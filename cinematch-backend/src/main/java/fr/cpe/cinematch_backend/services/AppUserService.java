@@ -1,0 +1,32 @@
+package fr.cpe.cinematch_backend.services;
+
+import fr.cpe.cinematch_backend.dtos.requests.UserRequest;
+import fr.cpe.cinematch_backend.entities.AppUser;
+import fr.cpe.cinematch_backend.repositories.AppUserRepository;
+import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AppUserService {
+
+    @Autowired
+    private AppUserRepository appUserRepository;
+
+    @Transactional
+    public boolean insertUser(UserRequest userRequest) throws BadEndpointException
+    {
+
+        if (appUserRepository.findByUsername(userRequest.getUsername()).isPresent())
+        {
+            throw new BadEndpointException(403, "BAD REQUEST", "Username is already in use");
+        }
+        AppUser userEntity = new AppUser();
+        userEntity.setUsername(userRequest.getUsername());
+        userEntity.setEmail(userRequest.getEmail());
+        userEntity.setPassword(userRequest.getPassword());
+        appUserRepository.save(userEntity);
+        return true;
+    }
+}
