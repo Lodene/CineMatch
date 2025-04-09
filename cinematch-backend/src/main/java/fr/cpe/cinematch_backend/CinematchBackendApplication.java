@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class CinematchBackendApplication {
+public class OpBackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CinematchBackendApplication.class, args);
+		SpringApplication.run(OpBackendApplication.class, args);
 	}
 
 }
