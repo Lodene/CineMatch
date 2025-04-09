@@ -1,0 +1,19 @@
+<mat-toolbar color="primary">
+    <!-- Home Button -->
+    <button mat-button routerLink="/">{{'app.common-component.header.title' | translate}}</button>
+
+    <!-- Push the menu to the right -->
+    <span class="spacer"></span>
+
+    <!-- Menu List -->
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      @for (item of headerMenuItem; track item.id) {
+        <button mat-menu-item [routerLink]="item.shortLink">
+          {{item.textKey | translate}} 
+        </button>
+      }
+    </mat-menu>
+</mat-toolbar>

@@ -1,0 +1,16 @@
+{
+    "app": {
+        "title": "New App",
+        "common-component": {
+            "header": {
+                "title": "New App",
+                "menu-item": {
+                    "about": "About"
+                }
+            }
+        },
+        "generic-error" : {
+            "error": "Error"
+        }
+    }
+}
