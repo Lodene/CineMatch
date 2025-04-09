@@ -8,11 +8,11 @@
 		<version>3.4.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ch.m13e</groupId>
-	<artifactId>op-backend</artifactId>
+	<groupId>cpe.cinematch_backend</groupId>
+	<artifactId>cinematch_backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>op-backend</name>
-	<description>Operational backend for futur m13e projects</description>
+	<name>cinematch_backend</name>
+	<description>Cinematch monolith backend</description>
 	<url/>
 	<licenses>
 		<license/>

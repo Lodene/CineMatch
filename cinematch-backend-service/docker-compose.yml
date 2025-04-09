@@ -1,0 +1,13 @@
+activemq:
+    image: symptoma/activemq:5.18.3
+    container_name: activemq
+    ports:
+      - "61616:61616"
+      - "61613:61613"
+      - "8161:8161"
+    environment:
+      ACTIVEMQ_DISALLOW_WEBCONSOLE: "false"
+      ACTIVEMQ_USERNAME: "admin"
+      ACTIVEMQ_PASSWORD: "cine"
+      ACTIVEMQ_WEBADMIN_USERNAME: "admin"
+      ACTIVEMQ_WEBADMIN_PASSWORD: "cine"
