@@ -1,4 +1,5 @@
-activemq:
+services:
+  activemq:
     image: symptoma/activemq:5.18.3
     container_name: activemq
     ports:
@@ -11,3 +12,55 @@ activemq:
       ACTIVEMQ_PASSWORD: "cine"
       ACTIVEMQ_WEBADMIN_USERNAME: "admin"
       ACTIVEMQ_WEBADMIN_PASSWORD: "cine"
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: cinematch
+    command:
+      - --storageEngine
+      - wiredTiger
+      - --auth
+    volumes:
+      - mongo_data:/data/db
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8091:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_SERVER: mongodb
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - "8888:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@cinematch.com
+      PGADMIN_DEFAULT_PASSWORD: cine
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  db:
+    image: postgres:14-alpine
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=cinematch
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+volumes:
+  local_pgdata:
+  pgadmin-data:
+  mongo_data:
