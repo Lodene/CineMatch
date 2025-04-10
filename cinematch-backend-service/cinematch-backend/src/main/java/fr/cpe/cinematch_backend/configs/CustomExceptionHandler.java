@@ -2,6 +2,7 @@ package fr.cpe.cinematch_backend.configs;
 
 import fr.cpe.cinematch_backend.dtos.ErrorDto;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,11 @@ public class CustomExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDto processBadEndpointException(BadEndpointException e) {
         return new ErrorDto(HttpStatus.BAD_REQUEST.value(), e.getMessage(), e.getReason());
+    }
+
+    @ExceptionHandler(GenericNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorDto processGenericNotFoundException(GenericNotFoundException e) {
+        return new ErrorDto(HttpStatus.NOT_FOUND.value(), e.getMessage(), e.getReason());
     }
 }
