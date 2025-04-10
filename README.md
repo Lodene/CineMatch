@@ -16,7 +16,7 @@ TODO
 ### Authors 
 
 Marin Thomas
-Rtaily Oumaima
+Rtayli Oumaima
 Al-Homsi Raghad
     Mathias
     Antoine
