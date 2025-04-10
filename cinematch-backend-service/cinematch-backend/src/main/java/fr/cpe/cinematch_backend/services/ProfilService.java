@@ -19,6 +19,9 @@ public class ProfilService {
     @Autowired
     private CurrentUserService currentUserService;
 
+    @Autowired
+    private AppUserRepository appUserRepository;
+
     public ProfilDTO getCurrentUserProfil() {
         AppUser user = currentUserService.getCurrentUser();
         Profil profil = profilRepository.findByUserId(user.getId())
@@ -58,5 +61,15 @@ public class ProfilService {
         profil.setDescription("");
         profil.setProfilPicture(null);
         profilRepository.save(profil);
+    }
+
+    public ProfilDTO getProfilByUsername(String username) {
+        AppUser user = appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found with username: " + username));
+
+        Profil profil = profilRepository.findByUserId(user.getId())
+                .orElseThrow(() -> new IllegalStateException("Profil not found for username: " + username));
+
+        return new ProfilDTO(profil.isChild(), profil.getDescription(), profil.getProfilPicture());
     }
 }

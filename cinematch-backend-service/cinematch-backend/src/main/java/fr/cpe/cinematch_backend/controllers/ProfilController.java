@@ -35,4 +35,9 @@ public class ProfilController {
         profilService.deleteProfilePicture();
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<ProfilDTO> getProfilByUsername(@PathVariable String username) {
+        return ResponseEntity.ok(profilService.getProfilByUsername(username));
+    }
 }
