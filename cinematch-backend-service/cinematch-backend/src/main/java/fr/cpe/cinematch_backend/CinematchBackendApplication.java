@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CinematchBackendApplication {
 
 	public static void main(String[] args) {
+		System.out.println("🚀 Lancement de l'application Spring Boot...");
 		SpringApplication.run(CinematchBackendApplication.class, args);
 	}
 

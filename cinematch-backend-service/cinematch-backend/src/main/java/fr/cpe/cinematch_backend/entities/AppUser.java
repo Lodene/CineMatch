@@ -18,12 +18,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="app_user")
+@Table(name = "app_user")
 public class AppUser implements UserDetails {
 
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(unique = true, length = 100, nullable = false)
