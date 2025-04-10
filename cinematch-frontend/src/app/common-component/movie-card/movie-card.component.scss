@@ -1,0 +1,34 @@
+.card {
+    width: 335px;
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+}
+
+.header-image {
+    background-size: cover;
+}
+
+.card-cotent {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-action {
+    display: flex;
+    justify-content: start;
+}
+
+
+
+
+.rounded-border-gradient {
+    text-align: center;
+    padding: 5px;
+    border: solid 2px grey;
+    border-radius: 20px;
+    min-height: 20px;
+    min-width: 50px;
+}

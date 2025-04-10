@@ -1,0 +1,165 @@
+// Margin utility classes
+// Generates classes for all, top, right, bottom, left, x-axis, and y-axis
+// For values 2-50 in steps of 2
+
+// Margin - all sides
+@for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .m-#{$size} {
+      margin: #{$size}px;
+    }
+  }
+  
+  // Margin - top
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mt-#{$size} {
+      margin-top: #{$size}px;
+    }
+  }
+  
+  // Margin - right
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mr-#{$size} {
+      margin-right: #{$size}px;
+    }
+  }
+  
+  // Margin - bottom
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mb-#{$size} {
+      margin-bottom: #{$size}px;
+    }
+  }
+  
+  // Margin - left
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .ml-#{$size} {
+      margin-left: #{$size}px;
+    }
+  }
+  
+  // Margin - x-axis (left and right)
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mx-#{$size} {
+      margin-left: #{$size}px;
+      margin-right: #{$size}px;
+    }
+  }
+  
+  // Margin - y-axis (top and bottom)
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .my-#{$size} {
+      margin-top: #{$size}px;
+      margin-bottom: #{$size}px;
+    }
+  }
+  
+  // Add negative margins for positioning elements
+  // Negative margin - all sides
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .m-n#{$size} {
+      margin: -#{$size}px;
+    }
+  }
+  
+  // Negative margin - top
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mt-n#{$size} {
+      margin-top: -#{$size}px;
+    }
+  }
+  
+  // Negative margin - right
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mr-n#{$size} {
+      margin-right: -#{$size}px;
+    }
+  }
+  
+  // Negative margin - bottom
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mb-n#{$size} {
+      margin-bottom: -#{$size}px;
+    }
+  }
+  
+  // Negative margin - left
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .ml-n#{$size} {
+      margin-left: -#{$size}px;
+    }
+  }
+  
+  // Negative margin - x-axis (left and right)
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .mx-n#{$size} {
+      margin-left: -#{$size}px;
+      margin-right: -#{$size}px;
+    }
+  }
+  
+  // Negative margin - y-axis (top and bottom)
+  @for $i from 1 through 25 {
+    $size: $i * 2;
+    
+    .my-n#{$size} {
+      margin-top: -#{$size}px;
+      margin-bottom: -#{$size}px;
+    }
+  }
+  
+  // Auto margins for easy centering and alignment
+  .m-auto {
+    margin: auto;
+  }
+  
+  .mt-auto {
+    margin-top: auto;
+  }
+  
+  .mr-auto {
+    margin-right: auto;
+  }
+  
+  .mb-auto {
+    margin-bottom: auto;
+  }
+  
+  .ml-auto {
+    margin-left: auto;
+  }
+  
+  .mx-auto {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .my-auto {
+    margin-top: auto;
+    margin-bottom: auto;
+  }

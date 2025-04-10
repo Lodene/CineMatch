@@ -1,0 +1,14 @@
+<mat-card class="card m-10" appearance="outlined">
+    <img class="image" [src]="movie.poster" [alt]="movie.title+' poster'">
+    <mat-card-content class="card-cotent mt-4">
+        <div class="name  mr-10 text-bold">{{movie.title}}</div>
+        <div style="display: flex;">
+            <mat-icon style="color:#ffe234;" aria-hidden="false" aria-label="star" fontIcon="star"></mat-icon>
+            <div class="rate">{{movie?.rating}}</div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions class="card-actions">
+        <div class="rounded-border-gradient mr-10">{{movie.releaseDate}}</div>
+        <div class="rounded-border-gradient">{{movie.genre[0]}}</div>
+    </mat-card-actions>
+</mat-card>

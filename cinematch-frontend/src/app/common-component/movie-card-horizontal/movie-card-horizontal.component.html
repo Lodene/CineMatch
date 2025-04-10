@@ -1,0 +1,25 @@
+<mat-card class="card m-10" appearance="outlined">
+    <img class="image" [src]="movie.poster" [alt]="movie.title+' poster'">
+
+    <mat-card-content class=" mt-10">
+        <div class="close-icon">
+            <button mat-icon-button aria-label="close">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div class="name  mr-10 title-md">{{movie.title}}</div>
+        <div style="display: flex;" class="my-20">
+            <mat-icon class="mr-4" style="color:#ffe234;" aria-hidden="false" aria-label="star"
+                fontIcon="star"></mat-icon>
+            <div class="mr-10">{{movie?.rating}}</div>
+            <mat-icon class="mr-4" aria-hidden="false" aria-label="calendar_today" fontIcon="calendar_today"></mat-icon>
+            <div class="mr-10">{{movie?.releaseDate}}</div>
+            <mat-icon class="mr-4" aria-hidden="false" aria-label="access_time" fontIcon="access_time"></mat-icon>
+            <div class="mr-10">{{movie?.duration}} min</div>
+        </div>
+        <div style="display: flex; flex-direction: row;" class="my-20">
+            <div *ngFor="let g of movie.genre" class="rounded-border-gradient mr-10">{{g}}</div>
+        </div>
+        <div class="mr-10">{{movie.description}}</div>
+    </mat-card-content>
+</mat-card>
