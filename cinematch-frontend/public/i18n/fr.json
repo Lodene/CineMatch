@@ -7,6 +7,11 @@
                 "menu-item": {
                     "about": "À propos"
                 }
+            },
+            "login": {
+                "response": {
+                    "login-successful": "Authentification réussie"
+                }
             }
         },
         "generic-error" : {

@@ -6,9 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
-import { error } from 'console';
 import { Router } from '@angular/router';
-import { ToasterService } from '../../services/toaster/toaster.service';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 type LoginRequest = {
   username: string;
@@ -26,7 +26,8 @@ export class LoginComponent {
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private toasterService: ToasterService
+    private toastr: ToastrService,
+    private translateService: TranslateService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -42,9 +43,10 @@ export class LoginComponent {
       
       this.authService.login(loginRequest.username, loginRequest.password).subscribe(res => {
         // redirect to main page =>
+        this.toastr.success(this.translateService.instant('app.common-component.login.response.login-successful'));
         this.router.navigateByUrl("/main");
       }, (error) => {
-        this.toasterService.add(error.error.reason);
+        this.toastr.error(error.error.reason, error.error.error);
         console.log(error.error);
       });
     } else {

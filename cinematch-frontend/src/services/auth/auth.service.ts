@@ -2,7 +2,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, of, Subscription, tap } from 'rxjs';
 import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +11,14 @@ export class AuthService {
 
   private readonly apiUrl = 'http://localhost:8081/auth';
   private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  private localStorage;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: any,    
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: any,
+    @Inject(DOCUMENT) private document: Document,  
     private http: HttpClient, private router: Router,
-    
   ) {
+    this.localStorage = document.defaultView?.localStorage;
     // Check if there is a token in cookies and set it in the subject
     const token = this.getTokenFromStorage();
     this.tokenSubject.next(token);
@@ -41,12 +44,17 @@ export class AuthService {
 
   // Method to set token in HttpOnly cookie
   private setTokenInStorage(token: string): void {
-    localStorage.setItem("token", token);
+    if (!!this.localStorage) {
+      this.localStorage.setItem("token", token);
+    }
   }
 
   // Method to retrieve token from cookie
   public getTokenFromStorage(): string | null {
-    return localStorage.getItem("token");
+    if (!!this.localStorage) {
+      return this.localStorage.getItem("token");
+    }
+    return null;
   }
 
   // Logout method: Clear JWT from cookie and BehaviorSubject
