@@ -1,0 +1,131 @@
+.featured-wrapper {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #f9f9f9, rgba(255, 255, 255, 0.7), transparent);
+  }
+}
+
+.content-container {
+  position: relative;
+  height: 100%;
+  padding: 0 2rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  .text-content {
+    max-width: 800px;
+    padding-bottom: 3rem;
+  }
+
+  .film-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1rem;
+  }
+
+  .film-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    align-items: center;
+
+    .badge {
+      padding: 0.3rem 0.8rem;
+      background: #e4e4e7;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .rating-score {
+      color: #fbbf24; // jaune (comme dans l'image)
+      font-weight: 600;
+    }
+
+    .runtime {
+      color: #4b5563;
+    }
+  }
+
+  .genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    .badge {
+      background: #f4f4f5;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      padding: 0.3rem 0.8rem;
+    }
+  }
+
+  .overview {
+    font-size: 1.1rem;
+    color: #4b5563;
+    margin-bottom: 1.75rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    button {
+      border-radius: 9999px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      mat-icon {
+        font-size: 1.2rem;
+      }
+
+      &:first-child {
+        background-color: #a594f9;
+        color: white;
+      }
+
+      &:nth-child(2) {
+        background-color: #f4f4f5;
+        color: #111;
+      }
+
+      &:last-child {
+        background-color: white;
+        border: 1px solid #e5e7eb;
+        color: #111;
+      }
+    }
+  }
+}
