@@ -22,8 +22,17 @@
             <column name="created_at" type="DATETIME"/>
         </createTable>
     </changeSet>
-    <changeSet id="1742419715388-2" author="PC">
-        <addUniqueConstraint columnNames="username" constraintName="uc_app_user_username" tableName="app_user"/>
+
+    <changeSet id="1744290451613-2" author="T-H-O-M-A-S">
+        <createTable tableName="movie">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_movieentity"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(1024)"/>
+            <column name="release_date" type="DATETIME"/>
+            <column name="poster" type="VARCHAR(255)"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>
