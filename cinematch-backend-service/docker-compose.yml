@@ -1,4 +1,5 @@
 services:
+
   activemq:
     image: symptoma/activemq:5.18.3
     container_name: activemq
@@ -60,6 +61,24 @@ services:
       - POSTGRES_DB=cinematch
     volumes:
       - local_pgdata:/var/lib/postgresql/data
+  spring-back:
+    depends_on:
+      - db
+    build: ./cinematch-backend
+    container_name: cinematch-monolith
+    ports:
+      - "8081:8081"
+      - "5005:5005"
+  spring-orchestrator:
+    depends_on:
+      - activemq
+      - mongodb
+    build: ./orchestrator
+    container_name: orchestrator
+    ports:
+      - "8088:8088"
+      - "5008:5008"
+  
 volumes:
   local_pgdata:
   pgadmin-data:

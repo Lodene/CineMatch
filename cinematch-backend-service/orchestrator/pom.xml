@@ -57,7 +57,7 @@
         </dependency>
 
         <dependency>
-            <groupId>com.projet_asi_ii</groupId>
+            <groupId>cpe.cinematch_backend</groupId>
             <artifactId>common-module</artifactId>
             <version>1.0.0</version>
         </dependency>

@@ -5,7 +5,7 @@ RUN apt-get update \
 
 WORKDIR /app
 ADD . /app
-RUN mvn install:install-file -Dfile=/app/common-module-1.0.0-orchestrator.jar -DgroupId=com.projet_asi_ii -DartifactId=common-module -Dversion=1.0.0 -Dpackaging=jar
+RUN mvn install:install-file -Dfile=/app/common-module-1.0.0-orchestrator.jar -DgroupId=cpe.cinematch_backend -DartifactId=common-module -Dversion=1.0.0 -Dpackaging=jar
 RUN mvn verify --fail-never
 RUN mvn package -DskipTests
 
