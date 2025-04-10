@@ -1,14 +1,44 @@
-<mat-toolbar color="primary">
-    <!-- Home Button -->
-    <button mat-button routerLink="/">{{'app.common-component.header.title' | translate}}</button>
+<mat-toolbar class="header-toolbar" color="transparent">
 
-    <!-- Push the menu to the right -->
-    <span class="spacer"></span>
+  <!-- Bloc de gauche -->
+  <div class="left-section">
+    <!-- Logo -->
+    <span class="logo">CineMatch</span>
 
-    <!-- Menu List -->
+    <!-- Navigation items -->
+    <div class="nav-links">
+      <button
+        *ngFor="let item of headerMenuItem"
+        mat-button
+        [routerLink]="item.shortLink"
+        routerLinkActive="active-link"
+      >
+        <mat-icon>{{ item.icon }}</mat-icon>
+        {{ item.textKey | translate }}
+      </button>
+    </div>
+  </div>
+  
+  <!-- Bloc de droite -->
+  <div class="right-section">
+
+    <!-- Search -->
+    <mat-form-field class="search-field" appearance="outline">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Search for films..." />
+    </mat-form-field>
+
+    <!-- Login -->
+    <button mat-stroked-button color="primary" class="login-button">
+      <mat-icon>login</mat-icon>
+      Login
+    </button>
+
+    <!-- Menu icon -->
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
+
     <mat-menu #menu="matMenu">
       @for (item of headerMenuItem; track item.id) {
         <button mat-menu-item [routerLink]="item.shortLink">
@@ -16,4 +46,6 @@
         </button>
       }
     </mat-menu>
+  </div>
+
 </mat-toolbar>

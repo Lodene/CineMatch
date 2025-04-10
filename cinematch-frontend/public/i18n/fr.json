@@ -1,9 +1,9 @@
 {
     "app": {
-        "title": "Nouvelle application",
+        "title": "CineMatch",
         "common-component": {
             "header": {
-                "title": "Nouvelle application",
+                "title": "CineMatch",
                 "menu-item": {
                   "home": "Accueil",
                   "recommendations": "Recommandations",
@@ -49,9 +49,10 @@
                     "signup-successful": "Compte crée avec succès"
                 }
             }
-        },
-        "generic-error" : {
-            "error": "Erreur"
-        }
+        },         
+      "generic-error": {
+        "error": "Erreur"
+      }
     }
-}
+  }
+  

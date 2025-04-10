@@ -53,5 +53,10 @@
         "generic-error" : {
             "error": "Error"
         }
-    }
+      },
+      "generic-error": {
+        "error": "Error"
+      }
 }
+  
+  
