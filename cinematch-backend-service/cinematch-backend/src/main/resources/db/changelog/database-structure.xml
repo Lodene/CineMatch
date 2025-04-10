@@ -72,4 +72,25 @@
                                  constraintName="FK_REVIEWS_ON_ID_USER" referencedColumnNames="id"
                                  referencedTableName="app_user"/>
     </changeSet>
+    <changeSet id="1744310000000-3" author="matias">
+        <createTable tableName="profil">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profil"/>
+            </column>
+
+            <column name="is_child" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(1024)"/>
+
+            <column name="profil_picture" type="VARCHAR(255)"/>
+
+            <column name="id_user" type="BIGINT">
+                <constraints nullable="false" unique="true" foreignKeyName="fk_profil_user" references="app_user(id)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
 </databaseChangeLog>
