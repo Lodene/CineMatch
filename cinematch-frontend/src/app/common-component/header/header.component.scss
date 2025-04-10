@@ -1,7 +1,66 @@
-.header {
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  background: transparent;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #e2e8f0;
+  height: 64px;
+  gap: 1rem;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  .logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #a594f9;
+  }
+
+  .nav-links {
     display: flex;
-    align-items: center;
+    gap: 1.25rem;
+
+    button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      border-radius: 8px;
+
+      &.active-link {
+        background-color: #e0d8ff;
+        font-weight: bold;
+      }
+    }
   }
-  .spacer {
-    flex-grow: 1; /* Pushes everything after it to the right */
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .search-field {
+    margin-top: 20px; 
+    width: 240px;
+
+    ::ng-deep .mat-form-field-outline {
+      border-width: 2px;
+    }
+
+    ::ng-deep .mat-form-field-infix {
+      padding: 0.2rem 0.5rem;
+    }
   }
+
+  .login-button {
+    height: 36px;
+    border-radius: 8px;
+    padding: 0 1rem;
+  }
+}
