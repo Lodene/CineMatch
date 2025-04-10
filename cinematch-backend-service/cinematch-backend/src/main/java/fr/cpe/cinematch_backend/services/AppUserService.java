@@ -14,6 +14,9 @@ public class AppUserService {
     @Autowired
     private AppUserRepository appUserRepository;
 
+    @Autowired
+    private ProfilService profilService;
+
     @Transactional
     public boolean insertUser(UserRequest userRequest) throws BadEndpointException
     {
@@ -27,6 +30,7 @@ public class AppUserService {
         userEntity.setEmail(userRequest.getEmail());
         userEntity.setPassword(userRequest.getPassword());
         appUserRepository.save(userEntity);
+        profilService.createProfilForUser(userEntity);
         return true;
     }
 }
