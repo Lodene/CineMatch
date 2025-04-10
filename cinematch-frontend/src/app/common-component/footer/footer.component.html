@@ -1,0 +1,63 @@
+<footer class="footer">
+  <div class="container">
+    <div class="grid">
+      <!-- Section 1 : Logo + tagline -->
+      <div>
+        <h3 class="title">{{ 'app.common-component.header.title' | translate }}</h3>
+        <p class="text-muted">
+          {{ 'app.common-component.footer.tagline' | translate }}
+        </p>
+      </div>
+
+      <!-- Section 2 : Navigation -->
+      <div>
+        <h4 class="subtitle">{{ 'app.common-component.footer.navigation' | translate }}</h4>
+        <ul>
+          <li><a routerLink="/">{{ 'app.common-component.header.menu-item.home' | translate }}</a></li>
+          <li><a routerLink="/explore">{{ 'app.common-component.header.menu-item.explore' | translate }}</a></li>
+          <li><a routerLink="/watchlist">{{ 'app.common-component.header.menu-item.watchlist' | translate }}</a></li>
+          <li><a routerLink="/favorites">{{ 'app.common-component.header.menu-item.favorites' | translate }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Section 3 : Compte -->
+      <div>
+        <h4 class="subtitle">{{ 'app.common-component.footer.account' | translate }}</h4>
+        <ul>
+          <li><a routerLink="/login">{{ 'app.common-component.login.title' | translate }}</a></li>
+          <li><a routerLink="/signup">{{ 'app.common-component.signup.title' | translate }}</a></li>
+          <li><a routerLink="/profile">{{ 'app.common-component.header.menu-item.profile' | translate }}</a></li>
+          <li><a routerLink="/settings">{{ 'app.common-component.header.menu-item.settings' | translate }}</a></li>
+        </ul>
+      </div>
+
+      <!-- Section 4 : Légal -->
+      <div>
+        <h4 class="subtitle">{{ 'app.common-component.footer.legal.title' | translate }}</h4>
+        <ul>
+          <li><a routerLink="/terms">{{ 'app.common-component.footer.legal.terms' | translate }}</a></li>
+          <li><a routerLink="/privacy">{{ 'app.common-component.footer.legal.privacy' | translate }}</a></li>
+          <li><a routerLink="/about">{{ 'app.common-component.header.menu-item.about' | translate }}</a></li>
+          <li><a routerLink="/contact">{{ 'app.common-component.footer.legal.contact' | translate }}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bas de page -->
+    <div class="bottom">
+      <p class="copyright">
+        © 2025 {{ 'app.common-component.header.title' | translate }}. {{ 'app.common-component.footer.rights' | translate }}
+      </p>
+
+      <div class="social">
+        <a href="#"><mat-icon fontIcon="twitter"></mat-icon></a>
+        <a href="#"><mat-icon fontIcon="instagram"></mat-icon></a>
+        <a href="#"><mat-icon fontIcon="code"></mat-icon></a>
+        <a href="#" class="love">
+          <span>{{ 'app.common-component.footer.made-with' | translate }}</span>
+          <mat-icon fontIcon="favorite" class="heart-icon"></mat-icon>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

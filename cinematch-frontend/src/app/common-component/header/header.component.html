@@ -3,7 +3,7 @@
   <!-- Bloc de gauche -->
   <div class="left-section">
     <!-- Logo -->
-    <span class="logo">CineMatch</span>
+    <span class="logo">{{ 'app.common-component.header.title' | translate }}</span>
 
     <!-- Navigation items -->
     <div class="nav-links">
@@ -18,23 +18,23 @@
       </button>
     </div>
   </div>
-  
+
   <!-- Bloc de droite -->
   <div class="right-section">
 
     <!-- Search -->
     <mat-form-field class="search-field" appearance="outline">
       <mat-icon matPrefix>search</mat-icon>
-      <input matInput placeholder="Search for films..." />
+      <input matInput [placeholder]="'app.common-component.header.search-placeholder' | translate" />
     </mat-form-field>
 
     <!-- Login -->
-    <button mat-stroked-button color="primary" class="login-button">
+    <button mat-stroked-button color="primary" class="login-button" routerLink="/login">
       <mat-icon>login</mat-icon>
-      Login
+      {{ 'app.common-component.login.title' | translate }}
     </button>
 
-    <!-- Menu icon -->
+    <!-- Menu icon (mobile/small screen) -->
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
@@ -42,7 +42,7 @@
     <mat-menu #menu="matMenu">
       @for (item of headerMenuItem; track item.id) {
         <button mat-menu-item [routerLink]="item.shortLink">
-          {{item.textKey | translate}} 
+          {{ item.textKey | translate }} 
         </button>
       }
     </mat-menu>
