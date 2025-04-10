@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ./common-module
+cd cinematch-backend-service/common-module
 mvn clean install
-cd ..
+cd ../..
 docker compose up --build -d

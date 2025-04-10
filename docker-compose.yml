@@ -1,5 +1,4 @@
 services:
-
   activemq:
     image: symptoma/activemq:5.18.3
     container_name: activemq
@@ -64,7 +63,7 @@ services:
   spring-back:
     depends_on:
       - db
-    build: ./cinematch-backend
+    build: ./cinematch-backend-service/cinematch-backend
     container_name: cinematch-monolith
     ports:
       - "8081:8081"
@@ -73,12 +72,28 @@ services:
     depends_on:
       - activemq
       - mongodb
-    build: ./orchestrator
+    build: ./cinematch-backend-service/orchestrator
     container_name: orchestrator
     ports:
       - "8088:8088"
       - "5008:5008"
-  
+  cinematch-frontend:
+    container_name: cinematch-frontend
+    restart: no
+    build:
+      context: ./cinematch-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./cinematch-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - spring-back
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Ensures file changes are detected
+      - WATCHPACK_POLLING=true
+
 volumes:
   local_pgdata:
   pgadmin-data:
