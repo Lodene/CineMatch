@@ -6,6 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
+import { error } from 'console';
+import { Router } from '@angular/router';
+import { ToasterService } from '../../services/toaster/toaster.service';
 
 type LoginRequest = {
   username: string;
@@ -21,7 +24,9 @@ type LoginRequest = {
 export class LoginComponent {
   loginForm: FormGroup;
   constructor(private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private toasterService: ToasterService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -35,8 +40,13 @@ export class LoginComponent {
         password: this.loginForm.get('password')?.value
       } as LoginRequest;
       
-      this.authService.login(loginRequest.username, loginRequest.password);
-      console.log(this.authService.isAuthenticated());
+      this.authService.login(loginRequest.username, loginRequest.password).subscribe(res => {
+        // redirect to main page =>
+        this.router.navigateByUrl("/main");
+      }, (error) => {
+        this.toasterService.add(error.error.reason);
+        console.log(error.error);
+      });
     } else {
       console.log('Form is not valid!');
     }

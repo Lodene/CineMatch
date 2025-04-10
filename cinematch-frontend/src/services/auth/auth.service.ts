@@ -1,6 +1,6 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, Subscription, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -27,12 +27,15 @@ export class AuthService {
   }
 
   // Login method: Assuming you receive the JWT after authentication
-  login(username: string, password: string): void {
-    console.log(username, password);
-    this.http.post<any>(`${this.apiUrl}/login`, { username, password }).subscribe((res: any) => {
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(map(res => {
       const token = res.token;
       this.setTokenInStorage(token);
       this.tokenSubject.next(token); // Update the BehaviorSubject with new token
+      return res;
+    }), error => {
+      console.log("error during login: ", error);
+      return error;
     });
   }
 
