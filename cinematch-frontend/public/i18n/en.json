@@ -9,8 +9,37 @@
                 }
             },
             "login": {
+                "title": "Login",
+                "username-label": "Username",
+                "username-placeholder": "Enter your username",
+                "username-error-required": "Username is required.",
+                "username-error-length": "Username must be at least 3 characters long.",
+                "password-label": "Password",
+                "password-placeholder": "Enter your password",
+                "password-error-required": "Password is required.",
+                "password-error-length": "Password must be at least 6 characters long.",
+                "submit-button": "Login",
                 "response": {
                     "login-successful": "Login successful"
+                }
+            },
+            "signup": {
+                "title": "Sign up",
+                "email-label": "Email",
+                "email-placeholder": "Enter your email",
+                "email-error-required": "Email is required.",
+                "email-error-format": "Email must respect the standard.",
+                "username-label": "Username",
+                "username-placeholder": "Enter your username",
+                "username-error-required": "Username is required.",
+                "username-error-length": "Username must be at least 3 characters long.",
+                "password-label": "Password",
+                "password-placeholder": "Enter your password",
+                "password-error-required": "Password is required.",
+                "password-error-length": "Password must be at least 6 characters long.",
+                "signup-button": "Sign up",
+                "response": {
+                    "signup-successful": "Signup successful"
                 }
             }
         },

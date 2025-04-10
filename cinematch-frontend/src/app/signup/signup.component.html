@@ -1,1 +1,45 @@
-<p>signup works!</p>
+<div class="signup-container">
+    <h1>{{ 'app.common-component.signup.title' | translate }}</h1>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" placeholder="Enter your username" />
+        <mat-error>
+            {{ 'app.common-component.signup.username-error-required' | translate }}
+        </mat-error>
+        <mat-error>
+            {{ 'app.common-component.signup.username-error-length' | translate }}
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>
+            {{ 'app.common-component.signup.email-label' | translate }}
+        </mat-label>
+        <input matInput formControlName="email" type="text" placeholder="Enter your email" />
+        <mat-error>
+            {{ 'app.common-component.signup.email-error-required' | translate }}
+        </mat-error>
+        <mat-error>
+            {{ 'app.common-component.signup.email-error-format' | translate }}
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>
+            {{ 'app.common-component.signup.password-label' | translate }}
+        </mat-label>
+        <input matInput formControlName="password" type="password" placeholder="Enter your password" />
+        <mat-error>
+            {{ 'app.common-component.signup.password-error-required' | translate }}
+        </mat-error>
+        <mat-error>
+            {{ 'app.common-component.signup.password-error-length' | translate }}
+        </mat-error>
+      </mat-form-field>
+  
+      <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid">
+        {{ 'app.common-component.signup.signup-button' | translate }}
+      </button>
+    </form>
+  </div>
+  

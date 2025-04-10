@@ -20,7 +20,7 @@ public class AppUserService {
 
         if (appUserRepository.findByUsername(userRequest.getUsername()).isPresent())
         {
-            throw new BadEndpointException(403, "BAD REQUEST", "Username is already in use");
+            throw new BadEndpointException(403, "Failed to create new account", "Username is already in use");
         }
         AppUser userEntity = new AppUser();
         userEntity.setUsername(userRequest.getUsername());

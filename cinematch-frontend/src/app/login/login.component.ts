@@ -5,19 +5,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth/auth.service';
+import { AuthService, LoginRequest } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
-type LoginRequest = {
-  username: string;
-  password: string;
-}
+
 
 @Component({
   selector: 'app-login',
-  imports: [MatInputModule, MatFormFieldModule, MatButtonModule, ReactiveFormsModule],
+  imports: [MatInputModule, MatFormFieldModule, MatButtonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -41,7 +38,7 @@ export class LoginComponent {
         password: this.loginForm.get('password')?.value
       } as LoginRequest;
       
-      this.authService.login(loginRequest.username, loginRequest.password).subscribe(res => {
+      this.authService.login(loginRequest).subscribe(res => {
         // redirect to main page =>
         this.toastr.success(this.translateService.instant('app.common-component.login.response.login-successful'));
         this.router.navigateByUrl("/main");

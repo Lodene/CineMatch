@@ -1,29 +1,30 @@
 <div class="login-container">
+    <h1>{{ 'app.common-component.login.title' | translate }}</h1>
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Username</mat-label>
+        <mat-label>{{ 'app.common-component.login.username-label' | translate }}</mat-label>
         <input matInput formControlName="username" placeholder="Enter your username" />
         <mat-error>
-          Username is required.
+          {{ 'app.common-component.login.username-error-required' | translate }}
         </mat-error>
         <mat-error>
-          Username must be at least 3 characters long.
+          {{ 'app.common-component.login.username-error-length' | translate }}
         </mat-error>
       </mat-form-field>
   
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Password</mat-label>
+        <mat-label>{{ 'app.common-component.login.password-label' | translate }}</mat-label>
         <input matInput formControlName="password" type="password" placeholder="Enter your password" />
         <mat-error>
-          Password is required.
+          {{ 'app.common-component.login.password-error-required' | translate }}
         </mat-error>
         <mat-error>
-          Password must be at least 6 characters long.
+          {{ 'app.common-component.login.password-error-length' | translate }}
         </mat-error>
       </mat-form-field>
   
       <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
-        Login
+        {{ 'app.common-component.login.submit-button' | translate }}
       </button>
     </form>
   </div>

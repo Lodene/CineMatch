@@ -9,8 +9,37 @@
                 }
             },
             "login": {
+                "title": "Se connecter",
+                "username-label": "Nom d'utilisateur",
+                "username-placeholder": "Entrer votre nom d'utilisateur",
+                "username-error-required": "Le nom d'utilisateur est obligatoire.",
+                "username-error-length": "Le nom d'utilisateur doit avoir 3 caractères ou plus.",
+                "password-label": "Mot de passe",
+                "password-placeholder": "Entrer votre mot de passe",
+                "password-error-required": "Le mot de passe est obligatoire.",
+                "password-error-length": "Le mot de passe doit avoir 6 caractères ou plus.",
+                "submit-button": "Se connecter",
                 "response": {
                     "login-successful": "Authentification réussie"
+                }
+            },
+            "signup": {
+                "title": "Créer un compte",
+                "email-label": "Email",
+                "email-placeholder": "Entrer votre email",
+                "email-error-required": "L'email est obligatoire.",
+                "email-error-format": "L'email doit respecter le format standard.",
+                "username-label": "Nom d'utilisateur",
+                "username-placeholder": "Entrer votre nom d'utilisateur",
+                "username-error-required": "Le nom d'utilisateur est obligatoire.",
+                "username-error-length": "Le nom d'utilisateur doit avoir 3 caractères ou plus.",
+                "password-label": "Mot de passe",
+                "password-placeholder": "Entrer votre mot de passe",
+                "password-error-required": "Le mot de passe est obligatoire.",
+                "password-error-length": "Le mot de passe doit avoir 6 caractères ou plus.",
+                "signup-button": "Créer un compte",
+                "response": {
+                    "signup-successful": "Compte crée avec succès"
                 }
             }
         },

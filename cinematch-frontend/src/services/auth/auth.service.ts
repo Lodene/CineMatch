@@ -4,6 +4,19 @@ import { BehaviorSubject, map, Observable, of, Subscription, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 
+// Request typing => 
+export type SignupRequest = {
+  username: string;
+  password: string;
+  email: string
+}
+
+export type LoginRequest = {
+  username: string;
+  password: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -30,8 +43,8 @@ export class AuthService {
   }
 
   // Login method: Assuming you receive the JWT after authentication
-  login(username: string, password: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, { username, password }).pipe(map(res => {
+  login(loginRequest: LoginRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, loginRequest).pipe(map(res => {
       const token = res.token;
       this.setTokenInStorage(token);
       this.tokenSubject.next(token); // Update the BehaviorSubject with new token
@@ -78,5 +91,13 @@ export class AuthService {
   addAuthHeader(headers: HttpHeaders): HttpHeaders {
     const token = this.tokenSubject.value;
     return token ? headers.append('Authorization', `Bearer ${token}`) : headers;
+  }
+  signup(signupRequest: SignupRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/signup`, signupRequest).pipe(map(res => {
+      return res;
+    }), error => {
+      console.log("error during signup: ", error);
+      return error;
+    });
   }
 }
