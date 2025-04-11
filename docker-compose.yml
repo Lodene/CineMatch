@@ -1,11 +1,46 @@
 services:
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+  stomp_listener:
+    build:
+      context: ./stomp_listener
+      dockerfile: Dockerfile
+    depends_on:
+      - activemq
+      - redis
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - ACTIVEMQ_HOST=activemq
+      - ACTIVEMQ_PORT=61613
+      - ACTIVEMQ_USER=admin
+      - ACTIVEMQ_PASS=cine
+    restart: unless-stopped
+
+  celery_worker:
+    build:
+      context: ./celery_worker
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - activemq
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - ACTIVEMQ_HOST=activemq
+      - ACTIVEMQ_PORT=61613
+      - ACTIVEMQ_USER=admin
+      - ACTIVEMQ_PASS=cine
+    restart: unless-stopped
+
   activemq:
     image: symptoma/activemq:5.18.3
     container_name: activemq
     ports:
-      - "61616:61616"
-      - "61613:61613"
-      - "8161:8161"
+      - "61616:61616" # ActiveMQ
+      - "61613:61613" # STOMP
+      - "8161:8161" # WEB UI
     environment:
       ACTIVEMQ_DISALLOW_WEBCONSOLE: "false"
       ACTIVEMQ_USERNAME: "admin"
