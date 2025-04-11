@@ -1,6 +1,7 @@
 package fr.cpe.cinematch_backend.entities.review;
 
 import fr.cpe.cinematch_backend.entities.AppUser;
+import fr.cpe.cinematch_backend.entities.MovieEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "reviews")
-public class Review {
+public class ReviewEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +23,9 @@ public class Review {
 
     private Integer note;
 
-    @Column(name = "id_movie", nullable = false)
-    private Long idMovie;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_movie", nullable = false)
+    private MovieEntity movie;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", nullable = false)

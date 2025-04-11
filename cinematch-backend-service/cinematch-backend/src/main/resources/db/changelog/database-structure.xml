@@ -35,4 +35,31 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="1744300053668-1" author="T-H-O-M-A-S" labels="Initialization of review entity">
+        <createTable tableName="reviews">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_reviews"/>
+            </column>
+            <column name="description" type="VARCHAR(1000)"/>
+            <column name="note" type="INT"/>
+            <column name="id_movie" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_user" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME"/>
+            <column name="modified_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744300053668-2" author="PC">
+        <addForeignKeyConstraint baseColumnNames="id_movie" baseTableName="reviews"
+                                 constraintName="FK_REVIEWS_ON_ID_MOVIE" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744300053668-3" author="PC">
+        <addForeignKeyConstraint baseColumnNames="id_user" baseTableName="reviews"
+                                 constraintName="FK_REVIEWS_ON_ID_USER" referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+    </changeSet>
 </databaseChangeLog>

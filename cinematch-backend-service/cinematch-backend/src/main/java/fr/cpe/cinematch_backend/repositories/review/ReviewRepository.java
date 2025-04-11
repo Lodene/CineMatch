@@ -1,15 +1,19 @@
 package fr.cpe.cinematch_backend.repositories.review;
 
-import fr.cpe.cinematch_backend.entities.review.Review;
+import fr.cpe.cinematch_backend.entities.MovieEntity;
+import fr.cpe.cinematch_backend.entities.review.ReviewEntity;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<ReviewEntity, Long> {
 
-    List<Review> findByUser(AppUser user);
+    List<ReviewEntity> findByUser(AppUser user);
 
-    Optional<Review> findByUserAndIdMovie(AppUser user, Long idMovie);
+    List<ReviewEntity> findByUserAndMovie(AppUser user, MovieEntity movie);
+
+    List<ReviewEntity> findByMovie(MovieEntity movie);
+
 }
