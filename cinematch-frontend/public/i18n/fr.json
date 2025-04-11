@@ -1,58 +1,104 @@
 {
-    "app": {
+  "app": {
+    "title": "CineMatch",
+    "common-component": {
+      "header": {
         "title": "CineMatch",
-        "common-component": {
-            "header": {
-                "title": "CineMatch",
-                "menu-item": {
-                  "home": "Accueil",
-                  "recommendations": "Recommandations",
-                  "watchlist,": "Liste de visionnage",
-                  "diary": "Journal",
-                  "favorites": "Favoris",
-                  "profile": "Profil",
-                  "about": "À propos"
-                },
-                "search-placeholder": "Rechercher un film"
-            },
-            "login": {
-                "title": "Se connecter",
-                "username-label": "Nom d'utilisateur",
-                "username-placeholder": "Entrer votre nom d'utilisateur",
-                "username-error-required": "Le nom d'utilisateur est obligatoire.",
-                "username-error-length": "Le nom d'utilisateur doit avoir 3 caractères ou plus.",
-                "password-label": "Mot de passe",
-                "password-placeholder": "Entrer votre mot de passe",
-                "password-error-required": "Le mot de passe est obligatoire.",
-                "password-error-length": "Le mot de passe doit avoir 6 caractères ou plus.",
-                "submit-button": "Se connecter",
-                "response": {
-                    "login-successful": "Authentification réussie"
-                }
-            },
-            "signup": {
-                "title": "Créer un compte",
-                "email-label": "Email",
-                "email-placeholder": "Entrer votre email",
-                "email-error-required": "L'email est obligatoire.",
-                "email-error-format": "L'email doit respecter le format standard.",
-                "username-label": "Nom d'utilisateur",
-                "username-placeholder": "Entrer votre nom d'utilisateur",
-                "username-error-required": "Le nom d'utilisateur est obligatoire.",
-                "username-error-length": "Le nom d'utilisateur doit avoir 3 caractères ou plus.",
-                "password-label": "Mot de passe",
-                "password-placeholder": "Entrer votre mot de passe",
-                "password-error-required": "Le mot de passe est obligatoire.",
-                "password-error-length": "Le mot de passe doit avoir 6 caractères ou plus.",
-                "signup-button": "Créer un compte",
-                "response": {
-                    "signup-successful": "Compte crée avec succès"
-                }
+        "search-placeholder": "Rechercher un film...",
+        "menu-item": {
+          "home": "Accueil",
+          "recommendations": "Recommandations",
+          "watchlist": "Liste de visionnage",
+          "diary": "Journal",
+          "favorites": "Favoris",
+          "profile": "Profil",
+          "about": "À propos",
+          "settings": "Réglage",
+          "explore": "Explorer"
+        }
+      },
+      "footer": {
+        "tagline": "Découvrez votre prochain film préféré avec des recommandations personnalisées.",
+        "navigation": "Navigation",
+        "account": "Compte",
+        "legal": {
+          "title": "Légal",
+          "terms": "Conditions d'utilisation",
+          "privacy": "Politique de confidentialité",
+          "contact": "Contact"
+        },
+        "made-with": "Fait avec",
+        "rights": "Tous droits réservés."
+      },
+      "login": {
+        "title": "Se connecter",
+        "username-label": "Nom d'utilisateur",
+        "username-placeholder": "Entrer votre nom d'utilisateur",
+        "username-error-required": "Le nom d'utilisateur est obligatoire.",
+        "username-error-length": "Le nom d'utilisateur doit avoir 3 caractères ou plus.",
+        "password-label": "Mot de passe",
+        "password-placeholder": "Entrer votre mot de passe",
+        "password-error-required": "Le mot de passe est obligatoire.",
+        "password-error-length": "Le mot de passe doit avoir 6 caractères ou plus.",
+        "submit-button": "Se connecter",
+        "response": {
+          "login-successful": "Authentification réussie"
+        }
+      },
+      "signup": {
+        "title": "Créer un compte",
+        "email-label": "Email",
+        "email-placeholder": "Entrer votre email",
+        "email-error-required": "L'email est obligatoire.",
+        "email-error-format": "L'email doit respecter le format standard.",
+        "username-label": "Nom d'utilisateur",
+        "username-placeholder": "Entrer votre nom d'utilisateur",
+        "username-error-required": "Le nom d'utilisateur est obligatoire.",
+        "username-error-length": "Le nom d'utilisateur doit avoir 3 caractères ou plus.",
+        "password-label": "Mot de passe",
+        "password-placeholder": "Entrer votre mot de passe",
+        "password-error-required": "Le mot de passe est obligatoire.",
+        "password-error-length": "Le mot de passe doit avoir 6 caractères ou plus.",
+        "signup-button": "Créer un compte",
+        "response": {
+          "signup-successful": "Compte crée avec succès"
+        }
+      },
+      "profile": {
+        "username": "John Doe",
+        "subtitle": "Passionné de cinéma. Inscrit en avril 2023",
+        "stats": {
+          "watched": "Films vus",
+          "reviews": "Avis",
+          "watchlist": "Liste de visionnage"
+        },
+        "actions": {
+          "edit": "Modifier le profil"
+        },
+        "tabs": {
+          "activity": "Activité",
+          "favorites": "Favoris"
+        },
+        "sections": {
+          "activity": {
+            "title": "Activité récente",
+            "like": "Vous avez aimé {{ film }}",
+            "add": "Vous avez ajouté {{ film }} à votre liste de visionnage",
+            "watch": "Vous avez regardé {{ film }}",
+            "time": {
+              "4h": "il y a 4 heures",
+              "2d": "il y a 2 jours",
+              "1w": "il y a 1 semaine"
             }
-        },         
-      "generic-error": {
-        "error": "Erreur"
+          },
+          "favorites": {
+            "title": "Vos films préférés"
+          }
+        }
       }
+    },
+    "generic-error": {
+      "error": "Erreur"
     }
   }
-  
+}
