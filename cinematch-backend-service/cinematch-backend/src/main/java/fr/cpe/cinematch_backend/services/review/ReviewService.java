@@ -1,14 +1,18 @@
 package fr.cpe.cinematch_backend.services.review;
 
 import fr.cpe.cinematch_backend.dtos.review.ReviewRequestDto;
-import fr.cpe.cinematch_backend.dtos.review.ReviewResponseDto;
+import fr.cpe.cinematch_backend.dtos.review.ReviewDto;
+import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 
 import java.util.List;
 
 public interface ReviewService {
-    void createReview(ReviewRequestDto dto);
+    void createReview(ReviewRequestDto reviewRequestDto, String username) throws GenericNotFoundException;
 
-    void updateReview(ReviewRequestDto dto);
+    ReviewDto updateReview(Long id, ReviewRequestDto dto) throws GenericNotFoundException, BadEndpointException;
 
-    List<ReviewResponseDto> getUserReviews(Long idUser);
+    List<ReviewDto> getUserReviews(String username) throws GenericNotFoundException;
+
+    boolean deleteReview(long id);
 }

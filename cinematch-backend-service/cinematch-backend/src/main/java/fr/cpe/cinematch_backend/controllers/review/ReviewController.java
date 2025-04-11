@@ -1,38 +1,61 @@
 package fr.cpe.cinematch_backend.controllers.review;
 
 import fr.cpe.cinematch_backend.dtos.review.ReviewRequestDto;
-import fr.cpe.cinematch_backend.dtos.review.ReviewResponseDto;
+import fr.cpe.cinematch_backend.dtos.review.ReviewDto;
+import fr.cpe.cinematch_backend.entities.AppUser;
+import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.review.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/reviews")
+@RequestMapping("reviews")
 public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
 
-    public ReviewController() {
-        System.out.println("ReviewController chargé !");
-    }
-
-    @PostMapping("/create")
-    public void createReview(@RequestBody @Valid ReviewRequestDto dto) {
+    @PostMapping
+    public void createReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto) throws GenericNotFoundException {
         System.out.println("✅ Requête reçue dans createReview");
-        reviewService.createReview(dto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser uE = (AppUser) authentication.getPrincipal();
+        reviewService.createReview(reviewRequestDto, uE.getUsername());
     }
 
-    @PutMapping("/update")
-    public void updateReview(@RequestBody @Valid ReviewRequestDto dto) {
-        reviewService.updateReview(dto);
+    @PutMapping("/{reviewId}")
+    public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "reviewId") String reviewId, @RequestBody ReviewRequestDto reviewRequestDto) throws GenericNotFoundException, BadEndpointException {
+        long id;
+        try {
+            id = Long.parseLong(reviewId);
+        } catch (NumberFormatException e) {
+            throw new BadEndpointException(400, "Error while formating review id", "Id could not be parsed to 'Long'");
+        }
+        return ResponseEntity.ok(reviewService.updateReview(id, reviewRequestDto));
     }
 
-    @GetMapping("/user/{idUser}")
-    public List<ReviewResponseDto> getUserReviews(@PathVariable Long idUser) {
-        return reviewService.getUserReviews(idUser);
+    @GetMapping("/getByUser/{idUser}")
+    public List<ReviewDto> getUserReviews(@PathVariable Long idUser) throws GenericNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser uE = (AppUser) authentication.getPrincipal();
+        return reviewService.getUserReviews(uE.getUsername());
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<Boolean> deleteReview(@PathVariable(value = "reviewId") String reviewId) throws BadEndpointException {
+        long id;
+        try {
+            id = Long.parseLong(reviewId);
+        } catch (NumberFormatException e) {
+            throw new BadEndpointException(400, "Error while formating review id", "Id could not be parsed to 'Long'");
+        }
+        return ResponseEntity.ok(reviewService.deleteReview(id));
     }
 }

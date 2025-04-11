@@ -10,10 +10,6 @@ import lombok.Setter;
 @Setter
 public class ReviewRequestDto {
 
-    @NotNull
-    private Long idUser;
-
-    @NotNull
     private Long idMovie;
 
     @Min(0)
