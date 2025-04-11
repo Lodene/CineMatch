@@ -1,26 +1,26 @@
-<div class="featured-wrapper">
+<div class="featured-wrapper" *ngIf="movie">
     <div class="backdrop">
-      <img [src]="film.backdropUrl || film.posterUrl" [alt]="film.title" />
+      <img [src]="movie.backdropUrl || movie.poster" [alt]="movie.title" />
       <div class="gradient-overlay"></div>
     </div>
   
     <div class="content-container">
       <div class="text-content">
-        <h1 class="film-title">{{ film.title }}</h1>
+        <h1 class="film-title">{{ movie.title }}</h1>
   
         <div class="film-meta">
-          <span class="badge">{{ film.year }}</span>
+          <span class="badge">{{ movie.releaseDate }}</span>
           <span class="rating">
-            <span class="rating-score">{{ film.rating }}</span> / 10
+            <span class="rating-score">{{ movie.rating }}</span> / 10
           </span>
-          <span class="runtime">{{ film.runtime }} min</span>
+          <span class="runtime">{{ movie.runtime }} min</span>
         </div>
   
         <div class="genres">
-          <span class="badge secondary" *ngFor="let genre of film.genres">{{ genre }}</span>
+          <span class="badge secondary" *ngFor="let genre of movie.genres">{{ genre }}</span>
         </div>
   
-        <p class="overview">{{ film.overview }}</p>
+        <p class="overview">{{ movie.description }}</p>
   
         <div class="actions">
           <button mat-flat-button color="primary">
@@ -33,7 +33,7 @@
             Add to Watchlist
           </button>
   
-          <button mat-flat-button color="accent" [routerLink]="'/film/' + film.id">
+          <button mat-flat-button color="accent" [routerLink]="'/film/' + movie.id">
             <mat-icon>info</mat-icon>
             Details
           </button>

@@ -5,7 +5,8 @@ export class Movie {
     releaseDate: number = 2000;
     poster: string = 'https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg';
     
-    genre: string[] = ['Drama', 'Crime'];
+    genres: string[] = ['Drama', 'Crime'];
     rating: number = 9.99;
-    duration: number = 142;
+    runtime: number = 142;
+    backdropUrl: string = "https://image.tmdb.org/t/p/original/kXfqcdQKsToO0OUXHcrrNCHDBzO.jpg";
 }
