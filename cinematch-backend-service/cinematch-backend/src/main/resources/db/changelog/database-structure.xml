@@ -92,5 +92,20 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="1744310000000-4" author="Antoine">
+        <createTable tableName="watchlist_movie">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" primaryKeyName="pk_watchlist_movie"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME"/>
+        </createTable>
+    </changeSet>
+
 
 </databaseChangeLog>
