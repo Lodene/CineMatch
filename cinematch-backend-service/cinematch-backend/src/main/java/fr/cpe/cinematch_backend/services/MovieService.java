@@ -43,6 +43,8 @@ public class MovieService {
         movieEntity.get().setDescription(movieDto.getDescription());
         movieEntity.get().setReleaseDate(movieDto.getReleaseDate());
         movieEntity.get().setPoster(movieDto.getPoster());
+        movieEntity.get().setRating(movieDto.getRating());
+        movieEntity.get().setGenre(movieDto.getGenre());
         return MovieMapper.INSTANCE.toMovieDto(movieRepository.save(movieEntity.get()));
     }
 
@@ -54,5 +56,10 @@ public class MovieService {
         } else {
             return false;
         }
+    }
+
+
+    public Optional<MovieEntity> getMovieEntityById(long id) {
+        return this.movieRepository.findById(id);
     }
 }

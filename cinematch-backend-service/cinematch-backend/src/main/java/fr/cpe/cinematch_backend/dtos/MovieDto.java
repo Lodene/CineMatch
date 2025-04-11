@@ -18,4 +18,6 @@ public class MovieDto {
     private String description;
     private Date releaseDate;
     private String poster;
+    private String genre;
+    private float rating;
 }
