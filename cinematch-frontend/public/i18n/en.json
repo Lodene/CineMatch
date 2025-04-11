@@ -1,62 +1,107 @@
 {
-    "app": {
-        "title": "New App",
-        "common-component": {
-          "header": {
-              "title": "CineMatch",
-              "menu-item": {
-                "home": "Home",
-                "recommendations": "Recommendations",
-                "watchlist": "Watchlist",
-                "diary": "Diary",
-                "favorites": "Favorites",
-                "profile": "Profile",
-                "about": "About"
-              },
-              "search-placeholder": "Search a movie"
-            },
-            "login": {
-                "title": "Login",
-                "username-label": "Username",
-                "username-placeholder": "Enter your username",
-                "username-error-required": "Username is required.",
-                "username-error-length": "Username must be at least 3 characters long.",
-                "password-label": "Password",
-                "password-placeholder": "Enter your password",
-                "password-error-required": "Password is required.",
-                "password-error-length": "Password must be at least 6 characters long.",
-                "submit-button": "Login",
-                "response": {
-                    "login-successful": "Login successful"
-                }
-            },
-            "signup": {
-                "title": "Sign up",
-                "email-label": "Email",
-                "email-placeholder": "Enter your email",
-                "email-error-required": "Email is required.",
-                "email-error-format": "Email must respect the standard.",
-                "username-label": "Username",
-                "username-placeholder": "Enter your username",
-                "username-error-required": "Username is required.",
-                "username-error-length": "Username must be at least 3 characters long.",
-                "password-label": "Password",
-                "password-placeholder": "Enter your password",
-                "password-error-required": "Password is required.",
-                "password-error-length": "Password must be at least 6 characters long.",
-                "signup-button": "Sign up",
-                "response": {
-                    "signup-successful": "Signup successful"
-                }
-            }
-        },
-        "generic-error" : {
-            "error": "Error"
+  "app": {
+    "title": "New App",
+    "common-component": {
+      "header": {
+        "title": "CineMatch",
+        "search-placeholder": "Search for films...",
+        "menu-item": {
+          "home": "Home",
+          "recommendations": "Recommendations",
+          "watchlist": "Watchlist",
+          "diary": "Diary",
+          "favorites": "Favorites",
+          "profile": "Profile",
+          "about": "About",
+          "settings": "Settings",
+          "explore": "Explore"
         }
       },
-      "generic-error": {
-        "error": "Error"
+      "footer": {
+        "tagline": "Discover your next favorite film with personalized recommendations.",
+        "navigation": "Navigation",
+        "account": "Account",
+        "legal": {
+          "title": "Legal",
+          "terms": "Terms of Service",
+          "privacy": "Privacy Policy",
+          "contact": "Contact"
+        },
+        "made-with": "Made with",
+        "rights": "All rights reserved."
+      },
+      "login": {
+        "title": "Login",
+        "username-label": "Username",
+        "username-placeholder": "Enter your username",
+        "username-error-required": "Username is required.",
+        "username-error-length": "Username must be at least 3 characters long.",
+        "password-label": "Password",
+        "password-placeholder": "Enter your password",
+        "password-error-required": "Password is required.",
+        "password-error-length": "Password must be at least 6 characters long.",
+        "submit-button": "Login",
+        "response": {
+          "login-successful": "Login successful"
+        }
+      },
+      "signup": {
+        "title": "Sign up",
+        "email-label": "Email",
+        "email-placeholder": "Enter your email",
+        "email-error-required": "Email is required.",
+        "email-error-format": "Email must respect the standard.",
+        "username-label": "Username",
+        "username-placeholder": "Enter your username",
+        "username-error-required": "Username is required.",
+        "username-error-length": "Username must be at least 3 characters long.",
+        "password-label": "Password",
+        "password-placeholder": "Enter your password",
+        "password-error-required": "Password is required.",
+        "password-error-length": "Password must be at least 6 characters long.",
+        "signup-button": "Sign up",
+        "response": {
+          "signup-successful": "Signup successful"
+        }
+      },
+      "profile": {
+        "username": "John Doe",
+        "subtitle": "Film enthusiast. Joined April 2023",
+        "stats": {
+          "watched": "Films Watched",
+          "reviews": "Reviews",
+          "watchlist": "Watchlist"
+        },
+        "actions": {
+          "edit": "Edit Profile"
+        },
+        "tabs": {
+          "activity": "Activity",
+          "favorites": "Favorites"
+        },
+        "sections": {
+          "activity": {
+            "title": "Recent Activity",
+            "like": "You liked {{ film }}",
+            "add": "You added {{ film }} to your watchlist",
+            "watch": "You watched {{ film }}",
+            "time": {
+              "4h": "4 hours ago",
+              "2d": "2 days ago",
+              "1w": "1 week ago"
+            }
+          },
+          "favorites": {
+            "title": "Your Favorite Films"
+          }
+        }
       }
+    },
+    "generic-error": {
+      "error": "Error"
+    }
+  },
+  "generic-error": {
+    "error": "Error"
+  }
 }
-  
-  

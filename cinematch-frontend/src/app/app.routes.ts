@@ -3,6 +3,7 @@ import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { ProfilComponent } from './profil/profil.component';
 import { MainComponent } from './main/main.component';
 import { AuthGuard } from '../services/auth/auth-guard.service';
 import { WatchListComponent } from './watch-list/watch-list.component';
@@ -13,7 +14,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
+  { path: 'profile', component: ProfilComponent},
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
-
+  
 ];

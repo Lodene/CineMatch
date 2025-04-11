@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Pour *ngIf, *ngFor, etc.
 import { HeaderComponent } from './common-component/header/header.component';
+import { FooterComponent } from './common-component/footer/footer.component';
+
 import {
   TranslateService,
   TranslatePipe,
@@ -10,7 +12,7 @@ import {
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
