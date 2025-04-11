@@ -15,10 +15,10 @@
             <mat-icon class="mr-4" aria-hidden="false" aria-label="calendar_today" fontIcon="calendar_today"></mat-icon>
             <div class="mr-10">{{movie?.releaseDate}}</div>
             <mat-icon class="mr-4" aria-hidden="false" aria-label="access_time" fontIcon="access_time"></mat-icon>
-            <div class="mr-10">{{movie?.duration}} min</div>
+            <div class="mr-10">{{movie?.runtime}} min</div>
         </div>
         <div style="display: flex; flex-direction: row;" class="my-20">
-            <div *ngFor="let g of movie.genre" class="rounded-border-gradient mr-10">{{g}}</div>
+            <div *ngFor="let g of movie.genres" class="rounded-border-gradient mr-10">{{g}}</div>
         </div>
         <div class="mr-10">{{movie.description}}</div>
     </mat-card-content>

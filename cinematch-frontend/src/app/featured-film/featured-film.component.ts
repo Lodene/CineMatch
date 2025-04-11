@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Film } from '../../models/types/components/featured-film/film.model';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { Movie } from '../../models/movie';
 
 @Component({
   selector: 'app-featured-film',
@@ -12,5 +12,5 @@ import { RouterModule } from '@angular/router';
   styleUrl: './featured-film.component.scss'
 })
 export class FeaturedFilmComponent {
-  @Input() film!: Film;
+  @Input() movie!: Movie;
 }

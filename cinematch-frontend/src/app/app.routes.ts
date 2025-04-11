@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MainComponent } from './main/main.component';
 import { AuthGuard } from '../services/auth/auth-guard.service';
+import { WatchListComponent } from './watch-list/watch-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
@@ -12,6 +13,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
+  { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
 
 ];
