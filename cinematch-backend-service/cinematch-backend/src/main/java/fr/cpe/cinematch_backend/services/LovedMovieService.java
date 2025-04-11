@@ -10,10 +10,13 @@ import fr.cpe.cinematch_backend.mappers.MovieMapper;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.MovieRepository;
 import fr.cpe.cinematch_backend.repositories.LovedMovieRepository;
+import fr.cpe.cinematch_backend.services.security.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LovedMovieService {
@@ -27,53 +30,54 @@ public class LovedMovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public void likeMovie(LovedMovieRequestDto dto, String username) throws GenericNotFoundException {
-        AppUser user = appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                        "User with username '" + username + "' couldn't be found"));
-        MovieEntity movie = movieRepository.findById(dto.getIdMovie())
+    @Autowired
+    private CurrentUserService currentUserService;
+
+    public void likeMovie(Long movieId) throws GenericNotFoundException {
+
+        AppUser user = checkAndRetrieveUser();
+        MovieEntity movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
-                        "Movie with id '" + dto.getIdMovie() + "' couldn't be found"));
+                        "Movie with id '" + movieId + "' couldn't be found"));
 
-        if (lovedMovieRepository.existsByUserAndMovie(user, movie))
-            return;
-
-        LovedMovieEntity lovedMovie = new LovedMovieEntity();
-        lovedMovie.setUser(user);
-        lovedMovie.setMovie(movie);
-        lovedMovieRepository.save(lovedMovie);
+        if (lovedMovieRepository.existsByUserAndMovie(user, movie)){
+            // unlike a movie
+            lovedMovieRepository.findByUserAndMovie(user, movie)
+                    .ifPresent(lovedMovieRepository::delete);
+        } else {
+            // like a movie
+            LovedMovieEntity lovedMovie = new LovedMovieEntity();
+            lovedMovie.setUser(user);
+            lovedMovie.setMovie(movie);
+            lovedMovieRepository.save(lovedMovie);
+        }
     }
 
-    public void unlikeMovie(Long idMovie, String username) throws GenericNotFoundException {
-        AppUser user = appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                        "User with username '" + username + "' couldn't be found"));
-        MovieEntity movie = movieRepository.findById(idMovie)
-                .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
-                        "Movie with id '" + idMovie + "' couldn't be found"));
-
-        lovedMovieRepository.findByUserAndMovie(user, movie)
-                .ifPresent(lovedMovieRepository::delete);
-    }
-
-    public List<MovieDto> getLovedMovies(String username) throws GenericNotFoundException {
-        AppUser user = appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                        "User with username '" + username + "' couldn't be found"));
-
+    public List<MovieDto> getCurentUserLovedMovies() throws GenericNotFoundException {
+        AppUser user = checkAndRetrieveUser();
         return lovedMovieRepository.findByUser(user).stream()
                 .map(lovedMovie -> MovieMapper.INSTANCE.toMovieDto(lovedMovie.getMovie()))
                 .toList();
     }
 
-    public List<MovieDto> getLovedMoviesByUserId(Long idUser) throws GenericNotFoundException {
-        AppUser user = appUserRepository.findById(idUser)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                        "User with id '" + idUser + "' couldn't be found"));
-
-        return lovedMovieRepository.findByUser(user).stream()
-                .map(lm -> MovieMapper.INSTANCE.toMovieDto(lm.getMovie()))
-                .toList();
+    public List<MovieDto> getLovedMoviesByUsername(String username) throws GenericNotFoundException {
+        Optional<AppUser> user = appUserRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            throw new GenericNotFoundException(404, "User not found", "The user ' "+ username + "' is not logged in or does not exist");
+        }
+        List<LovedMovieEntity> lovedMovieEntityList = lovedMovieRepository.findByUser(user.get());
+        List<MovieDto> movieDtoList = new ArrayList<>();
+        for (LovedMovieEntity lovedMovieEntity : lovedMovieEntityList) {
+            movieDtoList.add(MovieMapper.INSTANCE.toMovieDto(lovedMovieEntity.getMovie()));
+        }
+        return movieDtoList;
     }
 
+    private AppUser checkAndRetrieveUser() throws GenericNotFoundException {
+        AppUser user = currentUserService.getCurrentUser();
+        if (user == null) {
+            throw new GenericNotFoundException(404, "User not found", "The current user is not logged in or does not exist");
+        }
+        return user;
+    }
 }

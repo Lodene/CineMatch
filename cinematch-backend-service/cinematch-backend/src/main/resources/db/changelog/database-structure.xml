@@ -92,5 +92,33 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="1744358097281-1" author="T-H-O-M-A-S">
+        <createTable tableName="loved_movies">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_loved_movies"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744358097281-2" author="T-H-O-M-A-S">
+        <addUniqueConstraint columnNames="user_id, movie_id" constraintName="uc_f515bafb318a9de253194ac4a"
+                             tableName="loved_movies"/>
+    </changeSet>
+    <changeSet id="1744358097281-3" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="loved_movies"
+                                 constraintName="FK_LOVED_MOVIES_ON_MOVIE" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744358097281-4" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="loved_movies"
+                                 constraintName="FK_LOVED_MOVIES_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+    </changeSet>
+
 
 </databaseChangeLog>
