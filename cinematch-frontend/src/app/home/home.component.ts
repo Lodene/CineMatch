@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FeaturedFilmComponent],
+  imports: [CommonModule, FeaturedFilmComponent, MovieCardComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
