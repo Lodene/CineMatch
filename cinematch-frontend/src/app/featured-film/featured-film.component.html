@@ -9,7 +9,7 @@
         <h1 class="film-title">{{ movie.title }}</h1>
   
         <div class="film-meta">
-          <span class="badge">{{ movie.releaseDate }}</span>
+          <span class="badge">{{ movie.releaseDate | date:'y'}}</span>
           <span class="rating">
             <span class="rating-score">{{ movie.rating }}</span> / 10
           </span>

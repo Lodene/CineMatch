@@ -1,4 +1,4 @@
-<mat-card class="card m-10" appearance="outlined">
+<mat-card class="card m-10" appearance="outlined" (click)="goToMovie(movie)">
     <img class="image" [src]="movie.poster" [alt]="movie.title+' poster'">
     <mat-card-content class="card-cotent mt-4">
         <div class="name  mr-10 text-bold">{{movie.title}}</div>
@@ -8,7 +8,7 @@
         </div>
     </mat-card-content>
     <mat-card-actions class="card-actions">
-        <div class="rounded-border-gradient mr-10">{{movie.releaseDate}}</div>
+        <div class="rounded-border-gradient mr-10">{{movie.releaseDate | date:'y'}}</div>
         <div class="rounded-border-gradient">{{movie.genres[0]}}</div>
     </mat-card-actions>
 </mat-card>
