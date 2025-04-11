@@ -73,7 +73,7 @@
                                  referencedTableName="app_user"/>
     </changeSet>
     <changeSet id="1744310000000-3" author="matias">
-        <createTable tableName="profil">
+        <createTable tableName="profile">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_profil"/>
             </column>

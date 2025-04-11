@@ -7,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProfilDTO {
+public class ProfileDto {
     private boolean isChild;
     private String description;
     private String profilPicture;
+    private String username;
 }

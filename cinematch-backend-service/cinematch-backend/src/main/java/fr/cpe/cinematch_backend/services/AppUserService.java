@@ -30,7 +30,7 @@ public class AppUserService {
         userEntity.setEmail(userRequest.getEmail());
         userEntity.setPassword(userRequest.getPassword());
         appUserRepository.save(userEntity);
-        profilService.createProfilForUser(userEntity);
+        profilService.createProfileForUser(userEntity);
         return true;
     }
 }
