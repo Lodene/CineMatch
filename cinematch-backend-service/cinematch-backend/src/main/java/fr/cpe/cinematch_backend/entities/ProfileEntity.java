@@ -4,12 +4,12 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "profil")
+@Table(name = "profile")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profil {
+public class ProfileEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package fr.cpe.cinematch_backend.controllers;
 
-import fr.cpe.cinematch_backend.dtos.ProfilDTO;
+import fr.cpe.cinematch_backend.dtos.ProfileDto;
+import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.ProfilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,30 +15,31 @@ public class ProfilController {
     private ProfilService profilService;
 
     @GetMapping
-    public ResponseEntity<ProfilDTO> getProfil() {
-        return ResponseEntity.ok(profilService.getCurrentUserProfil());
+    public ResponseEntity<ProfileDto> getProfil() throws GenericNotFoundException {
+        return ResponseEntity.ok(profilService.getCurrentUserProfile());
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateProfil(@RequestBody ProfilDTO dto) {
-        profilService.updateProfil(dto);
+    public ResponseEntity<Void> updateProfil(@RequestBody ProfileDto dto) throws GenericNotFoundException {
+        profilService.updateProfile(dto);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/picture")
-    public ResponseEntity<Void> updatePicture(@RequestBody String path) {
+    public ResponseEntity<Void> updatePicture(@RequestBody String path) throws GenericNotFoundException {
         profilService.updateProfilePicture(path);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/picture")
-    public ResponseEntity<Void> deletePicture() {
+    public ResponseEntity<Void> deletePicture() throws GenericNotFoundException {
         profilService.deleteProfilePicture();
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<ProfilDTO> getProfilByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(profilService.getProfilByUsername(username));
+    public ResponseEntity<ProfileDto> getProfilByUsername(@PathVariable String username) throws GenericNotFoundException {
+        return ResponseEntity.ok(profilService.getProfileByUsername(username));
     }
+
 }
