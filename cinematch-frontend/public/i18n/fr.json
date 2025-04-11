@@ -5,8 +5,15 @@
             "header": {
                 "title": "Nouvelle application",
                 "menu-item": {
-                    "about": "À propos"
-                }
+                  "home": "Accueil",
+                  "recommendations": "Recommandations",
+                  "watchlist,": "Liste de visionnage",
+                  "diary": "Journal",
+                  "favorites": "Favoris",
+                  "profile": "Profil",
+                  "about": "À propos"
+                },
+                "search-placeholder": "Rechercher un film"
             },
             "login": {
                 "title": "Se connecter",

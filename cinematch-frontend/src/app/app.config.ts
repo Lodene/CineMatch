@@ -3,25 +3,28 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS, provideHttpClient, withFetch} from "@angular/common/http";
-import {provideTranslateService, TranslateLoader} from "@ngx-translate/core";
+import {HTTP_INTERCEPTORS, provideHttpClient, withFetch, withInterceptorsFromDi} from "@angular/common/http";
+import {provideTranslateService, TranslateLoader, TranslatePipe, TranslateService} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient} from '@angular/common/http';
 import { AuthInterceptor } from './interceptor/auth-interceptor';
 // toaster => 
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideToastr } from 'ngx-toastr';
+import { provideToastr } from 'ngx-toastr';;
+
+
 const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
     new TranslateHttpLoader(http, './i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    TranslatePipe,
     provideAnimations(),
     provideToastr(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(),
+    provideHttpClient(withInterceptorsFromDi()),
     provideTranslateService({
       loader: {
         provide: TranslateLoader,
@@ -30,6 +33,4 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ]
-  };
-
+]};

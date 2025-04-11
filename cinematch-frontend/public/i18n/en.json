@@ -2,11 +2,18 @@
     "app": {
         "title": "New App",
         "common-component": {
-            "header": {
-                "title": "New App",
-                "menu-item": {
-                    "about": "About"
-                }
+          "header": {
+              "title": "CineMatch",
+              "menu-item": {
+                "home": "Home",
+                "recommendations": "Recommendations",
+                "watchlist": "Watchlist",
+                "diary": "Diary",
+                "favorites": "Favorites",
+                "profile": "Profile",
+                "about": "About"
+              },
+              "search-placeholder": "Search a movie"
             },
             "login": {
                 "title": "Login",
