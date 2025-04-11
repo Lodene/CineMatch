@@ -8,20 +8,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/profil")
+@RequestMapping("/profile")
 public class ProfilController {
 
     @Autowired
     private ProfilService profilService;
 
     @GetMapping
-    public ResponseEntity<ProfileDto> getProfil() throws GenericNotFoundException {
+    public ResponseEntity<ProfileDto> getProfile() throws GenericNotFoundException {
         return ResponseEntity.ok(profilService.getCurrentUserProfile());
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateProfil(@RequestBody ProfileDto dto) throws GenericNotFoundException {
-        profilService.updateProfile(dto);
+    public ResponseEntity<Void> updateProfile(@RequestBody ProfileDto profileDto) throws GenericNotFoundException {
+        profilService.updateProfile(profileDto);
         return ResponseEntity.ok().build();
     }
 
@@ -38,7 +38,7 @@ public class ProfilController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<ProfileDto> getProfilByUsername(@PathVariable String username) throws GenericNotFoundException {
+    public ResponseEntity<ProfileDto> getProfileByUsername(@PathVariable String username) throws GenericNotFoundException {
         return ResponseEntity.ok(profilService.getProfileByUsername(username));
     }
 

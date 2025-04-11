@@ -41,8 +41,8 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.updateReview(id, reviewRequestDto));
     }
 
-    @GetMapping("/getByUser/{idUser}")
-    public List<ReviewDto> getUserReviews(@PathVariable Long idUser) throws GenericNotFoundException {
+    @GetMapping
+    public List<ReviewDto> getUserReviews() throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
         return reviewService.getUserReviews(uE.getUsername());
@@ -58,4 +58,10 @@ public class ReviewController {
         }
         return ResponseEntity.ok(reviewService.deleteReview(id));
     }
+
+    @GetMapping("/getByUsername/{username}")
+    public ResponseEntity<List<ReviewDto>> getReviewsByUsername(@PathVariable String username) throws GenericNotFoundException {
+        return ResponseEntity.ok(reviewService.getReviewsByUsername(username));
+    }
+
 }

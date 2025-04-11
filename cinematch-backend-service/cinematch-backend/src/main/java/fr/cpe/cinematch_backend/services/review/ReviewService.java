@@ -15,4 +15,6 @@ public interface ReviewService {
     List<ReviewDto> getUserReviews(String username) throws GenericNotFoundException;
 
     boolean deleteReview(long id);
+
+    List<ReviewDto> getReviewsByUsername(String username) throws GenericNotFoundException;
 }

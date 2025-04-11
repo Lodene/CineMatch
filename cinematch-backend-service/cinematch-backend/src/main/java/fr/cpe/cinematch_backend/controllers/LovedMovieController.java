@@ -28,7 +28,7 @@ public class LovedMovieController {
     }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<List<MovieDto>> getLovedMoviesByUserId(@PathVariable String username) throws GenericNotFoundException {
+    public ResponseEntity<List<MovieDto>> getLovedMoviesByUsername(@PathVariable String username) throws GenericNotFoundException {
         return ResponseEntity.ok(lovedMovieService.getLovedMoviesByUsername(username));
     }
 

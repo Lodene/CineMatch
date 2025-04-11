@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -91,5 +92,15 @@ public class ReviewServiceImpl implements ReviewService {
         }
         reviewRepository.deleteById(id);
         return  true;
+    }
+
+    @Override
+    public List<ReviewDto> getReviewsByUsername(String username) throws GenericNotFoundException {
+        Optional<AppUser> appUser = appUserRepository.findByUsername(username);
+        if (appUser.isEmpty()) {
+            throw new GenericNotFoundException(404, "User not found", "username '" + username + "' does not exist");
+        }
+        return reviewRepository.findByUser(appUser.get()).stream()
+                .map(ReviewMapper.INSTANCE::toReviewDto).collect(Collectors.toList());
     }
 }
