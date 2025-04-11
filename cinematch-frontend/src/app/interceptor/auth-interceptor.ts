@@ -13,6 +13,12 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (req.url.includes('auth')) {
+      // when targeting auth, we must clear the token before sending it to the backend
+      this.authService.logout();
+      return next.handle(req);
+      
+    }
     const authToken = this.authService.getTokenFromStorage(); // Get token from cookie
     if (authToken) {
       const cloned = req.clone({

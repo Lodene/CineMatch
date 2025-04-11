@@ -2,45 +2,45 @@
   <div class="profile-header">
     <img class="avatar" src="https://github.com/shadcn.png" alt="@shadcn" />
     <div class="profile-info">
-      <h1 class="username">{{ userProfile.name | translate }} </h1>
-      <p class="bio">{{ userProfile.bio | translate' }}</p>
+      <h1 class="username">{{ userProfile.name }} </h1>
+      <p class="bio">{{ userProfile.bio }}</p>
       <div class="stats">
-        <div><span class="bold">265</span> {{ 'app.profile.stats.watched' | translate }}</div>
-        <div><span class="bold">87</span> {{ 'app.profile.stats.reviews' | translate }}</div>
-        <div><span class="bold">42</span> {{ 'app.profile.stats.watchlist' | translate }}</div>
+        <div><span class="bold">265</span> {{ 'app.common-component.profile.stats.watched' | translate }}</div>
+        <div><span class="bold">87</span> {{ 'app.common-component.profile.stats.reviews' | translate }}</div>
+        <div><span class="bold">42</span> {{ 'app.common-component.profile.stats.watchlist' | translate }}</div>
       </div>
     </div>
-    <button mat-stroked-button>{{ 'app.profile.actions.edit' | translate }}</button>
+    <button mat-stroked-button>{{ 'app.common-component.profile.actions.edit' | translate }}</button>
   </div>
 
   <mat-tab-group>
-    <mat-tab label="{{ 'app.profile.tabs.activity' | translate }}">
-      <h2>{{ 'app.profile.sections.activity.title' | translate }}</h2>
+    <mat-tab label="{{ 'app.common-component.profile.tabs.activity' | translate }}">
+      <h2>{{ 'app.common-component.profile.sections.activity.title' | translate }}</h2>
       <mat-card class="activity-card">
         <mat-card-content>
           <div class="activity-item">
             <mat-icon>favorite</mat-icon>
-            {{ 'app.profile.sections.activity.like' | translate:{ film: 'Interstellar' } }}
-            <p class="timestamp">{{ 'app.profile.sections.activity.time.4h' | translate }}</p>
+            {{ 'app.common-component.profile.sections.activity.like' | translate:{ film: 'Interstellar' } }}
+            <p class="timestamp">{{ 'app.common-component.profile.sections.activity.time.4h' | translate }}</p>
           </div>
           <mat-divider></mat-divider>
           <div class="activity-item">
             <mat-icon>playlist_add</mat-icon>
-            {{ 'app.profile.sections.activity.add' | translate:{ film: 'Pulp Fiction' } }}
-            <p class="timestamp">{{ 'app.profile.sections.activity.time.2d' | translate }}</p>
+            {{ 'app.common-component.profile.sections.activity.add' | translate:{ film: 'Pulp Fiction' } }}
+            <p class="timestamp">{{ 'app.common-component.profile.sections.activity.time.2d' | translate }}</p>
           </div>
           <mat-divider></mat-divider>
           <div class="activity-item">
             <mat-icon>movie</mat-icon>
-            {{ 'app.profile.sections.activity.watch' | translate:{ film: 'The Dark Knight' } }}
-            <p class="timestamp">{{ 'app.profile.sections.activity.time.1w' | translate }}</p>
+            {{ 'app.common-component.profile.sections.activity.watch' | translate:{ film: 'The Dark Knight' } }}
+            <p class="timestamp">{{ 'app.common-component.profile.sections.activity.time.1w' | translate }}</p>
           </div>
         </mat-card-content>
       </mat-card>
     </mat-tab>
 
-    <mat-tab label="{{ 'app.profile.tabs.favorites' | translate }}">
-      <h2>{{ 'app.profile.sections.favorites.title' | translate }}</h2>
+    <mat-tab label="{{ 'app.common-component.profile.tabs.favorites' | translate }}">
+      <h2>{{ 'app.common-component.profile.sections.favorites.title' | translate }}</h2>
       <!-- FIX ME LATER : Compenent Film Card -->
     </mat-tab>
   </mat-tab-group>
