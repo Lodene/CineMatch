@@ -1,6 +1,5 @@
 package fr.cpe.cinematch_backend.services;
 
-import fr.cpe.cinematch_backend.dtos.LovedMovieRequestDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;

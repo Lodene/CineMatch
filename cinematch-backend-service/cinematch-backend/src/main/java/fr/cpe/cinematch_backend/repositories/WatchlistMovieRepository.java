@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface WatchlistMovieRepository extends JpaRepository<WatchlistMovieEntity, Long> {
-    boolean existsByUserAndMovie(AppUser user, MovieEntity movie);
 
     Optional<WatchlistMovieEntity> findByUserAndMovie(AppUser user, MovieEntity movie);
 

@@ -1,27 +1,23 @@
 package fr.cpe.cinematch_backend.services.review;
 
-import fr.cpe.cinematch_backend.dtos.review.ReviewRequestDto;
-import fr.cpe.cinematch_backend.dtos.review.ReviewDto;
+import fr.cpe.cinematch_backend.dtos.requests.ReviewRequest;
+import fr.cpe.cinematch_backend.dtos.ReviewDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.review.ReviewEntity;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
-import fr.cpe.cinematch_backend.repositories.review.ReviewRepository;
+import fr.cpe.cinematch_backend.repositories.ReviewRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -38,39 +34,39 @@ public class ReviewServiceImpl implements ReviewService {
     private MovieService movieService;
 
     @Override
-    public void createReview(ReviewRequestDto reviewRequestDto, String username) throws GenericNotFoundException {
+    public void createReview(ReviewRequest reviewRequest, String username) throws GenericNotFoundException {
         Optional<AppUser> user =  appUserRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new GenericNotFoundException(404, "User not found", "username '" + username + "' does not exist");
         }
-        Optional<MovieEntity> movieEntity = movieService.getMovieEntityById(reviewRequestDto.getIdMovie());
+        Optional<MovieEntity> movieEntity = movieService.getMovieEntityById(reviewRequest.getIdMovie());
         if (movieEntity.isEmpty()) {
-            throw new GenericNotFoundException(404, "Movie not found", "movie with id'" + reviewRequestDto.getIdMovie() + "' does not exist");
+            throw new GenericNotFoundException(404, "Movie not found", "movie with id'" + reviewRequest.getIdMovie() + "' does not exist");
         }
         ReviewEntity reviewEntity = new ReviewEntity();
         reviewEntity.setUser(user.get());
         reviewEntity.setMovie(movieEntity.get());
-        reviewEntity.setNote(reviewRequestDto.getNote());
-        reviewEntity.setDescription(reviewRequestDto.getDescription());
+        reviewEntity.setNote(reviewRequest.getNote());
+        reviewEntity.setDescription(reviewRequest.getDescription());
         reviewEntity.setCreatedAt(LocalDateTime.now());
         reviewEntity.setModifiedAt(LocalDateTime.now());
         reviewRepository.save(reviewEntity);
     }
 
     @Override
-    public ReviewDto updateReview(Long id, ReviewRequestDto reviewRequestDto) throws GenericNotFoundException, BadEndpointException {
+    public ReviewDto updateReview(Long id, ReviewRequest reviewRequest) throws GenericNotFoundException, BadEndpointException {
 
         ReviewEntity reviewEntity = reviewRepository.findById(id)
                 .orElseThrow(() -> new GenericNotFoundException(404,
                         "Review not found", "ReviewEntity with id '" + id + "' does not exist"));
-        if (reviewRequestDto.getNote() == null) {
+        if (reviewRequest.getNote() == null) {
             throw new BadEndpointException(400, "Error while updating review", "No note found");
         }
-        if (reviewRequestDto.getDescription() == null) {
+        if (reviewRequest.getDescription() == null) {
             throw new BadEndpointException(400, "Error while updating review", "No description found");
         }
-        reviewEntity.setNote(reviewRequestDto.getNote());
-        reviewEntity.setDescription(reviewRequestDto.getDescription());
+        reviewEntity.setNote(reviewRequest.getNote());
+        reviewEntity.setDescription(reviewRequest.getDescription());
         reviewEntity.setModifiedAt(LocalDateTime.now());
 
         return ReviewMapper.INSTANCE.toReviewDto(reviewRepository.save(reviewEntity));

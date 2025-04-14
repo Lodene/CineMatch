@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+// fixme: not enough with movieEntity refactored with dataset structure
 public class MovieCreationRequest {
     private String title;
     private String overview;
