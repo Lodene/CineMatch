@@ -1,8 +1,5 @@
 package fr.cpe.cinematch_backend.services;
 
-import fr.cpe.cinematch_backend.dtos.FriendDTO;
-import fr.cpe.cinematch_backend.dtos.FriendRequestDto;
-import fr.cpe.cinematch_backend.services.FriendService;
 import fr.cpe.cinematch_backend.dtos.FriendRequestResponseDto;
 import fr.cpe.cinematch_backend.dtos.IncomingFriendRequestDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
@@ -12,15 +9,15 @@ import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.FriendRequestRepository;
-import fr.cpe.cinematch_backend.repositories.FriendUserRepository;
+import fr.cpe.cinematch_backend.repositories.FriendShipRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FriendRequestService {
@@ -32,55 +29,49 @@ public class FriendRequestService {
     private AppUserRepository userRepository;
 
     @Autowired
-    private FriendService friendService;
+    private FriendshipService friendshipService;
 
     @Autowired
     private ProfilRepository profilRepository;
 
     @Autowired
-    private FriendUserRepository friendUserRepository;
+    private FriendShipRepository friendShipRepository;
 
-    public void sendFriendRequest(String senderUsername, FriendRequestDto dto)
+    public void sendFriendRequest(String senderUsername, String username)
             throws GenericNotFoundException, BadEndpointException {
         AppUser sender = userRepository.findByUsername(senderUsername)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found", "Sender not found"));
-        AppUser receiver = userRepository.findById(dto.getTo())
+        AppUser receiver = userRepository.findByUsername(username)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found", "Receiver not found"));
 
-        if (friendUserRepository.findByUserId1AndUserId2(sender.getId(), receiver.getId()).isPresent()) {
-            throw new BadEndpointException(409, "Friendship already exists", "These users are already friends");
+        if (friendShipRepository.findByUserId1AndUserId2(sender.getId(), receiver.getId()).isPresent()) {
+            throw new BadEndpointException(400, "FriendshipEntity already exists", "These users are already friends");
         }
 
-        if (friendUserRepository.findByUserId1AndUserId2(receiver.getId(), sender.getId()).isPresent()) {
-            throw new BadEndpointException(409, "Friendship already exists", "These users are already friends");
+        if (friendShipRepository.findByUserId1AndUserId2(receiver.getId(), sender.getId()).isPresent()) {
+            throw new BadEndpointException(400, "FriendshipEntity already exists", "These users are already friends");
         }
-
-        // 🔁 (Optionnel) Vérifier si une demande est déjà en cours
-        boolean alreadyRequested = friendRequestRepository.findAll().stream()
-                .anyMatch(r -> r.getAskedBy().equals(sender.getId()) && r.getTo().equals(receiver.getId()));
-        if (alreadyRequested) {
-            throw new GenericNotFoundException(409, "Friend request already sent",
+        if (this.checkIfFriendRequestAlreadyExist(sender.getId(), receiver.getId())) {
+            throw new BadEndpointException(400, "Friend request already sent",
                     "A friend request is already pending");
         }
 
         FriendRequestEntity request = new FriendRequestEntity();
-        request.setAskedBy(sender.getId());
-        request.setTo(receiver.getId());
-        request.setCreatedAt(LocalDateTime.now());
-        request.setModifiedAt(LocalDateTime.now());
+        request.setAskedById(sender.getId());
+        request.setToId(receiver.getId());
         friendRequestRepository.save(request);
     }
 
+    // return true if demand was accepted, false otherwise
     public void respondToFriendRequest(FriendRequestResponseDto dto) throws GenericNotFoundException {
         FriendRequestEntity request = friendRequestRepository.findById(dto.getRequestId())
                 .orElseThrow(() -> new GenericNotFoundException(404, "Request not found", "Request ID not found"));
-
         if (dto.isAccepted()) {
             try {
                 // Création du lien d'amitié si accepté
-                friendService.createFriendship(request.getAskedBy(), request.getTo());
+                friendshipService.createFriendship(request.getId(), request.getToId());
             } catch (BadEndpointException e) {
-                throw new GenericNotFoundException(409, "Friendship error", e.getMessage());
+                throw new GenericNotFoundException(409, "FriendshipEntity error", e.getMessage());
             }
         }
 
@@ -90,23 +81,23 @@ public class FriendRequestService {
 
     public List<IncomingFriendRequestDto> getReceivedFriendRequests(String username) throws GenericNotFoundException {
         AppUser currentUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable",
-                        "Utilisateur courant introuvable"));
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "The current user was not found"));
 
         List<FriendRequestEntity> receivedRequests = friendRequestRepository.findAll().stream()
-                .filter(r -> r.getTo().equals(currentUser.getId()))
+                .filter(r -> r.getToId().equals(currentUser.getId()))
                 .toList();
 
         List<IncomingFriendRequestDto> result = new ArrayList<>();
 
         for (FriendRequestEntity request : receivedRequests) {
-            AppUser sender = userRepository.findById(request.getAskedBy())
+            AppUser sender = userRepository.findById(request.getAskedById())
                     .orElseThrow(
-                            () -> new GenericNotFoundException(404, "Expéditeur introuvable", "Expéditeur non trouvé"));
+                            () -> new GenericNotFoundException(404, "Sender not found", "The sender's user was not found"));
 
             ProfileEntity profil = profilRepository.findByUserId(sender.getId())
-                    .orElseThrow(() -> new GenericNotFoundException(404, "Profil manquant",
-                            "Profil de l'expéditeur introuvable"));
+                    .orElseThrow(() -> new GenericNotFoundException(404, "Profile is missing",
+                            "The sender's profile was not found"));
 
             result.add(new IncomingFriendRequestDto(
                     request.getId(),
@@ -115,6 +106,17 @@ public class FriendRequestService {
         }
 
         return result;
+    }
+
+    private boolean checkIfFriendRequestAlreadyExist(Long senderId, Long userId) {
+        Optional<FriendRequestEntity> friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(senderId, userId);
+        if (friendRequestEntity.isEmpty()) {
+            // on vérifie dans l'autre sens
+            friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(userId, senderId);
+            return friendRequestEntity.isPresent();
+        } else {
+            return true;
+        }
     }
 
 }

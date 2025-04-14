@@ -1,12 +1,9 @@
 package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.FriendDTO;
-import fr.cpe.cinematch_backend.entities.AppUser;
-import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
-import fr.cpe.cinematch_backend.services.AppUserService;
-import fr.cpe.cinematch_backend.services.FriendService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import fr.cpe.cinematch_backend.services.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,20 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/friends")
-public class FriendController {
+@RequestMapping("/friendship")
+public class FriendshipController {
 
     @Autowired
-    private FriendService friendService;
+    private FriendshipService friendshipService;
 
-    @Autowired
-    private AppUserService appUserService;
 
     @GetMapping
-    public ResponseEntity<List<FriendDTO>> getMyFriends(@AuthenticationPrincipal UserDetails userDetails) throws GenericNotFoundException {
+    public ResponseEntity<List<ProfileDto>> getMyFriends(@AuthenticationPrincipal UserDetails userDetails) throws GenericNotFoundException {
         String currentUsername = userDetails.getUsername();
-        List<FriendDTO> friends = friendService.getFriendsOfUser(currentUsername);
-        return ResponseEntity.ok(friends);
+        return ResponseEntity.ok(friendshipService.getFriendsOfUser(currentUsername));
     }
 
     @DeleteMapping("/{username}")
@@ -37,7 +31,7 @@ public class FriendController {
             @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable String username) throws GenericNotFoundException {
         String currentUsername = userDetails.getUsername();
-        friendService.deleteFriendship(currentUsername, username);
+        friendshipService.deleteFriendship(currentUsername, username);
         return ResponseEntity.noContent().build();
     }
 }

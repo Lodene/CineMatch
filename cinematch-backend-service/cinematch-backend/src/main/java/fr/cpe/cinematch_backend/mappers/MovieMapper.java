@@ -18,6 +18,7 @@ public interface MovieMapper {
 
     MovieDto toMovieDto(MovieEntity movieEntity);
 
+    // used for debug purpose
     @Mapping(target = "id", ignore = true )
     MovieEntity movieCreationRequestToMovieEntity(MovieCreationRequest movieCreationRequest);
 }

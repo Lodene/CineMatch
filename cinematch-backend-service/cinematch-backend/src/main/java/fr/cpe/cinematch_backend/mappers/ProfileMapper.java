@@ -11,6 +11,8 @@ public interface ProfileMapper {
 
 ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
 
+    // fixme: use constructor with mapperResolver to automaticaly retrieve user based on profile username
+    @Mapping(target = "id", ignore = true)
     ProfileEntity toProfileEntity(ProfileDto profileDto);
 
     @Mapping(target = "username", expression = "java(profileEntity.getUser().getUsername())")
