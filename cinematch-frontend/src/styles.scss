@@ -8,3 +8,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 @import "./margins.scss";
 @import "./text.scss";
+
+.border{
+    border: 1px solid #888;
+    border-radius: 8px;
+    padding: 10px;
+}
