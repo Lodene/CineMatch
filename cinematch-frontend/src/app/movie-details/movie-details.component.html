@@ -7,7 +7,7 @@
         <div style="display: flex;" class="my-20">
             <mat-icon class="mr-4" style="color:#ffe234;" aria-hidden="false" aria-label="star"
                 fontIcon="star"></mat-icon>
-            <div class="mr-10">{{movie?.rating}}</div>
+            <div class="mr-10">{{movie?.imdbRating}}</div>
             <mat-icon class="mr-4" aria-hidden="false" aria-label="calendar_today" fontIcon="calendar_today"></mat-icon>
             <div class="mr-10">{{movie?.releaseDate | date:'y'}}</div>
             <mat-icon class="mr-4" aria-hidden="false" aria-label="access_time" fontIcon="access_time"></mat-icon>
@@ -16,7 +16,7 @@
         <div style="display: flex; flex-direction: row;" class="my-20">
             <div *ngFor="let g of movie.genres" class="rounded-border-gradient mr-10">{{g}}</div>
         </div>
-        <div class="mr-10">{{movie.description}}</div>
+        <div class="mr-10">{{movie.overview}}</div>
     </div>
 
 </div>

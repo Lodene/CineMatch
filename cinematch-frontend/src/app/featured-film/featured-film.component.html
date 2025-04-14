@@ -11,7 +11,7 @@
         <div class="film-meta">
           <span class="badge">{{ movie.releaseDate | date:'y'}}</span>
           <span class="rating">
-            <span class="rating-score">{{ movie.rating }}</span> / 10
+            <span class="rating-score">{{ movie.imdbRating }}</span> / 10
           </span>
           <span class="runtime">{{ movie.runtime }} min</span>
         </div>
@@ -20,7 +20,7 @@
           <span class="badge secondary" *ngFor="let genre of movie.genres">{{ genre }}</span>
         </div>
   
-        <p class="overview">{{ movie.description }}</p>
+        <p class="overview">{{ movie.overview }}</p>
   
         <div class="actions">
           <button mat-flat-button color="primary">
