@@ -280,28 +280,6 @@
     </createTable>
 </changeSet>
 
-<changeSet id="1744358097282-2" author="Antoine">
-    <addUniqueConstraint columnNames="user_id, movie_id"
-                         constraintName="uc_watched_user_movie"
-                         tableName="watched_movie"/>
-</changeSet>
-
-<changeSet id="1744358097282-3" author="Antoine">
-    <addForeignKeyConstraint baseColumnNames="movie_id"
-                             baseTableName="watched_movie"
-                             constraintName="fk_watched_movie_movie"
-                             referencedColumnNames="id"
-                             referencedTableName="movie"/>
-</changeSet>
-
-<changeSet id="1744358097282-4" author="Antoine">
-    <addForeignKeyConstraint baseColumnNames="user_id"
-                             baseTableName="watched_movie"
-                             constraintName="fk_watched_movie_user"
-                             referencedColumnNames="id"
-                             referencedTableName="app_user"/>
-</changeSet>
-
 
 
 </databaseChangeLog>

@@ -1,12 +1,11 @@
 package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.MovieDto;
-import fr.cpe.cinematch_backend.dtos.WatchedMovieRequestDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.WatchedMovieEntity;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
-import fr.cpe.cinematch_backend.mappers.WatchedMovieMapper;
+import fr.cpe.cinematch_backend.mappers.MovieMapper;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.MovieRepository;
 import fr.cpe.cinematch_backend.repositories.WatchedMovieRepository;
@@ -27,14 +26,14 @@ public class WatchedMovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public void toggleWatchedMovie(WatchedMovieRequestDto dto, String username) throws GenericNotFoundException {
+    public void addOrRemoveWatchedMovie(Long movieId, String username) throws GenericNotFoundException {
         AppUser user = appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
                         "username '" + username + "' not found"));
 
-        MovieEntity movie = movieRepository.findById(dto.getIdMovie())
+        MovieEntity movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
-                        "movie ID '" + dto.getIdMovie() + "' not found"));
+                        "movie ID '" + movieId+ "' not found"));
 
         watchedMovieRepository.findByUserAndMovie(user, movie)
                 .ifPresentOrElse(
@@ -53,7 +52,7 @@ public class WatchedMovieService {
                         "username '" + username + "' not found"));
 
         return watchedMovieRepository.findByUser(user).stream()
-                .map(WatchedMovieMapper.INSTANCE::toMovieDto)
+                .map(entry -> MovieMapper.INSTANCE.toMovieDto(entry.getMovie()))
                 .toList();
     }
 
@@ -63,7 +62,7 @@ public class WatchedMovieService {
                         "user ID '" + idUser + "' not found"));
 
         return watchedMovieRepository.findByUser(user).stream()
-                .map(WatchedMovieMapper.INSTANCE::toMovieDto)
+                .map(entry -> MovieMapper.INSTANCE.toMovieDto(entry.getMovie()))
                 .toList();
     }
 }
