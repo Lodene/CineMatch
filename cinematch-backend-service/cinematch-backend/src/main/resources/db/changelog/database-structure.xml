@@ -280,6 +280,60 @@
     </createTable>
 </changeSet>
 
+    <changeSet id="1744662725797-1" author="T-H-O-M-A-S">
+        <createTable tableName="watched_movie">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_watched_movie"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744662725797-2" author="T-H-O-M-A-S">
+        <createTable tableName="watchlist_movie">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_watchlist_movie"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="movie_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744662725797-3" author="T-H-O-M-A-S">
+        <addUniqueConstraint columnNames="user_id, movie_id" constraintName="uc_a56ecdcce263190d4db4d92b2"
+                             tableName="watched_movie"/>
+    </changeSet>
+    <changeSet id="1744662725797-4" author="T-H-O-M-A-S">
+        <addUniqueConstraint columnNames="user_id, movie_id" constraintName="uc_f10dc39233b32199446c785d7"
+                             tableName="watchlist_movie"/>
+    </changeSet>
+    <changeSet id="1744662725797-5" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="watched_movie"
+                                 constraintName="FK_WATCHED_MOVIE_ON_MOVIE" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744662725797-6" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="watched_movie"
+                                 constraintName="FK_WATCHED_MOVIE_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+    </changeSet>
+    <changeSet id="1744662725797-7" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_id" baseTableName="watchlist_movie"
+                                 constraintName="FK_WATCHLIST_MOVIE_ON_MOVIE" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744662725797-8" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="watchlist_movie"
+                                 constraintName="FK_WATCHLIST_MOVIE_ON_USER" referencedColumnNames="id"
+                                 referencedTableName="app_user"/>
+    </changeSet>
 
 
 </databaseChangeLog>
