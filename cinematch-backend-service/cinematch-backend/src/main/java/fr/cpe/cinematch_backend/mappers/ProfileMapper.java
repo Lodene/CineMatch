@@ -14,6 +14,7 @@ ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
     ProfileEntity toProfileEntity(ProfileDto profileDto);
 
     @Mapping(target = "username", expression = "java(profileEntity.getUser().getUsername())")
+    @Mapping(target = "isChild", source = "child")
     ProfileDto toProfileDto(ProfileEntity profileEntity);
 
 }

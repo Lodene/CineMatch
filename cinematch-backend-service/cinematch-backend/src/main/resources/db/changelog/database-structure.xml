@@ -22,29 +22,177 @@
             <column name="created_at" type="DATETIME"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1744290451613-2" author="T-H-O-M-A-S">
+    <changeSet id="1744614747527-1" author="PC">
         <createTable tableName="movie">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_movieentity"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_movie"/>
             </column>
             <column name="title" type="VARCHAR(255)"/>
-            <column name="description" type="VARCHAR(1024)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="vote_average" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vote_count" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)"/>
             <column name="release_date" type="DATETIME"/>
-            <column name="poster" type="VARCHAR(255)"/>
+            <column name="revenue" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="runtime" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="budget" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imdb_id" type="VARCHAR(255)"/>
+            <column name="original_language" type="VARCHAR(255)"/>
+            <column name="original_title" type="VARCHAR(255)"/>
+            <column name="overview" type="VARCHAR(255)"/>
+            <column name="popularity" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imdb_rating" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="imdb_votes" type="FLOAT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="poster_path" type="VARCHAR(255)"/>
+            <column name="backdrop_path" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-
-    <changeSet id="1744297214865-1"
-               author="T-H-O-M-A-S">
-        <addColumn tableName="movie">
-            <column name="rating" type="float"/>
-        </addColumn>
-        <addColumn tableName="movie">
-            <column name="genre" type="VARCHAR(255)"/>
-        </addColumn>
+    <changeSet id="1744614747527-2" author="T-H-O-M-A-S" labels="start of movie entity creation">
+        <createTable tableName="movie_entity_cast">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="cast" type="VARCHAR(255)"/>
+        </createTable>
     </changeSet>
-
+    <changeSet id="1744614747527-3" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_director">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="director" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-4" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_director_of_photograpy">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="director_of_photograpy" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-5" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_genres">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="genres" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-6" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_music_composer">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="music_composer" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-7" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_producers">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="producers" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-8" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_productions_companies">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="productions_companies" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-9" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_productions_countries">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="productions_countries" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-10" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_spoken_languages">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="spoken_languages" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-11" author="T-H-O-M-A-S">
+        <createTable tableName="movie_entity_writers">
+            <column name="movie_entity_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="writers" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1744614747527-12" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_cast"
+                                 constraintName="fk_movieentity_cast_on_movie_entity" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-13" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_director"
+                                 constraintName="fk_movieentity_director_on_movie_entity" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-14" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_director_of_photograpy"
+                                 constraintName="fk_movieentity_directorofphotograpy_on_movie_entity"
+                                 referencedColumnNames="id" referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-15" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_genres"
+                                 constraintName="fk_movieentity_genres_on_movie_entity" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-16" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_music_composer"
+                                 constraintName="fk_movieentity_musiccomposer_on_movie_entity"
+                                 referencedColumnNames="id" referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-17" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_producers"
+                                 constraintName="fk_movieentity_producers_on_movie_entity" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-18" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_productions_companies"
+                                 constraintName="fk_movieentity_productionscompanies_on_movie_entity"
+                                 referencedColumnNames="id" referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-19" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_productions_countries"
+                                 constraintName="fk_movieentity_productionscountries_on_movie_entity"
+                                 referencedColumnNames="id" referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-20" author="T-H-O-M-A-S">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_spoken_languages"
+                                 constraintName="fk_movieentity_spokenlanguages_on_movie_entity"
+                                 referencedColumnNames="id" referencedTableName="movie"/>
+    </changeSet>
+    <changeSet id="1744614747527-21" author="T-H-O-M-A-S" labels="end of movie entity creation">
+        <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_writers"
+                                 constraintName="fk_movieentity_writers_on_movie_entity" referencedColumnNames="id"
+                                 referencedTableName="movie"/>
+    </changeSet>
     <changeSet id="1744300053668-1" author="T-H-O-M-A-S" labels="Initialization of review entity">
         <createTable tableName="reviews">
             <column autoIncrement="true" name="id" type="BIGINT">
