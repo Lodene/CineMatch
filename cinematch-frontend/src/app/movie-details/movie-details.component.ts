@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { MovieService } from '../../services/movie/movie.service';
-import { ActivatedRoute } from '@angular/router';
-import { Movie } from '../../models/movie';
-import { MovieCardComponentHorizontal } from "../common-component/movie-card-horizontal/movie-card-horizontal.component";
 import { CommonModule, NgIf } from '@angular/common';
+import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import { Movie } from '../../models/movie';
+import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -27,17 +27,15 @@ export class MovieDetailsComponent {
   movie: Movie;
   ngOnInit() {
 
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(async params => {
       this.idMovie = +params['id'];
-      this.movieService.getMovieById(this.idMovie).subscribe(
-        (data) => {
-          this.movie = data;
-          console.log(this.movie);
-        },
-        (error) => {
-          console.error(`Error fetching movie with ID ${this.idMovie}:`, error);
-        }
-      );
+      try {
+        this.movie = await firstValueFrom(this.movieService.getMovieById(this.idMovie));
+        console.log(this.movie);
+      } catch (error) {
+        this.movie = await firstValueFrom(this.movieService.addMovie(new Movie()));
+        console.error(`Error fetching movie with ID ${this.idMovie}:`, error);
+      }
     }
     )
   }
