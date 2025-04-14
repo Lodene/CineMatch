@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,9 +14,9 @@ import java.util.Date;
 @Setter
 public class MovieCreationRequest {
     private String title;
-    private String description;
+    private String overview;
     private Date releaseDate;
-    private String poster;
-    private String genre;
-    private float rating;
+    private String posterPath;
+    private List<String> genres;
+    private float imdb_rating;
 }

@@ -20,16 +20,54 @@ public class MovieEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-
     private String title;
-    private String description;
-
+    private float voteAverage;
+    private float voteCount;
+    private String status;
     private Date releaseDate;
+    private float revenue;
+    private int runtime;
+    private int budget;
+    private String imdbId;
+    private String originalLanguage;
+    private String originalTitle;
+    private String overview;
 
-    private String poster;
+    private float popularity;
 
-    private String genre;
+    @ElementCollection
+    private List<String> genres;
 
-    private float rating;
+
+    @ElementCollection
+    private List<String> productionsCompanies;
+
+
+    @ElementCollection
+    private List<String> productionsCountries;
+
+    @ElementCollection
+    private List<String> spokenLanguages;
+
+    @ElementCollection
+    private List<String> cast;
+
+    @ElementCollection
+    private List<String> director;
+
+    @ElementCollection
+    private List<String> directorOfPhotograpy;
+
+    @ElementCollection
+    private List<String> writers;
+
+    @ElementCollection
+    private List<String> producers;
+    @ElementCollection
+    private List<String> musicComposer;
+    private float imdb_rating;
+    private float imdb_votes;
+    private String posterPath;
+    private String backdropPath;
 
 }

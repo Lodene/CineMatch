@@ -40,11 +40,11 @@ public class MovieService {
             throw new GenericNotFoundException(404, "Not found", "The movie was not found");
         }
         movieEntity.get().setTitle(movieDto.getTitle());
-        movieEntity.get().setDescription(movieDto.getDescription());
+        movieEntity.get().setOverview(movieDto.getOverview());
         movieEntity.get().setReleaseDate(movieDto.getReleaseDate());
-        movieEntity.get().setPoster(movieDto.getPoster());
-        movieEntity.get().setRating(movieDto.getRating());
-        movieEntity.get().setGenre(movieDto.getGenre());
+        movieEntity.get().setPosterPath(movieDto.getPosterPath());
+        movieEntity.get().setImdb_rating(movieDto.getImdb_rating());
+        movieEntity.get().setGenres(movieDto.getGenres());
         return MovieMapper.INSTANCE.toMovieDto(movieRepository.save(movieEntity.get()));
     }
 
