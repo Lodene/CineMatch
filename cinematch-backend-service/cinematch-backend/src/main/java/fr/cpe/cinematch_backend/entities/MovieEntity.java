@@ -26,8 +26,8 @@ public class MovieEntity {
     private String status;
     private Date releaseDate;
     private float revenue;
-    private int runtime;
-    private int budget;
+    private float runtime;
+    private float budget;
     private String imdbId;
     private String originalLanguage;
     private String originalTitle;
@@ -40,11 +40,11 @@ public class MovieEntity {
 
 
     @ElementCollection
-    private List<String> productionsCompanies;
+    private List<String> productionCompanies;
 
 
     @ElementCollection
-    private List<String> productionsCountries;
+    private List<String> productionCountries;
 
     @ElementCollection
     private List<String> spokenLanguages;
