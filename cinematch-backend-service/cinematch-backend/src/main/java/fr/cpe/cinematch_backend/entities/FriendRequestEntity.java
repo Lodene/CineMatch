@@ -3,8 +3,9 @@ package fr.cpe.cinematch_backend.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -16,15 +17,16 @@ public class FriendRequestEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "asked_by", nullable = false)
-    private Long askedBy;
+    @Column(name = "asked_by_id", nullable = false)
+    private Long askedById;
 
-    @Column(name = "to_user", nullable = false)
-    private Long to;
+    @Column(name = "to_id", nullable = false)
+    private Long toId;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @CreationTimestamp
+    private Date createdAt;
 
     @Column(name = "modified_at")
-    private LocalDateTime modifiedAt;
+    private Date modifiedAt;
 }

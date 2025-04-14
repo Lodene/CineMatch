@@ -7,12 +7,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.util.Date;
 
 @Entity
-@Table(name = "friend_user", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id_1", "user_id_2"}))
+@Table(name = "friendship")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FriendUser {
+public class FriendshipEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
