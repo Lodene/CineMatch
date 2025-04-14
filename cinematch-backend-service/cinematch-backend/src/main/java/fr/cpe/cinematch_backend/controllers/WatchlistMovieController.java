@@ -5,6 +5,7 @@ import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.WatchlistMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -19,21 +20,26 @@ public class WatchlistMovieController {
     private WatchlistMovieService watchlistMovieService;
 
     @PostMapping("{movieId}")
-    public void AddOrRemoveMovieFromWatchlist(@PathVariable Long movieId) throws GenericNotFoundException {
+    public ResponseEntity AddOrRemoveMovieFromWatchlist(@PathVariable Long movieId) throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) authentication.getPrincipal();
         watchlistMovieService.AddOrRemoveMovieFromWatchlist(movieId, user.getUsername());
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public List<MovieDto> getMyWatchlist() throws GenericNotFoundException {
+    public ResponseEntity<List<MovieDto>> getMyWatchlist() throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) authentication.getPrincipal();
-        return watchlistMovieService.getWatchlistByUsername(user.getUsername());
+        return ResponseEntity.ok(watchlistMovieService.getWatchlistByUsername(user.getUsername()));
     }
 
     @GetMapping("/user/{idUser}")
-    public List<MovieDto> getWatchlistByUserId(@PathVariable Long idUser) throws GenericNotFoundException {
-        return watchlistMovieService.getWatchlistByUserId(idUser);
+    public ResponseEntity<List<MovieDto>> getWatchlistByUserId(@PathVariable Long idUser) throws GenericNotFoundException {
+        return ResponseEntity.ok(watchlistMovieService.getWatchlistByUserId(idUser));
+    }
+    @GetMapping("/user/{username}")
+    public ResponseEntity<List<MovieDto>> getWatchlistByUsername(@PathVariable String username) throws GenericNotFoundException {
+        return ResponseEntity.ok(watchlistMovieService.getWatchlistByUsername(username));
     }
 }
