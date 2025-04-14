@@ -1,4 +1,4 @@
-package fr.cpe.cinematch_backend.dtos.review;
+package fr.cpe.cinematch_backend.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

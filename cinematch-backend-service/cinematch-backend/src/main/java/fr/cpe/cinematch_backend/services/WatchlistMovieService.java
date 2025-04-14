@@ -1,7 +1,6 @@
 package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.MovieDto;
-import fr.cpe.cinematch_backend.dtos.WatchlistMovieRequestDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.WatchlistMovieEntity;
@@ -27,14 +26,17 @@ public class WatchlistMovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public void toggleWatchlistMovie(WatchlistMovieRequestDto dto, String username) throws GenericNotFoundException {
+    /*
+    * Add a movie to curent user's watchlist, or remove it if it already exist.
+    * */
+    public void AddOrRemoveMovieFromWatchlist(Long movieId, String username) throws GenericNotFoundException {
         AppUser user = appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
                         "User with username '" + username + "' couldn't be found"));
 
-        MovieEntity movie = movieRepository.findById(dto.getIdMovie())
+        MovieEntity movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
-                        "Movie with id '" + dto.getIdMovie() + "' couldn't be found"));
+                        "Movie with id '" + movieId + "' couldn't be found"));
 
         watchlistMovieRepository.findByUserAndMovie(user, movie)
                 .ifPresentOrElse(
@@ -47,6 +49,7 @@ public class WatchlistMovieService {
                         });
     }
 
+    // return watchlist by username
     public List<MovieDto> getWatchlistByUsername(String username) throws GenericNotFoundException {
         AppUser user = appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found",

@@ -1,14 +1,13 @@
-package fr.cpe.cinematch_backend.dtos.review;
+package fr.cpe.cinematch_backend.dtos.requests;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ReviewRequestDto {
+public class ReviewRequest {
 
     private Long idMovie;
 

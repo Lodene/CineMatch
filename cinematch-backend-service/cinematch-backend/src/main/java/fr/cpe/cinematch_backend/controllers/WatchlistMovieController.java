@@ -1,11 +1,9 @@
 package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.MovieDto;
-import fr.cpe.cinematch_backend.dtos.WatchlistMovieRequestDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.WatchlistMovieService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,11 +18,11 @@ public class WatchlistMovieController {
     @Autowired
     private WatchlistMovieService watchlistMovieService;
 
-    @PostMapping("/toggle")
-    public void toggleWatchlistMovie(@RequestBody @Valid WatchlistMovieRequestDto dto) throws GenericNotFoundException {
+    @PostMapping("{movieId}")
+    public void AddOrRemoveMovieFromWatchlist(@PathVariable Long movieId) throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) authentication.getPrincipal();
-        watchlistMovieService.toggleWatchlistMovie(dto, user.getUsername());
+        watchlistMovieService.AddOrRemoveMovieFromWatchlist(movieId, user.getUsername());
     }
 
     @GetMapping
