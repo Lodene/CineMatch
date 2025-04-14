@@ -28,7 +28,6 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_movie"/>
             </column>
             <column name="title" type="VARCHAR(255)"/>
-            <column name="description" type="VARCHAR(255)"/>
             <column name="vote_average" type="FLOAT">
                 <constraints nullable="false"/>
             </column>
@@ -59,8 +58,6 @@
             <column name="imdb_votes" type="FLOAT">
                 <constraints nullable="false"/>
             </column>
-            <column name="poster_path" type="VARCHAR(255)"/>
-            <column name="backdrop_path" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet id="1744614747527-2" author="T-H-O-M-A-S" labels="start of movie entity creation">

@@ -65,8 +65,8 @@ public class MovieEntity {
     private List<String> producers;
     @ElementCollection
     private List<String> musicComposer;
-    private float imdb_rating;
-    private float imdb_votes;
+    private float imdbRating;
+    private float imdbVotes;
     private String posterPath;
     private String backdropPath;
 

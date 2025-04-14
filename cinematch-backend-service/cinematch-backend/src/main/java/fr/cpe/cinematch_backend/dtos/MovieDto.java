@@ -38,8 +38,8 @@ public class MovieDto {
     private List<String> writers;
     private List<String> producers;
     private List<String> musicComposer;
-    private float imdb_rating;
-    private float imdb_votes;
+    private float imdbRating;
+    private float imdbVotes;
     private String posterPath;
     private String backdropPath;
 }
