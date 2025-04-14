@@ -43,7 +43,7 @@ public class MovieService {
         movieEntity.get().setOverview(movieDto.getOverview());
         movieEntity.get().setReleaseDate(movieDto.getReleaseDate());
         movieEntity.get().setPosterPath(movieDto.getPosterPath());
-        movieEntity.get().setImdb_rating(movieDto.getImdb_rating());
+        movieEntity.get().setImdbRating(movieDto.getImdbRating());
         movieEntity.get().setGenres(movieDto.getGenres());
         return MovieMapper.INSTANCE.toMovieDto(movieRepository.save(movieEntity.get()));
     }
