@@ -1,3 +1,8 @@
 ﻿cinematch-frontend/.vscode
 cinematch-backend/.mvn
 .idea
+dataset-to-liquibase/liquibase_chunks
+dataset-to-liquibase/TMDB_all_movies.csv
+cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/tmdb*.xml
+dataset-to-liquibase/changeset.xml
+cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/full-db-insert.xml
