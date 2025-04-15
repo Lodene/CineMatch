@@ -41,7 +41,7 @@ public class FriendshipService {
         }
 
         FriendshipEntity friendshipEntity = new FriendshipEntity();
-        friendshipEntity.setUserId2(userId1);
+        friendshipEntity.setUserId1(userId1);
         friendshipEntity.setUserId2(userId2);
         friendshipEntity.setCreatedAt(new Date());
         friendShipRepository.save(friendshipEntity);

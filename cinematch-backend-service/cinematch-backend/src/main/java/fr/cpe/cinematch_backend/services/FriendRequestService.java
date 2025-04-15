@@ -63,20 +63,32 @@ public class FriendRequestService {
     }
 
     // return true if demand was accepted, false otherwise
-    public void respondToFriendRequest(FriendRequestResponseDto dto) throws GenericNotFoundException {
-        FriendRequestEntity request = friendRequestRepository.findById(dto.getRequestId())
-                .orElseThrow(() -> new GenericNotFoundException(404, "Request not found", "Request ID not found"));
-        if (dto.isAccepted()) {
-            try {
-                // Création du lien d'amitié si accepté
-                friendshipService.createFriendship(request.getId(), request.getToId());
-            } catch (BadEndpointException e) {
-                throw new GenericNotFoundException(409, "FriendshipEntity error", e.getMessage());
-            }
+    public void acceptFriendRequest(Long requestId, Long currentUserId) throws GenericNotFoundException {
+        FriendRequestEntity request = friendRequestRepository.findById(requestId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "Demande introuvable", "Aucune demande avec cet identifiant"));
+
+        if (!request.getToId().equals(currentUserId)) {
+            throw new GenericNotFoundException(403, "Action non autorisée", "Vous ne pouvez pas accepter cette demande");
         }
 
-        // Suppression de la demande (acceptée ou refusée)
-        friendRequestRepository.deleteById(request.getId());
+        try {
+            friendshipService.createFriendship(currentUserId, request.getAskedById());
+        } catch (BadEndpointException e) {
+            throw new GenericNotFoundException(409, "Erreur lors de la création de l'amitié", e.getMessage());
+        }
+
+        friendRequestRepository.deleteById(requestId);
+    }
+
+    public void declineFriendRequest(Long requestId, Long currentUserId) throws GenericNotFoundException {
+        FriendRequestEntity request = friendRequestRepository.findById(requestId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "Demande introuvable", "Aucune demande avec cet identifiant"));
+
+        if (!request.getToId().equals(currentUserId)) {
+            throw new GenericNotFoundException(403, "Action non autorisée", "Vous ne pouvez pas refuser cette demande");
+        }
+
+        friendRequestRepository.deleteById(requestId);
     }
 
     public List<IncomingFriendRequestDto> getReceivedFriendRequests(String username) throws GenericNotFoundException {
