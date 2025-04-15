@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FeaturedFilmComponent } from '../featured-film/featured-film.component';
 import { CommonModule } from '@angular/common';
+import { MovieService } from '../../services/movie/movie.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -14,20 +16,23 @@ import { CommonModule } from '@angular/common';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit{
-  
+export class HomeComponent implements OnInit {
+
   film: Movie;
   movies: Movie[] = [];
 
-  constructor(private translateService: TranslateService) {
+  constructor(
+    private translateService: TranslateService,
+    private movieService: MovieService,
+
+
+  ) {
 
   }
 
-  ngOnInit(): void {
-    this.movies.push(new Movie())
-    this.movies.push(new Movie())
-    this.movies.push(new Movie())
-    this.movies.push(new Movie())
+  async ngOnInit(): Promise<void> {
+    // temps de recup 5 mins
+    // this.movies = await firstValueFrom(this.movieService.getAllMovies());
     this.film = new Movie();
   }
 

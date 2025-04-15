@@ -9,6 +9,8 @@ import fr.cpe.cinematch_backend.repositories.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +20,42 @@ public class MovieService {
     private MovieRepository movieRepository;
 
 
+    @Autowired
+    private MoviePosterApiService moviePosterApiService;
+
+
+    public List<MovieDto> getAllMovies() throws GenericNotFoundException {
+        List<MovieEntity> movies = movieRepository.findAll();
+        List<MovieDto> movieDtos = new ArrayList<>();
+        if (!movies.isEmpty()) {
+            movies.forEach(
+                    movieEntity -> {
+                        // Fetch movie poster URL if it's not already set
+                        if (movieEntity.getPosterPath() == null || movieEntity.getPosterPath().isEmpty()) {
+                            try {
+                                String posterUrl = moviePosterApiService.getMoviePosterUrl(movieEntity.getId());
+                                movieEntity.setPosterPath(posterUrl);
+                                this.movieRepository.save(movieEntity);
+                            }catch (GenericNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        if (movieEntity.getBackdropPath() == null || movieEntity.getBackdropPath().isEmpty()) {
+                            try {
+                                String backdropUrl = moviePosterApiService.getMovieBackdropUrl(movieEntity.getId());
+                                movieEntity.setBackdropPath(backdropUrl);
+                                this.movieRepository.save(movieEntity);
+                            }catch (GenericNotFoundException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(movieEntity);
+                        movieDtos.add(movieDto);
+                    }
+            );
+        }
+        return movieDtos;
+    }
 
     public MovieDto getMovieById(long id) throws GenericNotFoundException {
         Optional<MovieEntity> movieEntity = movieRepository.findById(id);

@@ -1,5 +1,5 @@
 <mat-card class="card m-10" appearance="outlined" (click)="goToMovie(movie)">
-    <img class="image" [src]="movie.posterPath" [alt]="movie.title+' poster'">
+    <img class="image" [src]="'https://image.tmdb.org/t/p/w500'+movie.posterPath" [alt]="movie.title+' poster'">
     <mat-card-content class="card-cotent mt-4">
         <div class="name  mr-10 text-bold">{{movie.title}}</div>
         <div style="display: flex;">

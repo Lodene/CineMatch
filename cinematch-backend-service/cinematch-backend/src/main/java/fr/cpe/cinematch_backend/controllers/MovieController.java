@@ -8,11 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("movie")
 public class MovieController {
     @Autowired
     private MovieService movieService;
+
+
+    @GetMapping("/movies")
+    public ResponseEntity<List<MovieDto>> getAllMovies() throws GenericNotFoundException {
+        return ResponseEntity.ok(this.movieService.getAllMovies());
+    }
 
     @GetMapping("/{movieId}")
     public ResponseEntity<MovieDto> getMovieById(@PathVariable(value = "movieId") String movieId) throws GenericNotFoundException {

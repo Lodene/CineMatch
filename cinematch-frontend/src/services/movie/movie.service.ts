@@ -21,6 +21,10 @@ export class MovieService {
     return this.http.get<Movie>(`${this.backendUrl}/${movieId}`);
   }
 
+  public getAllMovies():Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.backendUrl}/movies`);
+  }
+
   public addMovie(movie: Movie) {
     return this.http.post<Movie>(`${this.backendUrl}`, movie, {
       headers: new HttpHeaders({
