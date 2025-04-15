@@ -21,7 +21,6 @@ LIST_FIELDS = [
 
 DISCARDED_FIELDS = [
     "tagline",
-    "poster_path"
 ]
 
 # If "" value => return "0.0"
