@@ -131,4 +131,14 @@ public class FriendRequestService {
         }
     }
 
+    @Transactional
+    public void deleteAllFriendRequestsByUserId(Long userId) {
+        List<FriendRequestEntity> allRequests = friendRequestRepository.findAll();
+        List<FriendRequestEntity> toDelete = allRequests.stream()
+                .filter(r -> r.getAskedById().equals(userId) || r.getToId().equals(userId))
+                .toList();
+
+        friendRequestRepository.deleteAll(toDelete);
+    }
+
 }
