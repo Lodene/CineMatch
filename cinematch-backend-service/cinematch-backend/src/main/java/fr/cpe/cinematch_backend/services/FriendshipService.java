@@ -50,28 +50,33 @@ public class FriendshipService {
     @Transactional
     public void deleteFriendship(String friendUsername, String currentUsername) throws GenericNotFoundException {
         AppUser currentUser = appUserRepository.findByUsername(currentUsername)
-                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable", "Utilisateur courant introuvable"));
+                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable",
+                        "Utilisateur courant introuvable"));
 
         AppUser friendUser = appUserRepository.findByUsername(friendUsername)
-                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable", "Aucun utilisateur avec ce nom d'utilisateur"));
+                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable",
+                        "Aucun utilisateur avec ce nom d'utilisateur"));
 
         FriendshipEntity friendshipEntity = this.findFriendShipEntity(currentUser.getId(), friendUser.getId());
         if (friendshipEntity == null) {
-            throw new GenericNotFoundException(404, "Amitié non trouvée", "Aucune amitié existante entre ces utilisateurs");
+            throw new GenericNotFoundException(404, "Amitié non trouvée",
+                    "Aucune amitié existante entre ces utilisateurs");
         }
         friendShipRepository.delete(friendshipEntity);
     }
 
     public List<ProfileDto> getFriendsOfUser(String currentUsername) throws GenericNotFoundException {
         AppUser currentUser = appUserRepository.findByUsername(currentUsername)
-                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable", "Utilisateur courant introuvable"));
+                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable",
+                        "Utilisateur courant introuvable"));
         List<FriendshipEntity> friendshipEntities = this.getUsersFriends(currentUser.getId());
         List<ProfileDto> friends = new ArrayList<>();
         for (FriendshipEntity friendshipEntity : friendshipEntities) {
             Long friendId = friendshipEntity.getUserId1().equals(currentUser.getId())
                     ? friendshipEntity.getUserId2()
                     : friendshipEntity.getUserId1();
-            // fixme: si l'utilisateur n'existe pas, on l'ignore (car un user peut supprimé son profile)
+            // fixme: si l'utilisateur n'existe pas, on l'ignore (car un user peut supprimé
+            // son profile)
             Optional<AppUser> friend = appUserRepository.findById(friendId);
             if (friend.isPresent()) {
                 Optional<ProfileEntity> profileEntity = profilRepository.findByUserId(friend.get().getId());
@@ -113,8 +118,7 @@ public class FriendshipService {
         return friendshipEntities;
     }
 
-    @Transactional
-    public void deleteAllFriendshipsByUserId(Long userId) {
+    public void deleteAllByUserId(Long userId) {
         List<FriendshipEntity> friendshipsToDelete = new ArrayList<>();
         friendshipsToDelete.addAll(friendShipRepository.findByUserId1(userId));
         friendshipsToDelete.addAll(friendShipRepository.findByUserId2(userId));

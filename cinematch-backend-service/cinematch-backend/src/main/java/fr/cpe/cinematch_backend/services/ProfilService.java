@@ -68,4 +68,13 @@ public class ProfilService {
         }
         return profileEntity.get();
     }
+
+    public ProfileEntity deleteProfil(AppUser user) throws GenericNotFoundException {
+        Optional<ProfileEntity> profileEntity = profilRepository.findById(user.getId());
+        if (profileEntity.isEmpty()) {
+            throw new GenericNotFoundException(404, "Profile not found", "Profile for user not found");
+        }
+        profilRepository.delete(profileEntity.get());
+        return profileEntity.get();
+    }
 }
