@@ -9,10 +9,11 @@ import {
   TranslatePipe,
   TranslateDirective
 } from "@ngx-translate/core";
+import { LoaderComponent } from './common-component/loader/loader.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, FooterComponent, LoaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
