@@ -1,7 +1,5 @@
-package fr.cpe.cinematch_backend.entities.review;
+package fr.cpe.cinematch_backend.entities;
 
-import fr.cpe.cinematch_backend.entities.AppUser;
-import fr.cpe.cinematch_backend.entities.MovieEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

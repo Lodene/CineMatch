@@ -5,7 +5,7 @@ import fr.cpe.cinematch_backend.dtos.ReviewDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
-import fr.cpe.cinematch_backend.services.review.ReviewService;
+import fr.cpe.cinematch_backend.services.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

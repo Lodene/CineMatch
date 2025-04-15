@@ -2,12 +2,16 @@ package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
+import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
+import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
+import fr.cpe.cinematch_backend.services.AppUserService;
 import fr.cpe.cinematch_backend.services.FriendRequestService;
 import fr.cpe.cinematch_backend.services.FriendshipService;
 import fr.cpe.cinematch_backend.services.LovedMovieService;
 import fr.cpe.cinematch_backend.services.ProfilService;
+import fr.cpe.cinematch_backend.services.ReviewService;
 import fr.cpe.cinematch_backend.services.WatchedMovieService;
 import fr.cpe.cinematch_backend.services.WatchlistMovieService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -44,6 +48,12 @@ public class ProfilController {
     @Autowired
     private FriendRequestService friendRequestService;
 
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private AppUserService appUserService;
+
     @GetMapping
     public ResponseEntity<ProfileDto> getProfile(@AuthenticationPrincipal UserDetails userDetails)
             throws GenericNotFoundException {
@@ -78,7 +88,7 @@ public class ProfilController {
     }
 
     @DeleteMapping("/user")
-    public ResponseEntity<Void> deleteAllLovedMoviesByUser(@PathVariable Long userId) throws GenericNotFoundException {
+    public ResponseEntity<Void> deleteUserByUserId() throws GenericNotFoundException, BadEndpointException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
         lovedMovieService.deleteAllByUserId(uE.getId());
@@ -86,8 +96,11 @@ public class ProfilController {
         watchlistMovieService.deleteAllByUserId(uE.getId());
         friendshipService.deleteAllByUserId(uE.getId());
         friendRequestService.deleteAllByUserId(uE.getId());
+        friendRequestService.deleteAllByUserId(uE.getId());
+        reviewService.deleteAllByUserId(uE.getId());
 
-        profilRepository.findByUserId(uE.getId()).ifPresent(profilRepository::delete);
+        profilService.deleteProfil(uE);
+        appUserService.deleteUserById(uE);
 
         return ResponseEntity.noContent().build();
     }

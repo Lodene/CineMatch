@@ -18,11 +18,9 @@ public class AppUserService {
     private ProfilService profilService;
 
     @Transactional
-    public boolean insertUser(UserRequest userRequest) throws BadEndpointException
-    {
+    public boolean insertUser(UserRequest userRequest) throws BadEndpointException {
 
-        if (appUserRepository.findByUsername(userRequest.getUsername()).isPresent())
-        {
+        if (appUserRepository.findByUsername(userRequest.getUsername()).isPresent()) {
             throw new BadEndpointException(403, "Failed to create new account", "Username is already in use");
         }
         AppUser userEntity = new AppUser();
@@ -31,6 +29,14 @@ public class AppUserService {
         userEntity.setPassword(userRequest.getPassword());
         appUserRepository.save(userEntity);
         profilService.createProfileForUser(userEntity);
+        return true;
+    }
+
+    public boolean deleteUserById(AppUser user) throws BadEndpointException {
+        if (user == null) {
+            throw new BadEndpointException(403, "Failed to delete account", "User not found");
+        }
+        appUserRepository.delete(user);
         return true;
     }
 }

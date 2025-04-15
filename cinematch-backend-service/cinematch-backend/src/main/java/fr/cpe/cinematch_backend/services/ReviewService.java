@@ -1,16 +1,17 @@
-package fr.cpe.cinematch_backend.services.review;
+package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.requests.ReviewRequest;
 import fr.cpe.cinematch_backend.dtos.ReviewDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
-import fr.cpe.cinematch_backend.entities.review.ReviewEntity;
+import fr.cpe.cinematch_backend.entities.ProfileEntity;
+import fr.cpe.cinematch_backend.entities.ReviewEntity;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
 import fr.cpe.cinematch_backend.repositories.ReviewRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
-import fr.cpe.cinematch_backend.services.MovieService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ReviewServiceImpl implements ReviewService {
+public class ReviewService {
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -33,7 +34,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private MovieService movieService;
 
-    @Override
     public void createReview(ReviewRequest reviewRequest, String username) throws GenericNotFoundException {
         Optional<AppUser> user = appUserRepository.findByUsername(username);
         if (user.isEmpty()) {
@@ -54,7 +54,6 @@ public class ReviewServiceImpl implements ReviewService {
         reviewRepository.save(reviewEntity);
     }
 
-    @Override
     public ReviewDto updateReview(Long id, ReviewRequest reviewRequest)
             throws GenericNotFoundException, BadEndpointException {
 
@@ -74,7 +73,6 @@ public class ReviewServiceImpl implements ReviewService {
         return ReviewMapper.INSTANCE.toReviewDto(reviewRepository.save(reviewEntity));
     }
 
-    @Override
     public List<ReviewDto> getUserReviews(String username) throws GenericNotFoundException {
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
@@ -84,7 +82,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public boolean deleteReview(long id) {
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty()) {
@@ -94,7 +91,6 @@ public class ReviewServiceImpl implements ReviewService {
         return true;
     }
 
-    @Override
     public List<ReviewDto> getReviewsByUsername(String username) throws GenericNotFoundException {
         Optional<AppUser> appUser = appUserRepository.findByUsername(username);
         if (appUser.isEmpty()) {
@@ -102,5 +98,14 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return reviewRepository.findByUser(appUser.get()).stream()
                 .map(ReviewMapper.INSTANCE::toReviewDto).collect(Collectors.toList());
+    }
+
+    public void deleteAllByUserId(Long userId) throws GenericNotFoundException {
+        AppUser user = appUserRepository.findById(userId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "User with id '" + userId + "' not found"));
+
+        List<ReviewEntity> reviews = reviewRepository.findByUser(user);
+        reviewRepository.deleteAll(reviews);
     }
 }

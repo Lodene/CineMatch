@@ -105,7 +105,8 @@ public class FriendRequestService {
         for (FriendRequestEntity request : receivedRequests) {
             AppUser sender = userRepository.findById(request.getAskedById())
                     .orElseThrow(
-                            () -> new GenericNotFoundException(404, "Sender not found", "The sender's user was not found"));
+                            () -> new GenericNotFoundException(404, "Sender not found",
+                                    "The sender's user was not found"));
 
             ProfileEntity profil = profilRepository.findByUserId(sender.getId())
                     .orElseThrow(() -> new GenericNotFoundException(404, "Profile is missing",
@@ -121,7 +122,8 @@ public class FriendRequestService {
     }
 
     private boolean checkIfFriendRequestAlreadyExist(Long senderId, Long userId) {
-        Optional<FriendRequestEntity> friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(senderId, userId);
+        Optional<FriendRequestEntity> friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(senderId,
+                userId);
         if (friendRequestEntity.isEmpty()) {
             // on vérifie dans l'autre sens
             friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(userId, senderId);
@@ -131,8 +133,7 @@ public class FriendRequestService {
         }
     }
 
-    @Transactional
-    public void deleteAllFriendRequestsByUserId(Long userId) {
+    public void deleteAllByUserId(Long userId) {
         List<FriendRequestEntity> allRequests = friendRequestRepository.findAll();
         List<FriendRequestEntity> toDelete = allRequests.stream()
                 .filter(r -> r.getAskedById().equals(userId) || r.getToId().equals(userId))
