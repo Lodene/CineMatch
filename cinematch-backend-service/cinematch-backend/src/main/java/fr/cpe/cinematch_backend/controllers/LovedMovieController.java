@@ -2,6 +2,8 @@ package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
+import fr.cpe.cinematch_backend.entities.LovedMovieEntity;
+import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.LovedMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +41,4 @@ public class LovedMovieController {
             throws GenericNotFoundException {
         return ResponseEntity.ok(lovedMovieService.getLovedMoviesByUsername(username));
     }
-
 }

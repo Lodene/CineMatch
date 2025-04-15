@@ -68,4 +68,13 @@ public class LovedMovieService {
         return movieDtoList;
     }
 
+    public void deleteAllByUserId(Long userId) throws GenericNotFoundException {
+        AppUser user = appUserRepository.findById(userId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "User with id '" + userId + "' not found"));
+
+        List<LovedMovieEntity> lovedMovies = lovedMovieRepository.findByUser(user);
+        lovedMovieRepository.deleteAll(lovedMovies);
+    }
+
 }
