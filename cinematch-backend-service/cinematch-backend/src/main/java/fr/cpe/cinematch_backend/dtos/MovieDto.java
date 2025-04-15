@@ -34,7 +34,7 @@ public class MovieDto {
     private List<String> spokenLanguages;
     private List<String> cast;
     private List<String> director;
-    private List<String> directorOfPhotograpy;
+    private List<String> directorOfPhotography;
     private List<String> writers;
     private List<String> producers;
     private List<String> musicComposer;

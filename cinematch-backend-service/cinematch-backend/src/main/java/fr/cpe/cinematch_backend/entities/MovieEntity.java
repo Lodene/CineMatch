@@ -56,7 +56,7 @@ public class MovieEntity {
     private List<String> director;
 
     @ElementCollection
-    private List<String> directorOfPhotograpy;
+    private List<String> directorOfPhotography;
 
     @ElementCollection
     private List<String> writers;

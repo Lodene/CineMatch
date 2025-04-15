@@ -154,7 +154,7 @@
     </changeSet>
     <changeSet id="1744614747527-14" author="T-H-O-M-A-S">
         <addForeignKeyConstraint baseColumnNames="movie_entity_id" baseTableName="movie_entity_director_of_photography"
-                                 constraintName="fk_movieentity_directorofphotograpy_on_movie_entity"
+                                 constraintName="fk_movieentity_directorofphotography_on_movie_entity"
                                  referencedColumnNames="id" referencedTableName="movie"/>
     </changeSet>
     <changeSet id="1744614747527-15" author="T-H-O-M-A-S">
