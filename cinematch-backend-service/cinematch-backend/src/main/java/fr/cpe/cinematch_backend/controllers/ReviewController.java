@@ -24,14 +24,14 @@ public class ReviewController {
 
     @PostMapping
     public void createReview(@RequestBody @Valid ReviewRequest reviewRequest) throws GenericNotFoundException {
-        System.out.println("✅ Requête reçue dans createReview");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
         reviewService.createReview(reviewRequest, uE.getUsername());
     }
 
     @PutMapping("/{reviewId}")
-    public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "reviewId") String reviewId, @RequestBody ReviewRequest reviewRequest) throws GenericNotFoundException, BadEndpointException {
+    public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "reviewId") String reviewId,
+            @RequestBody ReviewRequest reviewRequest) throws GenericNotFoundException, BadEndpointException {
         long id;
         try {
             id = Long.parseLong(reviewId);
@@ -49,7 +49,8 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ResponseEntity<Boolean> deleteReview(@PathVariable(value = "reviewId") String reviewId) throws BadEndpointException {
+    public ResponseEntity<Boolean> deleteReview(@PathVariable(value = "reviewId") String reviewId)
+            throws BadEndpointException {
         long id;
         try {
             id = Long.parseLong(reviewId);
@@ -60,7 +61,8 @@ public class ReviewController {
     }
 
     @GetMapping("/getByUsername/{username}")
-    public ResponseEntity<List<ReviewDto>> getReviewsByUsername(@PathVariable String username) throws GenericNotFoundException {
+    public ResponseEntity<List<ReviewDto>> getReviewsByUsername(@PathVariable String username)
+            throws GenericNotFoundException {
         return ResponseEntity.ok(reviewService.getReviewsByUsername(username));
     }
 

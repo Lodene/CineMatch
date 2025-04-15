@@ -35,13 +35,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void createReview(ReviewRequest reviewRequest, String username) throws GenericNotFoundException {
-        Optional<AppUser> user =  appUserRepository.findByUsername(username);
+        Optional<AppUser> user = appUserRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new GenericNotFoundException(404, "User not found", "username '" + username + "' does not exist");
         }
         Optional<MovieEntity> movieEntity = movieService.getMovieEntityById(reviewRequest.getIdMovie());
         if (movieEntity.isEmpty()) {
-            throw new GenericNotFoundException(404, "Movie not found", "movie with id'" + reviewRequest.getIdMovie() + "' does not exist");
+            throw new GenericNotFoundException(404, "Movie not found",
+                    "movie with id'" + reviewRequest.getIdMovie() + "' does not exist");
         }
         ReviewEntity reviewEntity = new ReviewEntity();
         reviewEntity.setUser(user.get());
@@ -54,7 +55,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ReviewDto updateReview(Long id, ReviewRequest reviewRequest) throws GenericNotFoundException, BadEndpointException {
+    public ReviewDto updateReview(Long id, ReviewRequest reviewRequest)
+            throws GenericNotFoundException, BadEndpointException {
 
         ReviewEntity reviewEntity = reviewRepository.findById(id)
                 .orElseThrow(() -> new GenericNotFoundException(404,
@@ -75,11 +77,13 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<ReviewDto> getUserReviews(String username) throws GenericNotFoundException {
         AppUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found", "User with username '" + username + "' couldn't be found"));
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "User with username '" + username + "' couldn't be found"));
         return reviewRepository.findByUser(user).stream()
                 .map(ReviewMapper.INSTANCE::toReviewDto)
                 .collect(Collectors.toList());
     }
+
     @Override
     public boolean deleteReview(long id) {
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
@@ -87,7 +91,7 @@ public class ReviewServiceImpl implements ReviewService {
             return false;
         }
         reviewRepository.deleteById(id);
-        return  true;
+        return true;
     }
 
     @Override
