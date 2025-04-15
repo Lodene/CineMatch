@@ -1,6 +1,12 @@
+# Install dependency lxml
+Write-Host "Installing lxml python dependency"
+python -m venv .venv
+.venv\Scripts\activate
+python -m pip install --upgrade pip
+python -m pip install lxml
 # Run dataset_to_liquibase.py
 Write-Host "Running dataset_to_liquibase.py..."
-# python dataset_to_liquibase.py
+python dataset_to_liquibase.py
 
 # Run clean_xml.py
 Write-Host "Running clean_xml.py..."

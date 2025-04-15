@@ -6,3 +6,4 @@ dataset-to-liquibase/TMDB_all_movies.csv
 cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/tmdb*.xml
 dataset-to-liquibase/changeset.xml
 cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/full-db-insert.xml
+dataset-to-liquibase/.venv

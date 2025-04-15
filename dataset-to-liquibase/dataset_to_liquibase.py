@@ -4,6 +4,7 @@ import html
 import re
 from lxml import etree as ET
 import datetime
+from pathlib import Path
 
 # === CONFIGURATION ===
 CSV_PATH = "TMDB_all_movies.csv"
@@ -165,5 +166,10 @@ def process_csv_in_chunks():
         if row_count % CHUNK_SIZE != 0:
             write_chunk_file(xml_root, chunk_count)
 
+def create_output_folder(destination_path):
+    Path(destination_path).mkdir(parents=True, exist_ok=True)
+    return
+
 if __name__ == "__main__":
+    create_output_folder("/liquibase_chunks")
     process_csv_in_chunks()
