@@ -1,16 +1,26 @@
+$StartTime = $(get-date)
 # Install dependency lxml
 Write-Host "Installing lxml python dependency"
 python -m venv .venv
 .venv\Scripts\activate
 python -m pip install --upgrade pip
 python -m pip install lxml
+$elapsedTime = $(get-date) - $StartTime
+Write-host "Done in $($elapsedTime.ToString("hh\:mm\:ss"))"  
 # Run dataset_to_liquibase.py
+$StartTimeDatasetToLiquibase = $(get-date)
 Write-Host "Running dataset_to_liquibase.py..."
 python dataset_to_liquibase.py
+$elapsedTime = $(get-date) - $StartTimeDatasetToLiquibase
+Write-host "Wrote all changeset in $($elapsedTime.ToString("hh\:mm\:ss"))"  
 
+$StartTimeCleanXml = $(get-date)
 # Run clean_xml.py
 Write-Host "Running clean_xml.py..."
 python clean_xml.py
+$elapsedTime = $(get-date) - $StartTimeCleanXml
+Write-host "Cleaned all changeset in $($elapsedTime.ToString("hh\:mm\:ss"))"  
+
 
 # Run create_changeset.py
 Write-Host "Running create_changeset.py..."

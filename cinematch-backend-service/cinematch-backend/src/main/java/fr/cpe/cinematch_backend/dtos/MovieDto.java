@@ -29,8 +29,8 @@ public class MovieDto {
     private String overview;
     private float popularity;
     private List<String> genres;
-    private List<String> productionsCompanies;
-    private List<String> productionsCountries;
+    private List<String> productionCompanies;
+    private List<String> productionCountries;
     private List<String> spokenLanguages;
     private List<String> cast;
     private List<String> director;

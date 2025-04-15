@@ -265,21 +265,6 @@
                                  referencedTableName="app_user"/>
     </changeSet>
 
-
-    <changeSet id="1744358097282-1" author="Antoine">
-    <createTable tableName="watched_movie">
-        <column autoIncrement="true" name="id" type="BIGINT">
-            <constraints nullable="false" primaryKey="true" primaryKeyName="pk_watched_movie"/>
-        </column>
-        <column name="user_id" type="BIGINT">
-            <constraints nullable="false"/>
-        </column>
-        <column name="movie_id" type="BIGINT">
-            <constraints nullable="false"/>
-        </column>
-    </createTable>
-</changeSet>
-
     <changeSet id="1744662725797-1" author="T-H-O-M-A-S">
         <createTable tableName="watched_movie">
             <column autoIncrement="true" name="id" type="BIGINT">
