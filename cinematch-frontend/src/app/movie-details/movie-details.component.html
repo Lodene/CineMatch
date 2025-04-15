@@ -1,5 +1,5 @@
-<div *ngIf="movie" class="container-movie m-20">
-    <img class="image" [src]="movie.posterPath" [alt]="movie.title+' poster'">
+<div *ngIf="!!movie; else notFound" class="container-movie m-20">
+    <img class="image" [src]="posterUrl" [alt]="'app.common-component.movie-details.image-not-found' | translate">
 
     <div class=" mx-10">
     
@@ -17,6 +17,17 @@
             <div *ngFor="let g of movie.genres" class="rounded-border-gradient mr-10">{{g}}</div>
         </div>
         <div class="mr-10">{{movie.overview}}</div>
+        <!-- cast -->
+        <app-list-person [title]="'Cast'" [person]="movie.cast" *ngIf="movie?.cast"></app-list-person>
+    
     </div>
 
+
 </div>
+<ng-template #notFound class="not-found-container">
+    <div>
+        <h2 class="not-found-text">
+            Movie not found
+        </h2>
+    </div>
+</ng-template>
