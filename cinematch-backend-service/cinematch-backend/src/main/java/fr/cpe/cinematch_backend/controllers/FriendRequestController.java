@@ -31,10 +31,19 @@ public class FriendRequestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/respond")
-    public ResponseEntity respondToFriendRequest(@RequestBody @Valid FriendRequestResponseDto dto)
-            throws GenericNotFoundException {
-        friendRequestService.respondToFriendRequest(dto);
+    @PostMapping("/accept/{requestId}")
+    public ResponseEntity<Void> acceptFriendRequest(@PathVariable Long requestId) throws GenericNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser currentUser = (AppUser) authentication.getPrincipal();
+        friendRequestService.acceptFriendRequest(requestId, currentUser.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/decline/{requestId}")
+    public ResponseEntity<Void> declineFriendRequest(@PathVariable Long requestId) throws GenericNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser currentUser = (AppUser) authentication.getPrincipal();
+        friendRequestService.declineFriendRequest(requestId, currentUser.getId());
         return ResponseEntity.ok().build();
     }
 
