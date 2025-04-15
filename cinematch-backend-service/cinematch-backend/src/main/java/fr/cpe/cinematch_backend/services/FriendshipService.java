@@ -113,4 +113,13 @@ public class FriendshipService {
         return friendshipEntities;
     }
 
+    @Transactional
+    public void deleteAllFriendshipsByUserId(Long userId) {
+        List<FriendshipEntity> friendshipsToDelete = new ArrayList<>();
+        friendshipsToDelete.addAll(friendShipRepository.findByUserId1(userId));
+        friendshipsToDelete.addAll(friendShipRepository.findByUserId2(userId));
+
+        friendShipRepository.deleteAll(friendshipsToDelete);
+    }
+
 }
