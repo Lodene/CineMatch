@@ -12,9 +12,8 @@ import fr.cpe.cinematch_backend.entities.MovieActionHistoryEntity;
 import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 import fr.cpe.cinematch_backend.repositories.MovieActionHistoryRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
-import fr.cpe.cinematch_backend.dtos.responses.PaginatedHistoryResponseDto;
+import fr.cpe.cinematch_backend.dtos.PaginatedHistoryResponseDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
-
 
 @Service
 public class MovieActionHistoryService {
