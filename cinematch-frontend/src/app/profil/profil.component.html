@@ -1,13 +1,13 @@
-<main class="profile-wrapper">
+<main class="profile-wrapper" *ngIf="userProfile; else loadingOrError">
   <div class="profile-header">
     <img class="avatar" src="https://github.com/shadcn.png" alt="@shadcn" />
     <div class="profile-info">
       <h1 class="username">{{ userProfile.name }} </h1>
       <p class="bio">{{ userProfile.bio }}</p>
       <div class="stats">
-        <div><span class="bold">265</span> {{ 'app.common-component.profile.stats.watched' | translate }}</div>
-        <div><span class="bold">87</span> {{ 'app.common-component.profile.stats.reviews' | translate }}</div>
-        <div><span class="bold">42</span> {{ 'app.common-component.profile.stats.watchlist' | translate }}</div>
+        <div><span class="bold">{{ userProfile.watchedMoviesCount }}</span> {{ 'app.common-component.profile.stats.watched' | translate }}</div>
+        <div><span class="bold">{{ userProfile.reviewsCount }}</span> {{ 'app.common-component.profile.stats.reviews' | translate }}</div>
+        <div><span class="bold">{{ userProfile.watchlistCount }}</span> {{ 'app.common-component.profile.stats.watchlist' | translate }}</div>
       </div>
     </div>
     <button mat-stroked-button>{{ 'app.common-component.profile.actions.edit' | translate }}</button>
@@ -45,3 +45,8 @@
     </mat-tab>
   </mat-tab-group>
 </main>
+
+<ng-template #loadingOrError>
+  <div *ngIf="isLoading">Chargement en cours...</div>
+  <div *ngIf="errorMessage">{{ errorMessage }}</div>
+</ng-template>
