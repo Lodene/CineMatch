@@ -1,4 +1,4 @@
-package fr.cpe.cinematch_backend.dtos.responses;
+package fr.cpe.cinematch_backend.dtos;
 
 import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 import lombok.AllArgsConstructor;
