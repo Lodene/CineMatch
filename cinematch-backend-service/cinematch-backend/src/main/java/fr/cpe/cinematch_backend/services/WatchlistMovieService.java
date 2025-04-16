@@ -11,6 +11,7 @@ import fr.cpe.cinematch_backend.repositories.MovieRepository;
 import fr.cpe.cinematch_backend.repositories.WatchlistMovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 
 import java.util.List;
 
@@ -26,27 +27,37 @@ public class WatchlistMovieService {
         @Autowired
         private MovieRepository movieRepository;
 
+        @Autowired
+        private MovieActionHistoryService movieActionHistoryService;
+
         /*
          * Add a movie to curent user's watchlist, or remove it if it already exist.
          */
         public void AddOrRemoveMovieFromWatchlist(Long movieId, String username) throws GenericNotFoundException {
                 AppUser user = appUserRepository.findByUsername(username)
-                                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                                                "User with username '" + username + "' couldn't be found"));
+                        .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                                "User with username '" + username + "' couldn't be found"));
 
                 MovieEntity movie = movieRepository.findById(movieId)
-                                .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
-                                                "Movie with id '" + movieId + "' couldn't be found"));
+                        .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
+                                "Movie with id '" + movieId + "' couldn't be found"));
 
                 watchlistMovieRepository.findByUserAndMovie(user, movie)
-                                .ifPresentOrElse(
-                                                watchlistMovieRepository::delete,
-                                                () -> {
-                                                        WatchlistMovieEntity newEntry = new WatchlistMovieEntity();
-                                                        newEntry.setUser(user);
-                                                        newEntry.setMovie(movie);
-                                                        watchlistMovieRepository.save(newEntry);
-                                                });
+                        .ifPresentOrElse(
+                                existing -> {
+                                        watchlistMovieRepository.delete(existing);
+                                        // Ajout dans l'historique : WATCHLIST_REMOVE
+                                        movieActionHistoryService.logAction(user.getId(), movieId, MovieActionType.WATCHLIST_REMOVE);
+                                },
+                                () -> {
+                                        WatchlistMovieEntity newEntry = new WatchlistMovieEntity();
+                                        newEntry.setUser(user);
+                                        newEntry.setMovie(movie);
+                                        watchlistMovieRepository.save(newEntry);
+
+                                        // Ajout dans l'historique : WATCHLIST_ADD
+                                        movieActionHistoryService.logAction(user.getId(), movieId, MovieActionType.WATCHLIST_ADD);
+                                });
         }
 
         // return watchlist by username
