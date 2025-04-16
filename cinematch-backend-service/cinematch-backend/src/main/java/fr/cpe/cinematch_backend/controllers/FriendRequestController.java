@@ -1,7 +1,5 @@
 package fr.cpe.cinematch_backend.controllers;
 
-import fr.cpe.cinematch_backend.dtos.FriendRequestDto;
-import fr.cpe.cinematch_backend.dtos.FriendRequestResponseDto;
 import fr.cpe.cinematch_backend.dtos.IncomingFriendRequestDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
