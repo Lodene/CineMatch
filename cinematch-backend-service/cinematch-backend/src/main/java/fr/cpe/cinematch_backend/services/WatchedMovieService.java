@@ -11,6 +11,8 @@ import fr.cpe.cinematch_backend.repositories.MovieRepository;
 import fr.cpe.cinematch_backend.repositories.WatchedMovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
+
 
 import java.util.List;
 
@@ -26,6 +28,9 @@ public class WatchedMovieService {
         @Autowired
         private MovieRepository movieRepository;
 
+        @Autowired
+        private MovieActionHistoryService movieActionHistoryService;
+
         public void addOrRemoveWatchedMovie(Long movieId, String username) throws GenericNotFoundException {
                 AppUser user = appUserRepository.findByUsername(username)
                                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
@@ -36,14 +41,21 @@ public class WatchedMovieService {
                                                 "movie ID '" + movieId + "' not found"));
 
                 watchedMovieRepository.findByUserAndMovie(user, movie)
-                                .ifPresentOrElse(
-                                                watchedMovieRepository::delete,
-                                                () -> {
-                                                        WatchedMovieEntity entity = new WatchedMovieEntity();
-                                                        entity.setUser(user);
-                                                        entity.setMovie(movie);
-                                                        watchedMovieRepository.save(entity);
-                                                });
+                        .ifPresentOrElse(
+                                existing -> {
+                                        watchedMovieRepository.delete(existing);
+                                        // Ajout dans l'historique : UNWATCHED
+                                        movieActionHistoryService.logAction(user.getId(), movieId, MovieActionType.UNWATCHED);
+                                },
+                                () -> {
+                                        WatchedMovieEntity entity = new WatchedMovieEntity();
+                                        entity.setUser(user);
+                                        entity.setMovie(movie);
+                                        watchedMovieRepository.save(entity);
+
+                                        // Ajout dans l'historique : WATCHED
+                                        movieActionHistoryService.logAction(user.getId(), movieId, MovieActionType.WATCHED);
+                                });
         }
 
         public List<MovieDto> getWatchedMoviesByUsername(String username) throws GenericNotFoundException {
