@@ -4,11 +4,14 @@
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Username</mat-label>
         <input matInput formControlName="username" placeholder="Enter your username" />
-        <mat-error>
+        <mat-error *ngIf="signupForm.get('username')?.hasError('required')">
             {{ 'app.common-component.signup.username-error-required' | translate }}
         </mat-error>
-        <mat-error>
+        <mat-error *ngIf="signupForm.get('username')?.hasError('minlength') || signupForm.get('username')?.hasError('maxlength')">
             {{ 'app.common-component.signup.username-error-length' | translate }}
+        </mat-error>
+        <mat-error *ngIf="signupForm.get('username')?.hasError('pattern')">
+          {{ 'app.common-component.signup.username-error-pattern' | translate }}
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" class="full-width">
@@ -16,10 +19,10 @@
             {{ 'app.common-component.signup.email-label' | translate }}
         </mat-label>
         <input matInput formControlName="email" type="text" placeholder="Enter your email" />
-        <mat-error>
+        <mat-error *ngIf="signupForm.get('email')?.hasError('required')">
             {{ 'app.common-component.signup.email-error-required' | translate }}
         </mat-error>
-        <mat-error>
+        <mat-error *ngIf="signupForm.get('email')?.hasError('email')">
             {{ 'app.common-component.signup.email-error-format' | translate }}
         </mat-error>
       </mat-form-field>
@@ -29,11 +32,14 @@
             {{ 'app.common-component.signup.password-label' | translate }}
         </mat-label>
         <input matInput formControlName="password" type="password" placeholder="Enter your password" />
-        <mat-error>
+        <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
             {{ 'app.common-component.signup.password-error-required' | translate }}
         </mat-error>
-        <mat-error>
+        <mat-error *ngIf="signupForm.get('password')?.hasError('minlength')">
             {{ 'app.common-component.signup.password-error-length' | translate }}
+        </mat-error>
+        <mat-error *ngIf="signupForm.get('password')?.hasError('pattern')">
+          {{ 'app.common-component.signup.password-error-pattern' | translate }}
         </mat-error>
       </mat-form-field>
   
