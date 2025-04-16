@@ -5,6 +5,7 @@ import re
 from lxml import etree as ET
 import datetime
 from pathlib import Path
+import sys 
 
 # === CONFIGURATION ===
 CSV_PATH = "TMDB_all_movies.csv"
@@ -118,7 +119,7 @@ def write_chunk_file(xml_root, chunk_number):
 
 # === MAIN PROCESS ===
 
-def process_csv_in_chunks():
+def process_csv_in_chunks(minMode: bool):
     with open(CSV_PATH, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
 
@@ -157,6 +158,8 @@ def process_csv_in_chunks():
             # Chunk write logic
             if row_count % CHUNK_SIZE == 0:
                 write_chunk_file(xml_root, chunk_count)
+                if minMode:
+                    return
                 chunk_count += 1
                 xml_root = start_changeset_root()
                 changeset = ET.SubElement(xml_root, "changeSet", id=f"chunk-{chunk_count}", author=CHANGESET_AUTHOR)
@@ -164,11 +167,19 @@ def process_csv_in_chunks():
         # Final chunk
         if row_count % CHUNK_SIZE != 0:
             write_chunk_file(xml_root, chunk_count)
+        if minMode == True:
+            exit(0)
 
 def create_output_folder(destination_path):
     Path(destination_path).mkdir(parents=True, exist_ok=True)
     return
 
 if __name__ == "__main__":
+    # minimum arg only make one dataset
+    minMode = False
+    print(sys.argv)
+    if sys.argv[1] == "-minimum":
+        minMode = True
+    print(minMode)
     create_output_folder("/liquibase_chunks")
-    process_csv_in_chunks()
+    process_csv_in_chunks(minMode)

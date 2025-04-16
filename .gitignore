@@ -7,3 +7,4 @@ cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/tmdb
 dataset-to-liquibase/changeset.xml
 cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/full-db-insert.xml
 dataset-to-liquibase/.venv
+cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/dataset_chunks
