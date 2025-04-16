@@ -44,23 +44,30 @@ public class ReviewService {
     @Autowired
     private ProfilRepository profilRepository;
 
-    public void createReview(ReviewRequest reviewRequest, String username) throws GenericNotFoundException {
-        Optional<AppUser> user = appUserRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new GenericNotFoundException(404, "User not found", "username '" + username + "' does not exist");
+    public void createReview(ReviewRequest reviewRequest, String username)
+            throws GenericNotFoundException, BadEndpointException {
+
+        AppUser user = appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "username '" + username + "' does not exist"));
+
+        MovieEntity movieEntity = movieService.getMovieEntityById(reviewRequest.getIdMovie())
+                .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
+                        "movie with id '" + reviewRequest.getIdMovie() + "' does not exist"));
+
+        // ✅ Empêcher les doublons de review pour le même film par le même utilisateur
+        if (!reviewRepository.findByUserAndMovie(user, movieEntity).isEmpty()) {
+            throw new BadEndpointException(400, "Duplicate review", "User has already reviewed this movie");
         }
-        Optional<MovieEntity> movieEntity = movieService.getMovieEntityById(reviewRequest.getIdMovie());
-        if (movieEntity.isEmpty()) {
-            throw new GenericNotFoundException(404, "Movie not found",
-                    "movie with id'" + reviewRequest.getIdMovie() + "' does not exist");
-        }
+
         ReviewEntity reviewEntity = new ReviewEntity();
-        reviewEntity.setUser(user.get());
-        reviewEntity.setMovie(movieEntity.get());
+        reviewEntity.setUser(user);
+        reviewEntity.setMovie(movieEntity);
         reviewEntity.setNote(reviewRequest.getNote());
         reviewEntity.setDescription(reviewRequest.getDescription());
         reviewEntity.setCreatedAt(LocalDateTime.now());
         reviewEntity.setModifiedAt(LocalDateTime.now());
+
         reviewRepository.save(reviewEntity);
     }
 
@@ -76,6 +83,7 @@ public class ReviewService {
         if (reviewRequest.getDescription() == null) {
             throw new BadEndpointException(400, "Error while updating review", "No description found");
         }
+
         reviewEntity.setNote(reviewRequest.getNote());
         reviewEntity.setDescription(reviewRequest.getDescription());
         reviewEntity.setModifiedAt(LocalDateTime.now());

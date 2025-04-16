@@ -24,7 +24,8 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @PostMapping
-    public void createReview(@RequestBody @Valid ReviewRequest reviewRequest) throws GenericNotFoundException {
+    public void createReview(@RequestBody @Valid ReviewRequest reviewRequest)
+            throws GenericNotFoundException, BadEndpointException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
         reviewService.createReview(reviewRequest, uE.getUsername());
