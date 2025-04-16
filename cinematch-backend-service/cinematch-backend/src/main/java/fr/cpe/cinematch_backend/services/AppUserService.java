@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AppUserService {
 
@@ -20,9 +22,21 @@ public class AppUserService {
     @Transactional
     public boolean insertUser(UserRequest userRequest) throws BadEndpointException {
 
+        List<String> validationErrors = userRequest.validate();
+        if (!validationErrors.isEmpty()) {
+            throw new BadEndpointException(400, "Failed to create new account",
+                    String.join("; ", validationErrors));
+        }
+
         if (appUserRepository.findByUsername(userRequest.getUsername()).isPresent()) {
             throw new BadEndpointException(403, "Failed to create new account", "Username is already in use");
         }
+
+        // Check if email already exists (recommended additional validation)
+        if (appUserRepository.findByEmail(userRequest.getEmail()).isPresent()) {
+            throw new BadEndpointException(403, "Failed to create new account", "Email address is already in use");
+        }
+
         AppUser userEntity = new AppUser();
         userEntity.setUsername(userRequest.getUsername());
         userEntity.setEmail(userRequest.getEmail());
