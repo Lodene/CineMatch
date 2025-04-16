@@ -8,7 +8,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { FeaturedFilmComponent } from '../featured-film/featured-film.component';
 import { CommonModule } from '@angular/common';
 import { MovieService } from '../../services/movie/movie.service';
-import { firstValueFrom } from 'rxjs';
+import { finalize, firstValueFrom } from 'rxjs';
+import { LoaderService } from '../../services/loader/loader.service';
+import { error } from 'console';
+import { ToastrService } from 'ngx-toastr';
+import { RandomUtil } from '../../utils/random';
 
 @Component({
   selector: 'app-home',
@@ -21,20 +25,27 @@ export class HomeComponent implements OnInit {
   film: Movie;
   movies: Movie[] = [];
 
-  constructor(
-    private translateService: TranslateService,
+  constructor(    
     private movieService: MovieService,
-
-
+    private loaderService: LoaderService,
+    private toasterService: ToastrService
   ) {
 
   }
 
-  async ngOnInit(): Promise<void> {
-    // temps de recup 5 mins
-    // this.movies = await firstValueFrom(this.movieService.getAllMovies());
-    this.film = new Movie();
+  ngOnInit(): void {
+    // temps de recup 5~ mins
+    // fixme: add pagination endpoint for movie
+    this.loaderService.show()
+    this.movieService.getAllMovies().
+    pipe(finalize(() =>
+      this.loaderService.hide())
+    ).subscribe((res: Movie[]) => {
+      this.movies = res;
+      this.film = this.movies[RandomUtil.getRandomNumberFromRange(0, this.movies.length)]; 
+    }, error => {
+      this.toasterService.error(error.error.reason, error.error.error);
+    });
   }
-
 }
 
