@@ -1,0 +1,6 @@
+<h2>{{title  }}</h2>
+<div class="person-wrapper">
+    <div *ngFor="let person of formattedPersonList">
+        <app-person-card [person]="person"></app-person-card>
+    </div>
+</div>

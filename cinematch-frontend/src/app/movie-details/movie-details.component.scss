@@ -1,10 +1,51 @@
-.container-movie{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+
+
+
+.not-found-container {
+    flex-grow: 1;
 }
 
-.image{
+.not-found-text {
+    display: flex;
+    justify-content: center;
+}
+
+.container-movie {
+    display: flex;
+    flex-direction: row;
+    max-width: 100%;
+    
+}
+
+
+.image {
     max-height: 100%;
+    min-width: 500px;
+    max-width: 500px;
+    text-align: center;
+    min-height: 750px;
+    max-height: 750px;
+    line-height: 750px;
     width: auto;
+}
+
+.details {
+    width: calc(100% - 550px);
+    padding: 20px;
+}
+
+.list-peson {
+    overflow: scroll;
+    max-width: 100%;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+}
+.not-found-container {
+    flex-grow: 1;
+}
+
+.not-found-text {
+    display: flex;
+    justify-content: center;
 }

@@ -96,6 +96,10 @@
             "title": "Your Favorite Films"
           }
         }
+      },
+      "movie-details": {
+        "not-found": "Movie not found",
+        "image-not-found": "No image could be loaded"
       }
     },
     "generic-error": {
