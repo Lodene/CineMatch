@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, SignupRequest } from '../../services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +17,8 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatButtonModule,
     ReactiveFormsModule,
-    TranslatePipe],
+    TranslatePipe, 
+    CommonModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
@@ -30,9 +32,24 @@ export class SignupComponent {
   ) {
     this.signupForm = this.fb.group({
       // todo: Add regex for email & username :
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      email: ['', Validators.required]
+      // username: ['', Validators.required],
+      // password: ['', Validators.required],
+      // email: ['', Validators.required]
+      username: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(20),
+        Validators.pattern(/^[a-zA-Z0-9_]+$/)
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/)
+      ]]
     });
   }
 
