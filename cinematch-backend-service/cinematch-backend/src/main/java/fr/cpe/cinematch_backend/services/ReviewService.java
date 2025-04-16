@@ -8,6 +8,7 @@ import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.ProfileEntity;
 import fr.cpe.cinematch_backend.entities.ReviewEntity;
+import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
@@ -15,7 +16,6 @@ import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
 import fr.cpe.cinematch_backend.repositories.ReviewRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +44,9 @@ public class ReviewService {
     @Autowired
     private ProfilRepository profilRepository;
 
+    @Autowired
+    private MovieActionHistoryService movieActionHistoryService;
+
     public void createReview(ReviewRequest reviewRequest, String username)
             throws GenericNotFoundException, BadEndpointException {
 
@@ -55,7 +58,7 @@ public class ReviewService {
                 .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
                         "movie with id '" + reviewRequest.getIdMovie() + "' does not exist"));
 
-        // ✅ Empêcher les doublons de review pour le même film par le même utilisateur
+        // Empêcher les doublons
         if (!reviewRepository.findByUserAndMovie(user, movieEntity).isEmpty()) {
             throw new BadEndpointException(400, "Duplicate review", "User has already reviewed this movie");
         }
@@ -69,6 +72,7 @@ public class ReviewService {
         reviewEntity.setModifiedAt(LocalDateTime.now());
 
         reviewRepository.save(reviewEntity);
+        movieActionHistoryService.logAction(user.getId(), movieEntity.getId(), MovieActionType.REVIEW_ADD);
     }
 
     public ReviewDto updateReview(Long id, ReviewRequest reviewRequest)
@@ -106,6 +110,10 @@ public class ReviewService {
             return false;
         }
         reviewRepository.deleteById(id);
+        movieActionHistoryService.logAction(
+                reviewEntity.get().getUser().getId(),
+                reviewEntity.get().getMovie().getId(),
+                MovieActionType.REVIEW_REMOVE);
         return true;
     }
 
@@ -149,7 +157,7 @@ public class ReviewService {
                                 "Profil de l'auteur non trouvé"));
                 profileDto = ReviewWithFriendFlagMapper.INSTANCE.profileEntityToDto(profile);
             } catch (GenericNotFoundException e) {
-                throw new RuntimeException(e); // on le wrappe pour le faire passer
+                throw new RuntimeException(e);
             }
 
             ReviewWithFriendFlagDto enrichedDto = ReviewWithFriendFlagMapper.INSTANCE.fromReviewDtoAndProfile(baseDto,
@@ -160,7 +168,5 @@ public class ReviewService {
 
             return enrichedDto;
         }).toList();
-
     }
-
 }

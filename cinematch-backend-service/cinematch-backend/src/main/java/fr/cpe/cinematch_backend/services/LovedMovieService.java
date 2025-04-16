@@ -12,6 +12,8 @@ import fr.cpe.cinematch_backend.repositories.LovedMovieRepository;
 import fr.cpe.cinematch_backend.services.security.CurrentUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ public class LovedMovieService {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Autowired
+    private MovieActionHistoryService movieActionHistoryService;
+
     public void likeMovie(AppUser user, Long movieId) throws GenericNotFoundException {
 
         MovieEntity movie = movieRepository.findById(movieId)
@@ -39,12 +44,14 @@ public class LovedMovieService {
             // unlike a movie
             lovedMovieRepository.findByUserAndMovie(user, movie)
                     .ifPresent(lovedMovieRepository::delete);
+            movieActionHistoryService.logAction(user.getId(), movieId, MovieActionType.UNLIKE);
         } else {
             // like a movie
             LovedMovieEntity lovedMovie = new LovedMovieEntity();
             lovedMovie.setUser(user);
             lovedMovie.setMovie(movie);
             lovedMovieRepository.save(lovedMovie);
+            movieActionHistoryService.logAction(user.getId(), movieId, MovieActionType.LIKE);
         }
     }
 
