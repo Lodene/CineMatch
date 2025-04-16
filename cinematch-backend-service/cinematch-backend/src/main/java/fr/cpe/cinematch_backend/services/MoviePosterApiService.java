@@ -2,7 +2,9 @@ package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.apiResponse.TmdbMovie;
 import fr.cpe.cinematch_backend.dtos.apiResponse.TmdbResponse;
-import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
+import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,16 +16,16 @@ import java.util.List;
 @Service
 public class MoviePosterApiService {
 
-    private static final String API_KEY = "";
+    @Autowired
+    private Environment env;
+
     private static final String BASE_URL = "https://api.themoviedb.org/3";
-    private static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500";
-
-
 
     RestTemplate restTemplate = new RestTemplate();
-    public String getMoviePosterUrl(long movieId) throws GenericNotFoundException {
+    public String getMoviePosterUrl(long movieId) throws BadEndpointException {
+        String apiKey = env.getProperty("tmdb.api.key");
         try {
-            String searchUrl = BASE_URL + "/movie/" + movieId + "/images?api_key=" + API_KEY + "&query=" + URLEncoder.encode(String.valueOf(movieId), StandardCharsets.UTF_8.toString());
+            String searchUrl = BASE_URL + "/movie/" + movieId + "/images?api_key=" + apiKey + "&query=" + URLEncoder.encode(String.valueOf(movieId), StandardCharsets.UTF_8);
             ResponseEntity<TmdbResponse> response = restTemplate.getForEntity(searchUrl, TmdbResponse.class);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -39,14 +41,15 @@ public class MoviePosterApiService {
                 }
             }
         } catch (Exception e) {
-            throw new GenericNotFoundException(404, "Not found", "No posterPath were found with the given movie id");
+            throw new BadEndpointException(500, "API error response", "The api did not return a result");
         }
         return null;
     }
 
-    public String getMovieBackdropUrl(long movieId) throws GenericNotFoundException {
+    public String getMovieBackdropUrl(long movieId) throws BadEndpointException {
+        String apiKey = env.getProperty("tmdb.api.key");
         try {
-            String searchUrl = BASE_URL + "/movie/" + movieId + "/images?api_key=" + API_KEY + "&query=" + URLEncoder.encode(String.valueOf(movieId), StandardCharsets.UTF_8.toString());
+            String searchUrl = BASE_URL + "/movie/" + movieId + "/images?api_key=" + apiKey + "&query=" + URLEncoder.encode(String.valueOf(movieId), StandardCharsets.UTF_8);
             ResponseEntity<TmdbResponse> response = restTemplate.getForEntity(searchUrl, TmdbResponse.class);
 
             if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
@@ -62,7 +65,7 @@ public class MoviePosterApiService {
             }
         } catch (Exception e) {
             // Log the exception
-            throw new GenericNotFoundException(404, "Not found", "No backdropPath were found with the given movie id");
+            throw new BadEndpointException(500, "API error response", "The api did not return a result");
         }
         return null;
     }

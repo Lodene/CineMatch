@@ -9,6 +9,7 @@ import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.ProfileEntity;
 import fr.cpe.cinematch_backend.entities.ReviewEntity;
+import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.MovieMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
@@ -58,7 +59,7 @@ public class MovieService {
                                 String posterUrl = moviePosterApiService.getMoviePosterUrl(movieEntity.getId());
                                 movieEntity.setPosterPath(posterUrl);
                                 this.movieRepository.save(movieEntity);
-                            } catch (GenericNotFoundException e) {
+                            } catch (BadEndpointException e) {
                                 throw new RuntimeException(e);
                             }
                         }
@@ -67,7 +68,7 @@ public class MovieService {
                                 String backdropUrl = moviePosterApiService.getMovieBackdropUrl(movieEntity.getId());
                                 movieEntity.setBackdropPath(backdropUrl);
                                 this.movieRepository.save(movieEntity);
-                            } catch (GenericNotFoundException e) {
+                            } catch (BadEndpointException e) {
                                 throw new RuntimeException(e);
                             }
                         }

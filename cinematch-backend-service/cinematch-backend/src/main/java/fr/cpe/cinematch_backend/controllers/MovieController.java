@@ -35,6 +35,7 @@ public class MovieController {
     }
 
     // Used for testing purpose
+    /*
     @PostMapping
     public ResponseEntity<MovieDto> createMovie(@RequestBody MovieCreationRequest movieCreationRequest) {
         return ResponseEntity.ok(this.movieService.createMovie(movieCreationRequest));
@@ -63,5 +64,5 @@ public class MovieController {
         }
         return ResponseEntity.ok(this.movieService.deleteMovie(id));
     }
-
+    */
 }
