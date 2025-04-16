@@ -4,6 +4,7 @@ import fr.cpe.cinematch_backend.dtos.LoginResponse;
 import fr.cpe.cinematch_backend.dtos.requests.UserRequest;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.services.AppUserService;
+import fr.cpe.cinematch_backend.services.UserValidateService;
 import fr.cpe.cinematch_backend.services.security.AuthenticationService;
 import fr.cpe.cinematch_backend.services.security.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,6 +42,8 @@ public class AuthController {
 
     @Autowired
     private AppUserService userService;
+    @Autowired
+    private UserValidateService userValidateService;
 
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
@@ -63,6 +66,11 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<UserRequest> signup(@RequestBody UserRequest userRequest) throws BadEndpointException {
+
+        boolean valid = userValidateService.validateUser(userRequest);
+        if (!valid) {
+            ResponseEntity.badRequest();
+        }
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         boolean res = userService.insertUser(userRequest);
         if (!res)
