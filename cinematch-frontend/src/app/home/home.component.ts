@@ -12,7 +12,7 @@ import { finalize, firstValueFrom } from 'rxjs';
 import { LoaderService } from '../../services/loader/loader.service';
 import { error } from 'console';
 import { ToastrService } from 'ngx-toastr';
-import { RandomUtil } from '../../utils/random';
+import { RandomUtils } from '../../utils/randomUtils';
 
 @Component({
   selector: 'app-home',
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
 
   film: Movie;
   movies: Movie[] = [];
-
+  error: any;
   constructor(    
     private movieService: MovieService,
     private loaderService: LoaderService,
@@ -37,15 +37,27 @@ export class HomeComponent implements OnInit {
     // temps de recup 5~ mins
     // fixme: add pagination endpoint for movie
     this.loaderService.show()
-    this.movieService.getAllMovies().
-    pipe(finalize(() =>
-      this.loaderService.hide())
-    ).subscribe((res: Movie[]) => {
-      this.movies = res;
-      this.film = this.movies[RandomUtil.getRandomNumberFromRange(0, this.movies.length)]; 
-    }, error => {
-      this.toasterService.error(error.error.reason, error.error.error);
+    this.movieService.getAllMovies().subscribe({
+      next: (res: Movie[]) => {
+        this.movies = res;
+        this.film = this.movies[RandomUtils.getRandomNumberFromRange(0, this.movies.length)]; 
+      },
+      error: (error) => {
+        console.log(error);
+        if (!!error?.error) {
+          this.error = error.error;
+        }
+      },
+      complete: () => {
+        this.loaderService.hide()
+      }
     });
+  }
+
+  ngOnChanges() {
+    if (this.error) {
+      this.toasterService.error(this.error.reason, this.error.error);
+    }
   }
 }
 

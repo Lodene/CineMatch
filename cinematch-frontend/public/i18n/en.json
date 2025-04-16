@@ -107,6 +107,7 @@
     }
   },
   "generic-error": {
-    "error": "Error"
+    "error": "Error",
+    "image-not-found": "No image could be loaded"
   }
 }

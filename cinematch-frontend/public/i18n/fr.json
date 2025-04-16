@@ -99,7 +99,8 @@
       }
     },
     "generic-error": {
-      "error": "Erreur"
+      "error": "Erreur",
+      "image-not-found": "Aucune image n'a pu être chargée"
     }
   }
 }

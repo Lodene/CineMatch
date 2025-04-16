@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Movie } from '../../models/movie';
+import { MovieConsultation } from '../../models/movieConsultation';
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +19,8 @@ export class MovieService {
    * @param movieId Id of the movie in the database
    * @returns Movie, 401, 404
    */ 
-  public getMovieById(movieId: number):Observable<Movie> {
-    return this.http.get<Movie>(`${this.backendUrl}/${movieId}`);
+  public getMovieById(movieId: number):Observable<MovieConsultation> {
+    return this.http.get<MovieConsultation>(`${this.backendUrl}/${movieId}`);
   }
 
   public getAllMovies():Observable<Movie[]> {

@@ -1,4 +1,4 @@
-export class RandomUtil {
+export class RandomUtils {
     /**
      * Return a random number in [min; max[
      * @param min lower treshold (inclusive)

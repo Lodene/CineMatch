@@ -1,6 +1,6 @@
 <div class="featured-wrapper" *ngIf="movie">
     <div class="backdrop">
-      <img [src]="movie.backdropPath || movie.posterPath" [alt]="movie.title" />
+      <img [src]="backdropPath" [alt]="'generic-error.image-not-found' | translate" />
       <div class="gradient-overlay"></div>
     </div>
   

@@ -9,6 +9,8 @@ import { LoaderService } from '../../services/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { ListPersonComponent } from '../list-person/list-person.component';
+import { MovieConsultation } from '../../models/movieConsultation';
+import { MovieImageUtils } from '../../utils/movieImageUtils';
 
 @Component({
   selector: 'app-movie-details',
@@ -39,24 +41,19 @@ export class MovieDetailsComponent {
   backdropUrl: string;
   posterUrl: string
 
-  tmdbImgUrl = "https://image.tmdb.org/t/p/w500"
 
   ngOnInit() {
     this.loaderService.show();
     this.route.params.subscribe(async params => {
       this.idMovie = +params['id'];
-        this.movieService.getMovieById(this.idMovie).pipe(finalize(() => {this.loaderService.hide()})).subscribe((movie: Movie) => {
-          this.movie = movie;
-          this.backdropUrl = this.constructUrl(movie.backdropPath);
-          this.posterUrl = this.constructUrl(movie.posterPath)
+        this.movieService.getMovieById(this.idMovie).pipe(finalize(() => {this.loaderService.hide()})).subscribe((movieConsultation: MovieConsultation) => {
+          this.movie = movieConsultation.movie;
+          this.backdropUrl = MovieImageUtils.constructUrl(movieConsultation.movie.backdropPath);
+          this.posterUrl = MovieImageUtils.constructUrl(movieConsultation.movie.posterPath)
         }, error => {
           this.toasterService.error(error.error.reason, error.error.error);
         });
     }
     )
-  }
-
-  private constructUrl(url: string): string {
-      return !!url ? this.tmdbImgUrl + url : '';
   }
 }

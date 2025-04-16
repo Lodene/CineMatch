@@ -14,6 +14,7 @@ export class WatchListComponent {
   movies: Movie[] = [];
 
   ngOnInit(): void {
+    // todo: 
     this.movies.push(new Movie())
     this.movies.push(new Movie())
     this.movies.push(new Movie())
