@@ -2,6 +2,7 @@ package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.requests.ReviewRequest;
 import fr.cpe.cinematch_backend.dtos.ReviewDto;
+import fr.cpe.cinematch_backend.dtos.ReviewWithFriendFlagDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -64,6 +65,14 @@ public class ReviewController {
     public ResponseEntity<List<ReviewDto>> getReviewsByUsername(@PathVariable String username)
             throws GenericNotFoundException {
         return ResponseEntity.ok(reviewService.getReviewsByUsername(username));
+    }
+
+    @GetMapping("/getByMovieWithFriendFlag/{idMovie}")
+    public ResponseEntity<List<ReviewWithFriendFlagDto>> getReviewByMovieWithFriendFlag(@PathVariable Long idMovie)
+            throws GenericNotFoundException, BadEndpointException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser uE = (AppUser) authentication.getPrincipal();
+        return ResponseEntity.ok(reviewService.getReviewByMovieWithFriendFlag(uE.getId(), idMovie));
     }
 
 }

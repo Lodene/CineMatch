@@ -126,4 +126,9 @@ public class FriendshipService {
         friendShipRepository.deleteAll(friendshipsToDelete);
     }
 
+    public boolean isFriend(Long idUser1, Long idUser2) {
+        return this.friendShipRepository.findByUserId1AndUserId2(idUser1, idUser2).isPresent()
+                || this.friendShipRepository.findByUserId1AndUserId2(idUser2, idUser1).isPresent();
+    }
+
 }

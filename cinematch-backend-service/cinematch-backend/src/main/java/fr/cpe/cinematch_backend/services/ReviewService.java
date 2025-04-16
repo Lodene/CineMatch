@@ -1,7 +1,9 @@
 package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.requests.ReviewRequest;
+import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.dtos.ReviewDto;
+import fr.cpe.cinematch_backend.dtos.ReviewWithFriendFlagDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.ProfileEntity;
@@ -9,8 +11,10 @@ import fr.cpe.cinematch_backend.entities.ReviewEntity;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
+import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
 import fr.cpe.cinematch_backend.repositories.ReviewRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
+import fr.cpe.cinematch_backend.repositories.ProfilRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +37,12 @@ public class ReviewService {
 
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    private FriendshipService friendshipService;
+
+    @Autowired
+    private ProfilRepository profilRepository;
 
     public void createReview(ReviewRequest reviewRequest, String username) throws GenericNotFoundException {
         Optional<AppUser> user = appUserRepository.findByUsername(username);
@@ -108,4 +118,41 @@ public class ReviewService {
         List<ReviewEntity> reviews = reviewRepository.findByUser(user);
         reviewRepository.deleteAll(reviews);
     }
+
+    public List<ReviewWithFriendFlagDto> getReviewByMovieWithFriendFlag(Long requesterId, Long movieId)
+            throws GenericNotFoundException {
+        AppUser requester = appUserRepository.findById(requesterId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "User with id '" + requesterId + "' not found"));
+
+        MovieEntity movie = movieService.getMovieEntityById(movieId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
+                        "Movie with id '" + movieId + "' not found"));
+
+        List<ReviewEntity> reviews = reviewRepository.findByMovie(movie);
+
+        return reviews.stream().map(review -> {
+            ReviewDto baseDto = ReviewMapper.INSTANCE.toReviewDto(review);
+
+            ProfileDto profileDto = null;
+            try {
+                ProfileEntity profile = profilRepository.findByUserId(review.getUser().getId())
+                        .orElseThrow(() -> new GenericNotFoundException(404, "Profil manquant",
+                                "Profil de l'auteur non trouvé"));
+                profileDto = ReviewWithFriendFlagMapper.INSTANCE.profileEntityToDto(profile);
+            } catch (GenericNotFoundException e) {
+                throw new RuntimeException(e); // on le wrappe pour le faire passer
+            }
+
+            ReviewWithFriendFlagDto enrichedDto = ReviewWithFriendFlagMapper.INSTANCE.fromReviewDtoAndProfile(baseDto,
+                    profileDto);
+
+            boolean isFriend = friendshipService.isFriend(requesterId, review.getUser().getId());
+            enrichedDto.setWrittenByFriend(isFriend);
+
+            return enrichedDto;
+        }).toList();
+
+    }
+
 }
