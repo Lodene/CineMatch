@@ -1,7 +1,7 @@
 <div *ngIf="!!movie; else notFound" class="container-movie m-20">
     <img class="image" [src]="posterUrl" [alt]="'app.common-component.movie-details.image-not-found' | translate">
 
-    <div class=" mx-10">
+    <div class="details mx-10">
     
         <div class="name  mr-10 title-md">{{movie.title}}</div>
         <div style="display: flex;" class="my-20">
@@ -18,7 +18,7 @@
         </div>
         <div class="mr-10">{{movie.overview}}</div>
         <!-- cast -->
-        <app-list-person [title]="'Cast'" [person]="movie.cast" *ngIf="movie?.cast"></app-list-person>
+        <app-list-person class="list-peson" [title]="'Cast'" [person]="movie.cast" *ngIf="movie?.cast"></app-list-person>
     
     </div>
 
