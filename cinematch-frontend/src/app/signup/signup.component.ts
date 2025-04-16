@@ -38,16 +38,18 @@ export class SignupComponent {
       username: ['', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(20),
+        Validators.maxLength(50),
         Validators.pattern(/^[a-zA-Z0-9_]+$/)
       ]],
       email: ['', [
         Validators.required,
+        Validators.maxLength(100),
         Validators.email
       ]],
       password: ['', [
         Validators.required,
         Validators.minLength(8),
+        Validators.maxLength(12),
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/)
       ]]
     });
