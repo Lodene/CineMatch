@@ -41,7 +41,8 @@ export class LoginComponent {
       this.authService.login(loginRequest).subscribe(res => {
         // redirect to main page =>
         this.toastr.success(this.translateService.instant('app.common-component.login.response.login-successful'));
-        this.router.navigateByUrl("/main");
+        this.router.navigateByUrl("/home");
+        
       }, (error) => {
         this.toastr.error(error.error.reason, error.error.error);
         console.log(error.error);

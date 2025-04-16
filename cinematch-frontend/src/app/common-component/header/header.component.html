@@ -28,10 +28,22 @@
     </mat-form-field>
 
     <!-- Login -->
-    <button mat-stroked-button color="primary" class="login-button" routerLink="/login">
-      <mat-icon>login</mat-icon>
-      {{ 'app.common-component.login.title' | translate }}
-    </button>
+     <div *ngIf="!isConnected; else notConnected" class="login-signup-wrapper">
+      <button  mat-stroked-button color="primary" class="login-button" routerLink="/login">
+        <mat-icon>login</mat-icon>
+        {{ 'app.common-component.login.title' | translate }}
+      </button>
+      <button mat-stroked-button color="primary" class="login-button" routerLink="/signup">
+        <mat-icon>login</mat-icon>
+        {{ 'app.common-component.signup.title' | translate }}
+      </button>
+     </div>
+     <ng-template #notConnected>
+      <button mat-stroked-button color="primary" class="login-button" (click)="logout()">
+        <mat-icon>login</mat-icon>
+        {{ 'app.common-component.header.logout' | translate }}
+      </button>
+     </ng-template>
 
     <!-- Menu icon (mobile/small screen) -->
     <button mat-icon-button [matMenuTriggerFor]="menu">

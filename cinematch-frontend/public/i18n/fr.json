@@ -15,7 +15,8 @@
           "about": "À propos",
           "settings": "Réglage",
           "explore": "Explorer"
-        }
+        },
+        "logout": "Se déconnecter"
       },
       "footer": {
         "tagline": "Découvrez votre prochain film préféré avec des recommandations personnalisées.",

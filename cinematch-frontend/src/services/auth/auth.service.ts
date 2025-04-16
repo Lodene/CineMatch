@@ -74,7 +74,7 @@ export class AuthService {
   logout(): void {
     this.clearTokenInStorage();
     this.tokenSubject.next(null);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/home']);
   }
 
   // Method to clear token in HttpOnly cookie

@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/auth/**", "/error/**").permitAll()
+                        .requestMatchers("/auth/**", "/error/**", "/movie/movies", "/movie/").permitAll()
                         .anyRequest().authenticated()
                 ).httpBasic(Customizer.withDefaults())
                 .logout(LogoutConfigurer::permitAll)

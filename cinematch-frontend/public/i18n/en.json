@@ -15,7 +15,8 @@
           "about": "About",
           "settings": "Settings",
           "explore": "Explore"
-        }
+        },
+        "logout": "Logout"
       },
       "footer": {
         "tagline": "Discover your next favorite film with personalized recommendations.",
