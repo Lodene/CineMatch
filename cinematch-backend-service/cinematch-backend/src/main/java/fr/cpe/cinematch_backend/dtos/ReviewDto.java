@@ -15,6 +15,7 @@ public class ReviewDto {
 
     private Long id;
     private Long idMovie;
+    private String movieTitle;
     private Integer note;
     private String description;
     private LocalDateTime createdAt;
