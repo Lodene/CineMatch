@@ -9,6 +9,8 @@ import { AuthService, LoginRequest } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { LoaderService } from '../../services/loader/loader.service';
+import { error } from 'console';
 
 
 
@@ -20,11 +22,14 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  logged: boolean;
+
   constructor(private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private loaderService: LoaderService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -37,16 +42,8 @@ export class LoginComponent {
         username: this.loginForm.get('username')?.value,
         password: this.loginForm.get('password')?.value
       } as LoginRequest;
-      
-      this.authService.login(loginRequest).subscribe(res => {
-        // redirect to main page =>
-        this.toastr.success(this.translateService.instant('app.common-component.login.response.login-successful'));
-        this.router.navigateByUrl("/home");
-        
-      }, (error) => {
-        this.toastr.error(error.error.reason, error.error.error);
-        console.log(error.error);
-      });
+      this.logged = false;
+      this.authService.login(loginRequest);         
     } else {
       console.log('Form is not valid!');
     }

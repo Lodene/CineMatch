@@ -65,7 +65,7 @@ export class SignupComponent {
       this.authService.signup(signupRequest).subscribe(res => {
         // redirect to login page =>
         this.toastr.success(this.translateService.instant('app.common-component.signup.response.signup-successful'));
-        this.router.navigateByUrl("/login");
+        this.router.navigate(['login']);
       }, (error) => {
         this.toastr.error(error.error.reason, error.error.error);
         // console.log(error.error);

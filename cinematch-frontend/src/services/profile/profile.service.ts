@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Profile } from '../../models/profile';
 import { Observable } from 'rxjs';
+import { User } from '../../models/types/components/user/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +15,12 @@ export class ProfileService {
   /**
    * Return current userProfile
    */
-  public getProfil(): Observable<Profile> {
-    return this.http.get<Profile>(`${this.backendUrl}`);
+  public getProfil(): Observable<User> {
+    return this.http.get<User>(`${this.backendUrl}`);
   }
 
-  public getProfileByUsername(username: string): Observable<Profile> {
-    return this.http.get<Profile>(`${this.backendUrl}/${username}`);
+  public getProfileByUsername(username: string): Observable<User> {
+    return this.http.get<User>(`${this.backendUrl}/${username}`);
   }
 
   /**
@@ -28,8 +28,8 @@ export class ProfileService {
    * @param profileInfo New user profile (also update picture)
    * @returns new profile
    */
-  public updateProfile(profileInfo: Profile): Observable<Profile> {
-    return this.http.put<Profile>(`${this.backendUrl}`, profileInfo);
+  public updateProfile(profileInfo: User): Observable<User> {
+    return this.http.put<User>(`${this.backendUrl}`, profileInfo);
   }
 
   /**

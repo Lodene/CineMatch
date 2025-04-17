@@ -10,6 +10,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { User } from '../../models/types/components/user/user.model';
 import { Movie } from '../../models/movie';
 import { ProfileService } from '../../services/profile/profile.service';
+import { LoaderService } from '../../services/loader/loader.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 
@@ -33,44 +35,29 @@ export class ProfilComponent implements OnInit {
   favoriteMovies: Movie[] = [];
 
   userProfile: User =  new User();   // Stocke le profil récupéré depuis l'API
-  isLoading: boolean = true;
-  errorMessage: string | null = null;
-
-  // userProfile: User = {
-  //   id: 1,
-  //   name: 'John Doe',
-  //   email: 'john.doe@example.com',
-  //   bio: 'Movie lover, tech enthusiast and popcorn addict.',
-  //   avatarUrl: 'https://i.pravatar.cc/300',
-  //   birthDate: '1990-01-01',
-  //   location: 'Paris, France',
-  //   favoriteGenres: ['Drama', 'Action']
-  // }
-
-  // ngOnInit(): void {
-  //   this.favoriteMovies.push(new Movie());
-  //   this.favoriteMovies.push(new Movie());
-  //   this.favoriteMovies.push(new Movie());
-    
-  // }
-
-  constructor(private profileService: ProfileService) {}
+  
+  constructor(
+    private profileService: ProfileService,
+    private loaderService: LoaderService,
+    private toasterService: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadUserProfile();
   }
 
   loadUserProfile() {
-    this.isLoading = true;
+    this.loaderService.show();
     this.profileService.getProfil().subscribe({
       next: (profile: User) => {
         this.userProfile = profile;
-        this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading profile', error);
-        this.errorMessage = "Impossible de charger le profil.";
-        this.isLoading = false;
+        this.toasterService.error(error.error.reason, error.error.error);
+      },
+      complete: () => {
+        this.loaderService.hide();
+        console.log(this.userProfile);
       }
     });
   }

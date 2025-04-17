@@ -16,10 +16,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
-  { path: 'profile', component: ProfilComponent},
+  { path: 'profile', component: ProfilComponent, canActivate:[AuthGuard]},
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: 'recommendations', component: RecommendationComponent, canActivate:[AuthGuard]},
-  { path: 'movie/:id', component: MovieDetailsComponent, canActivate:[AuthGuard] },
-  { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
+  { path: 'movie/:id', component: MovieDetailsComponent },
+  // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
   
 ];
