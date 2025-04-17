@@ -10,11 +10,15 @@ import { AuthGuard } from '../services/auth/auth-guard.service';
 import { WatchListComponent } from './watch-list/watch-list.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermServiceComponent } from './term-service/term-service.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
   { path: 'about', component: AboutComponent }, // Page "À propos"
   { path: 'contact', component: ContactComponent }, 
+  { path: 'privacy', component: PrivacyPolicyComponent }, 
+  { path: 'terms', component: TermServiceComponent }, 
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},

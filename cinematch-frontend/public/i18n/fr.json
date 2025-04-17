@@ -120,7 +120,41 @@
           "remove-from-watchlist": "Retirer ce film de votre watchlist",
           "need-connection": "Vous devez être connecté pour utiliser cette fonctionnalité"
         }
+      },
+      "privacy": {
+        "title": "Politique de confidentialité",
+        "intro": "Nous nous engageons à protéger vos informations personnelles et votre droit à la vie privée. Cette politique décrit comment nous collectons, utilisons et protégeons vos données.",
+        "data_collection": {
+          "title": "Collecte des données",
+          "description": "Nous collectons des données personnelles telles que votre nom, votre adresse e-mail et des données d'utilisation uniquement lorsque cela est nécessaire à la fourniture de nos services.",
+        "usage": {
+          "title": "Utilisation des données collectées",
+          "description": "Les données que nous collectons sont utilisées pour améliorer nos services, personnaliser votre expérience, et garantir la sécurité et les performances."
+        },
+        "rights": {
+          "title": "Vos droits",
+          "description": "Vous avez le droit d'accéder à vos données personnelles, de les corriger ou de les supprimer à tout moment. N'hésitez pas à nous contacter pour exercer vos droits."
+        },
+        "contact": "Si vous avez des questions concernant cette politique de confidentialité, vous pouvez nous contacter."
+      },
+      "terms": {
+        "title": "Conditions d'utilisation",
+        "intro": "Ces conditions régissent votre utilisation de nos services. En accédant à notre plateforme, vous acceptez d'être lié par ces conditions.",
+        "acceptance": {
+          "title": "Acceptation des conditions",
+          "description": "En accédant à notre site ou en utilisant nos services, vous reconnaissez avoir lu, compris et accepté les présentes conditions."
+        },
+        "usage": {
+          "title": "Utilisation autorisée",
+          "description": "Vous vous engagez à utiliser nos services uniquement à des fins légales et conformément aux lois et réglementations en vigueur."
+        },
+        "limitation": {
+          "title": "Limitation de responsabilité",
+          "description": "Nous ne sommes pas responsables des dommages pouvant résulter de l'utilisation ou de l'incapacité à utiliser nos services."
+        },
+        "contact": "Si vous avez des questions concernant ces conditions, n'hésitez pas à nous contacter."
       }
+  }
     },
     "generic-error": {
       "error": "Erreur",
