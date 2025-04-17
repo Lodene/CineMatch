@@ -29,9 +29,19 @@ public class MovieController {
     public ResponseEntity<MovieDetailsWithReviewsDto> getMovieById(@PathVariable Long movieId)
             throws GenericNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        AppUser currentUser = (AppUser) auth.getPrincipal();
+        String username = "";
+        if (auth.getPrincipal() instanceof String) {
+            if (((String) auth.getPrincipal()).equalsIgnoreCase("anonymousUser")) {
+                username = null;
+            }
+        } else {
+            AppUser currentUser = (AppUser) auth.getPrincipal();
+            username = currentUser.getUsername();
+        }
+
+
         return ResponseEntity
-                .ok(this.movieService.getMovieDetailsWithReviews(movieId, currentUser.getUsername()));
+                .ok(this.movieService.getMovieDetailsWithReviews(movieId, username));
     }
 
     // Used for testing purpose

@@ -50,16 +50,18 @@
         "title": "Sign up",
         "email-label": "Email",
         "email-placeholder": "Enter your email",
-        "email-error-required": "Email is required.",
         "email-error-format": "Email must respect the standard.",
+        "email-error-required": "Email is required.",
         "username-label": "Username",
         "username-placeholder": "Enter your username",
         "username-error-required": "Username is required.",
-        "username-error-length": "Username must be at least 3 characters long.",
+        "username-error-length": "Username must be between 3 and 20 characters.",
+        "username-error-pattern": "Username can only contain letters, numbers, and underscores.",
         "password-label": "Password",
         "password-placeholder": "Enter your password",
         "password-error-required": "Password is required.",
-        "password-error-length": "Password must be at least 6 characters long.",
+        "password-error-length": "Password must be at least 8 characters.",
+        "password-error-pattern": "Password must contain uppercase, lowercase, numbers, and special characters (!@#$%^&*).",
         "signup-button": "Sign up",
         "response": {
           "signup-successful": "Signup successful"
@@ -100,6 +102,15 @@
       "movie-details": {
         "not-found": "Movie not found",
         "image-not-found": "No image could be loaded"
+      },
+      "movie-actions": {
+        "tooltip": {
+          "like": "Add the movie to your favorites films",
+          "add-to-watchlist": "Add the movie to your watchlist",
+          "unlike": "Remove the movie to your favorites films",
+          "remove-from-watchlist": "Remove the movie from your watchlist",
+          "need-connection": "You need to be logged in to use this feature"
+        }
       }
     },
     "generic-error": {

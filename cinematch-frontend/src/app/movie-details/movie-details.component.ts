@@ -1,7 +1,7 @@
 import { CommonModule, NgIf } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { finalize, firstValueFrom } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { MovieService } from '../../services/movie/movie.service';
@@ -11,10 +11,14 @@ import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { ListPersonComponent } from '../list-person/list-person.component';
 import { MovieConsultation } from '../../models/movieConsultation';
 import { MovieImageUtils } from '../../utils/movieImageUtils';
+import { MovieActionsComponent } from '../common-component/movie-actions/movie-actions.component';
+import { FavoriteMovieService } from '../../services/favorite-movie/favorite-movie.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { error } from 'console';
+import { WatchlistService } from '../../services/watchlist/watchlist.service';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AboutMovieComponent } from "./about-movie/about-movie.component";
-import { ReviewCardComponent } from "../common-component/review-card/review-card.component";
-import { MatButtonModule } from '@angular/material/button';
+import { AboutMovieComponent } from './about-movie/about-movie.component';
+import { ReviewCardComponent } from '../common-component/review-card/review-card.component';
 
 @Component({
   selector: 'app-movie-details',
@@ -23,6 +27,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     CommonModule,
     TranslatePipe,
+    ListPersonComponent,
+    MovieActionsComponent,
     ListPersonComponent,
     MatTabsModule,
     AboutMovieComponent,
@@ -38,11 +44,17 @@ export class MovieDetailsComponent {
     private movieService: MovieService,
     private route: ActivatedRoute,
     private loaderService: LoaderService,
-    private toasterService: ToastrService
+    private toasterService: ToastrService,
+    private favoriteMovieService: FavoriteMovieService,
+    private watchlistService: WatchlistService,
+    private authService: AuthService
   ) { }
 
   idMovie: number;
   movie: Movie;
+  isLogged = false;
+  isLiked = false;
+  isInWatchlist = false;
   movieConsultation: MovieConsultation;
 
   // used for image
@@ -52,17 +64,58 @@ export class MovieDetailsComponent {
 
   ngOnInit() {
     this.loaderService.show();
-    this.route.params.subscribe(async params => {
-      this.idMovie = +params['id'];
-      this.movieService.getMovieById(this.idMovie).pipe(finalize(() => { this.loaderService.hide() })).subscribe((movieConsultation: MovieConsultation) => {
-        this.movieConsultation = movieConsultation;
-        this.movie = movieConsultation.movie;
-        this.backdropUrl = MovieImageUtils.constructUrl(movieConsultation.movie.backdropPath);
-        this.posterUrl = MovieImageUtils.constructUrl(movieConsultation.movie.posterPath)
-      }, error => {
-        this.toasterService.error(error.error.reason, error.error.error);
-      });
-    }
-    )
+    this.isLogged = this.authService.isAuthenticated();
+    this.route.params.subscribe({
+      next: (params: Params) => {
+        this.idMovie = +params['id'];
+        this.movieService.getMovieById(this.idMovie).subscribe(
+          {
+            next: (movieConsultation: MovieConsultation) => {
+              this.movieConsultation = movieConsultation;
+              this.movie = movieConsultation.movie;
+              this.backdropUrl = MovieImageUtils.constructUrl(movieConsultation.movie.backdropPath);
+              this.posterUrl = MovieImageUtils.constructUrl(movieConsultation.movie.posterPath);
+              this.isInWatchlist = movieConsultation.inWatchlist;
+              this.isLiked = movieConsultation.loved;
+            },
+            error: (error) => {
+              if (error?.err) {
+                this.toasterService.error(error.error.reason, error.error.error);
+              } else {
+                console.error(error);
+              }
+            }
+          }).add(() => {
+            this.loaderService.hide();
+          });
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    });
+  }
+
+  handleWatchListAction($event: number): void {
+    this.watchlistService.addOrRemoveMovieFromWatchlist($event).subscribe({
+      next: () => {
+        this.isInWatchlist = !this.isInWatchlist;
+      },
+      error: (err) => {
+        this.toasterService.error(err.error.reason, err.error.error);
+      }
+    })
+  }
+
+  handleLikeAction($event: number): void {
+    this.favoriteMovieService.likeOrUnlikeMovie($event).subscribe({
+      next: () => {
+        // inversion
+        this.isLiked = !this.isLiked;
+        console.log(this.isLiked);
+      },
+      error: (err) => {
+        this.toasterService.error(err.error.reason, err.error.error);
+      }
+    });
   }
 }

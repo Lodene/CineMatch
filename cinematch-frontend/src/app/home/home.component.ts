@@ -3,7 +3,7 @@ import { Movie } from '../../models/movie';
 import { MovieCardComponentHorizontal } from '../common-component/movie-card-horizontal/movie-card-horizontal.component';
 import { NgFor } from '@angular/common';
 
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { FeaturedFilmComponent } from '../featured-film/featured-film.component';
 import { CommonModule } from '@angular/common';
@@ -20,7 +20,7 @@ import { RandomUtils } from '../../utils/randomUtils';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewChecked  {
 
   film: Movie;
   movies: Movie[] = [];
@@ -32,15 +32,21 @@ export class HomeComponent implements OnInit {
   ) {
 
   }
+  ngAfterViewChecked(): void {
+    if (!!this.movies) {
+      this.loaderService.hide();
+    }
+  }
 
   ngOnInit(): void {
     // temps de recup 5~ mins
     // fixme: add pagination endpoint for movie
-    this.loaderService.show()
+    this.loaderService.show();
     this.movieService.getAllMovies().subscribe({
       next: (res: Movie[]) => {
         this.movies = res;
-        this.film = this.movies[RandomUtils.getRandomNumberFromRange(0, this.movies.length)]; 
+        this.film = this.movies[RandomUtils.getRandomNumberFromRange(0, this.movies.length)];
+        this.loaderService.hide();
       },
       error: (error) => {
         console.log(error);
@@ -49,10 +55,12 @@ export class HomeComponent implements OnInit {
         }
       },
       complete: () => {
-        this.loaderService.hide()
       }
+    }).add(() => {
+      // this.loaderService.hide();
     });
   }
+
 
   ngOnChanges() {
     if (this.error) {

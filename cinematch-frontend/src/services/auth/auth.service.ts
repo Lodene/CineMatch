@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, of, Subscription, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { LoaderService } from '../loader/loader.service';
+import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 
 // Request typing => 
 export type SignupRequest = {
@@ -30,6 +33,9 @@ export class AuthService {
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) private document: Document,  
     private http: HttpClient, private router: Router,
+    private loaderService: LoaderService,
+    private toasterService: ToastrService,
+    private translateService: TranslateService
   ) {
     this.localStorage = document.defaultView?.localStorage;
     // Check if there is a token in cookies and set it in the subject
@@ -43,15 +49,23 @@ export class AuthService {
   }
 
   // Login method: Assuming you receive the JWT after authentication
-  login(loginRequest: LoginRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, loginRequest).pipe(map(res => {
-      const token = res.token;
-      this.setTokenInStorage(token);
-      this.tokenSubject.next(token); // Update the BehaviorSubject with new token
-      return res;
-    }), error => {
-      console.log("error during login: ", error);
-      return error;
+  login(loginRequest: LoginRequest): void {
+    this.loaderService.show();
+    this.http.post<any>(`${this.apiUrl}/login`, loginRequest).subscribe(
+      {
+        next: (res) => {
+          const token = res.token;
+          this.setTokenInStorage(token);
+          this.tokenSubject.next(token); // Update the BehaviorSubject with new token
+          this.toasterService.success(this.translateService.instant('app.common-component.login.response.login-successful'));
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          this.toasterService.error(error.error.reason, error.error.error);
+        },
+      }
+    ).add(() => {
+      this.loaderService.hide();
     });
   }
 
@@ -72,8 +86,7 @@ export class AuthService {
 
   // Logout method: Clear JWT from cookie and BehaviorSubject
   logout(): void {
-    this.clearTokenInStorage();
-    this.tokenSubject.next(null);
+    this.clearToken();
     this.router.navigate(['/home']);
   }
 
@@ -82,8 +95,14 @@ export class AuthService {
     localStorage.clear();
   }
 
+  clearToken(): void {
+    this.clearTokenInStorage();
+    this.tokenSubject.next(null);
+  }
+
   // Method to check if the user is authenticated
   isAuthenticated(): boolean {
+    console.log(this.tokenSubject.value);
     return !!this.tokenSubject.value;  // Checks if there is a token in BehaviorSubject
   }
 

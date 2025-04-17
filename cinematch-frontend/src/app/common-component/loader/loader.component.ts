@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoaderService } from '../../../services/loader/loader.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { error } from 'console';
 
 @Component({
   selector: 'app-loader',
@@ -15,9 +16,14 @@ export class LoaderComponent implements OnInit {
   constructor(private loaderService: LoaderService) {}
 
   ngOnInit(): void {
-    this.loaderService.loading$.subscribe((state) => {
-      this.isLoading = state;
-    });
+    this.loaderService.loading$.subscribe({
+      next: (state: boolean) => {
+        this.isLoading = state
+      },
+      error: (error) => {
+        console.error(error);
+      }
+      });
   }
 
 }

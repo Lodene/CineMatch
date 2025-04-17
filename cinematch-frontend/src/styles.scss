@@ -14,3 +14,25 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border-radius: 8px;
     padding: 10px;
 }
+
+.big-icon {
+    // all 3 value must be identical otherwise the icon may overflow from its container
+    font-size: 36px !important;
+    width: 36px !important ;
+    height: 36px !important;
+}
+
+// used for icons
+.empty-button {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+    font: inherit;
+    border-radius: 0;
+    appearance: none; // Just in case we missed anything.
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+}

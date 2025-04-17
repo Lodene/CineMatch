@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService, SignupRequest } from '../../services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
@@ -16,7 +17,8 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatButtonModule,
     ReactiveFormsModule,
-    TranslatePipe],
+    TranslatePipe, 
+    CommonModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
 })
@@ -30,9 +32,26 @@ export class SignupComponent {
   ) {
     this.signupForm = this.fb.group({
       // todo: Add regex for email & username :
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      email: ['', Validators.required]
+      // username: ['', Validators.required],
+      // password: ['', Validators.required],
+      // email: ['', Validators.required]
+      username: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+        Validators.pattern(/^[a-zA-Z0-9_]+$/)
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.maxLength(100),
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(12),
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$/)
+      ]]
     });
   }
 
@@ -46,7 +65,7 @@ export class SignupComponent {
       this.authService.signup(signupRequest).subscribe(res => {
         // redirect to login page =>
         this.toastr.success(this.translateService.instant('app.common-component.signup.response.signup-successful'));
-        this.router.navigateByUrl("/login");
+        this.router.navigate(['login']);
       }, (error) => {
         this.toastr.error(error.error.reason, error.error.error);
         // console.log(error.error);

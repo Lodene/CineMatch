@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -12,15 +12,22 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {
   }
 
+  private handleAuthError(err: HttpErrorResponse ): Observable<any> {
+    if (err.status === 401 || err.status === 403) {
+      this.authService.clearToken();
+      return of(err);
+    }
+    return throwError(() => err);
+  }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes('auth')) {
       // when targeting auth, we must clear the token before sending it to the backend
-      this.authService.logout();
+      this.authService.clearToken();
       return next.handle(req);
-      
     }
     const authToken = this.authService.getTokenFromStorage(); // Get token from cookie
-    if (authToken) {
+    if (!!authToken) {
       const cloned = req.clone({
         setHeaders: {
           Authorization: `Bearer ${authToken}`
@@ -31,13 +38,14 @@ export class AuthInterceptor implements HttpInterceptor {
           if (err instanceof HttpErrorResponse) {
             if (err.status === 401) {
               // forbiden
+              this.authService.clearToken();
               this.router.navigateByUrl('/login');
             }
           }
-          return throwError(err)
+          return throwError(() => err)
         })
       );  // Proceed with the modified request
     }
-    return next.handle(req); // Proceed without token
+    return next.handle(req).pipe(catchError(x => this.handleAuthError(x))); // Proceed without token
   }
 }

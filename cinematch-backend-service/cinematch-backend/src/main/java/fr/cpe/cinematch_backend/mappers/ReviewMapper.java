@@ -12,6 +12,8 @@ public interface ReviewMapper {
     ReviewMapper INSTANCE = Mappers.getMapper(ReviewMapper.class);
 
     @Mapping(target = "idMovie", expression = "java(reviewEntity.getMovie().getId())")
+    @Mapping(target = "movieTitle", expression = "java(reviewEntity.getMovie().getTitle())")
+
     public ReviewDto toReviewDto(ReviewEntity reviewEntity);
 
     public ReviewEntity toReviewEntity(ReviewDto dto);

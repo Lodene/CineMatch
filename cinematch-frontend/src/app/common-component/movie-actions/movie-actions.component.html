@@ -1,0 +1,15 @@
+<div class="movie-action-wrapper">
+    <button
+    [disabled]="disabled"
+    class="empty-button"
+    matTooltip="{{ likeToolTip }}">
+        <mat-icon class="big-icon" [ngClass]="{'loved': isLiked}" (click)="handleLike()">{{ favoriteValue}}</mat-icon>
+    </button>
+
+    <button
+    [disabled]="disabled"
+    class="empty-button"
+    matTooltip="{{ watchListToolTip }}">
+        <mat-icon class="big-icon" (click)="handleWatchListAction()">{{ watchListIconValue }}</mat-icon>
+    </button>
+</div>

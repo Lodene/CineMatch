@@ -50,6 +50,11 @@
     justify-content: center;
 }
 
+.name-and-action-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+}
 
 .mat-mdc-tab-group{
     width: 100% !important;

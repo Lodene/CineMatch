@@ -24,6 +24,9 @@ public class MoviePosterApiService {
     RestTemplate restTemplate = new RestTemplate();
     public String getMoviePosterUrl(long movieId) throws BadEndpointException {
         String apiKey = env.getProperty("tmdb.api.key");
+        if (apiKey == null || apiKey.isEmpty()) {
+            return null;
+        }
         try {
             String searchUrl = BASE_URL + "/movie/" + movieId + "/images?api_key=" + apiKey + "&query=" + URLEncoder.encode(String.valueOf(movieId), StandardCharsets.UTF_8);
             ResponseEntity<TmdbResponse> response = restTemplate.getForEntity(searchUrl, TmdbResponse.class);
@@ -48,6 +51,9 @@ public class MoviePosterApiService {
 
     public String getMovieBackdropUrl(long movieId) throws BadEndpointException {
         String apiKey = env.getProperty("tmdb.api.key");
+        if (apiKey == null || apiKey.isEmpty()) {
+            return null;
+        }
         try {
             String searchUrl = BASE_URL + "/movie/" + movieId + "/images?api_key=" + apiKey + "&query=" + URLEncoder.encode(String.valueOf(movieId), StandardCharsets.UTF_8);
             ResponseEntity<TmdbResponse> response = restTemplate.getForEntity(searchUrl, TmdbResponse.class);
