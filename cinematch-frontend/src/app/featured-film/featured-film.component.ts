@@ -26,8 +26,10 @@ export class FeaturedFilmComponent implements OnInit, OnChanges {
   @Input() movie: Movie;
   backdropPath: string;
   ngOnInit(): void {
-    console.log(this.movie);
-    this.backdropPath = MovieImageUtils.constructUrl(this.movie.backdropPath);
+  // Movie can be null when component is mounting 
+    if (!!this.movie) {
+      this.backdropPath = MovieImageUtils.constructUrl(this.movie.backdropPath);
+    }
   }
   
 }
