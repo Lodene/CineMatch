@@ -98,6 +98,14 @@
             "title": "Vos films préférés"
           }
         }
+      },
+      "movie-actions": {
+        "tooltip": {
+          "like": "Ajouter ce film à votre liste de favoris",
+          "add-to-watchlist": "Ajouter ce film à votre watchlist",
+          "unlike": "Retirer ce film de votre liste de favoris",
+          "remove-from-watchlist": "Retirer ce film de votre watchlist"
+        }
       }
     },
     "generic-error": {

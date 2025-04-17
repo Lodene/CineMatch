@@ -49,3 +49,9 @@
     display: flex;
     justify-content: center;
 }
+
+.name-and-action-wrapper {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+}
