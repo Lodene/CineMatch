@@ -82,9 +82,6 @@ public class MovieService {
     public MovieDetailsWithReviewsDto getMovieDetailsWithReviews(Long movieId, String username)
             throws GenericNotFoundException {
 
-        AppUser user = appUserRepository.findByUsername(username)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                        "username '" + username + "' does not exist"));
 
         MovieEntity movie = this.getMovieEntityById(movieId)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
@@ -92,19 +89,28 @@ public class MovieService {
 
         List<ReviewEntity> reviews = reviewRepository.findByMovie(movie);
 
-        boolean hasCommented = reviews.stream().anyMatch(r -> r.getUser().getId() == user.getId());
-
+        boolean hasCommented = false;
+        AppUser appUser;
+        if (username != null) {
+            appUser = appUserRepository.findByUsername(username)
+                    .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                            "username '" + username + "' does not exist"));
+            hasCommented = reviews.stream().anyMatch(r -> r.getUser().getId() == appUser.getId());
+        } else {
+            appUser = null;
+        }
         List<ReviewWithFriendFlagDto> enrichedReviews = reviews.stream().map(review -> {
             ProfileEntity profile = profilRepository.findByUserId(review.getUser().getId())
                     .orElseThrow(() -> new RuntimeException(
-                            "Profil manquant pour l'utilisateur " + review.getUser().getId()));
+                            "Profile missing for user " + review.getUser().getId()));
             ProfileDto profileDto = ReviewWithFriendFlagMapper.INSTANCE.profileEntityToDto(profile);
-
             ReviewWithFriendFlagDto dto = ReviewWithFriendFlagMapper.INSTANCE.fromReviewDtoAndProfile(
                     ReviewMapper.INSTANCE.toReviewDto(review),
                     profileDto);
+            if (username != null) {
+                dto.setWrittenByFriend(friendshipService.isFriend(appUser.getId(), review.getUser().getId()));
+            }
 
-            dto.setWrittenByFriend(friendshipService.isFriend(user.getId(), review.getUser().getId()));
             return dto;
         }).toList();
 
