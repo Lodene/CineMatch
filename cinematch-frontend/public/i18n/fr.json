@@ -153,8 +153,26 @@
           "description": "Nous ne sommes pas responsables des dommages pouvant résulter de l'utilisation ou de l'incapacité à utiliser nos services."
         },
         "contact": "Si vous avez des questions concernant ces conditions, n'hésitez pas à nous contacter."
+      },
+      "settings": {
+        "title": "Paramètres",
+        "language": {
+          "title": "Langue",
+          "description": "Choisissez votre langue préférée pour l’interface.",
+          "change": "Changer la langue"
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Gérez la façon dont vous recevez les alertes et messages.",
+          "manage": "Gérer les notifications"
+        },
+        "security": {
+          "title": "Sécurité",
+          "description": "Mettez à jour votre mot de passe et vos paramètres de sécurité.",
+          "update": "Mettre à jour"
+        }
       }
-  }
+    }
     },
     "generic-error": {
       "error": "Erreur",

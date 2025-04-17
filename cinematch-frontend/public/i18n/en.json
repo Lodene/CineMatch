@@ -145,6 +145,24 @@
           "description": "We are not liable for any damages that may arise from the use or inability to use our services."
         },
         "contact": "If you have any questions about these terms, feel free to contact us."
+      },
+      "settings": {
+        "title": "Settings",
+        "language": {
+          "title": "Language",
+          "description": "Choose your preferred language for the interface.",
+          "change": "Change Language"
+        },
+        "notifications": {
+          "title": "Notifications",
+          "description": "Manage how you receive alerts and messages.",
+          "manage": "Manage Notifications"
+        },
+        "security": {
+          "title": "Security",
+          "description": "Update your password and security settings.",
+          "update": "Update Security"
+        }
       },  
       "movie-details": {
         "not-found": "Movie not found",
