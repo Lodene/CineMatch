@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WatchList } from '../../models/watchlist';
+import { Movie } from '../../models/movie';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class WatchlistService {
 
   constructor(private http: HttpClient) { }
 
-  public getCurrentUserWatchList(): Observable<WatchList> {
-    return this.http.get<WatchList>(`${this.backendUrl}`);
+  public getCurrentUserWatchList(): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.backendUrl}`);
   }
 
 

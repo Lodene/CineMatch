@@ -9,7 +9,7 @@
     height: auto;
 }
 
-.close-icon {
+.movie-action {
     text-align: right;
     height: 0;
 }
@@ -18,9 +18,8 @@
     background-size: cover;
 }
 
-.card-cotent {
-    display: flex;
-    justify-content: space-between;
+.card-content {
+    flex:1;
 }
 
 .card-action {

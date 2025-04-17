@@ -1,11 +1,18 @@
 <mat-card class="card m-10" appearance="outlined">
     <img class="image" [src]="posterPath" [alt]="'generic-error.image-not-found' | translate">
 
-    <mat-card-content class=" mt-10">
-        <div class="close-icon">
-            <button mat-icon-button aria-label="close">
-                <mat-icon>close</mat-icon>
-            </button>
+    <mat-card-content class="card-content mt-10">
+        <div class="movie-action">
+            <app-movie-actions
+                [disabled]="false"
+                [showLike]="showLike"
+                [showWatchList]="showWatchList"
+                [movieId]="movie.id"
+                [isInWatchList]="false"
+                [isLiked]="false"
+                (watchlistActionEvent)="handleWatchListAction($event)"
+                (likeActionEvent)="handleLikeAction($event)">
+            </app-movie-actions>
         </div>
         <div class="name  mr-10 title-md">{{movie.title}}</div>
         <div style="display: flex;" class="my-20">
@@ -21,5 +28,7 @@
             <div *ngFor="let g of movie.genres" class="rounded-border-gradient mr-10">{{g}}</div>
         </div>
         <div class="mr-10">{{movie.overview}}</div>
+        
     </mat-card-content>
+
 </mat-card>

@@ -38,6 +38,9 @@ export class MovieActionsComponent implements OnInit, OnChanges
 
   @Input() isLiked: boolean;
   @Input() isInWatchList: boolean;
+
+  @Input() showWatchList: boolean
+  @Input() showLike: boolean;
   constructor(private translateService: TranslateService
   ) { }
 

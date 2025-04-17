@@ -9,6 +9,8 @@
             <h2>{{movie.title}}</h2>
             <app-movie-actions
                 [disabled]="!isLogged"
+                [showLike]="true"
+                [showWatchList]="true"
                 [movieId]="movie.id"
                 [isInWatchList]="isInWatchlist"
                 [isLiked]="isLiked"

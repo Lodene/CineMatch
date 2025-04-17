@@ -1,5 +1,6 @@
 <div class="movie-action-wrapper">
     <button
+    *ngIf="showLike"
     [disabled]="disabled"
     class="empty-button"
     matTooltip="{{ likeToolTip }}">
@@ -7,6 +8,7 @@
     </button>
 
     <button
+    *ngIf="showWatchList"
     [disabled]="disabled"
     class="empty-button"
     matTooltip="{{ watchListToolTip }}">
