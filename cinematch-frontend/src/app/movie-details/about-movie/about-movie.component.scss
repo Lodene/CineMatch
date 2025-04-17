@@ -8,13 +8,20 @@
     flex-direction: column;
 }
 
-.details{
+.details-items{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .detail{
     display: flex;
     flex-direction: column;
+}
+
+.about-movie-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
 }

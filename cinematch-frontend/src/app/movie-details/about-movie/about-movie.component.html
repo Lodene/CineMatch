@@ -1,4 +1,4 @@
-<div >
+<div class="about-movie-wrapper">
     <div class="synopsis my-10">
         <div class="title-md">Synopsis</div>
         <div class="text">{{movie?.overview}}</div>
@@ -6,7 +6,7 @@
     <div class="details-container my-10">
         <div class="title-md">Details</div>
 
-        <div class="details">
+        <div class="details-items">
             <div class="detail m-20">
                 <div class="title-md">Director</div>
                 <div class="text" *ngFor="let director of movie?.director">
@@ -16,7 +16,7 @@
 
             <div class="detail m-20">
                 <div class="title-md">Runtime</div>
-                <div class="text">{{movie.runtime}}</div>
+                <div class="text">{{movie.runtime}}min</div>
             </div>
 
             <div class="detail m-20">
