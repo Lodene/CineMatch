@@ -14,7 +14,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleAuthError(err: HttpErrorResponse ): Observable<any> {
     if (err.status === 401 || err.status === 403) {
-      this.router.navigateByUrl(`/login`);
+      this.authService.clearToken();
       return of(err);
     }
     return throwError(() => err);
@@ -23,9 +23,8 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes('auth')) {
       // when targeting auth, we must clear the token before sending it to the backend
-      this.authService.logout();
+      this.authService.clearToken();
       return next.handle(req);
-      
     }
     const authToken = this.authService.getTokenFromStorage(); // Get token from cookie
     if (!!authToken) {
@@ -39,6 +38,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (err instanceof HttpErrorResponse) {
             if (err.status === 401) {
               // forbiden
+              this.authService.clearToken();
               this.router.navigateByUrl('/login');
             }
           }

@@ -1,13 +1,15 @@
 <div class="movie-action-wrapper">
     <button
+    [disabled]="disabled"
     class="empty-button"
-    matTooltip="{{'app.common-component.movie-actions.tooltip.like' | translate}}">
-        <mat-icon class="big-icon" (click)="handleLike()" >favorite_border</mat-icon>
+    matTooltip="{{ likeToolTip }}">
+        <mat-icon class="big-icon" [ngClass]="{'loved': isLiked}" (click)="handleLike()">{{ favoriteValue}}</mat-icon>
     </button>
 
     <button
+    [disabled]="disabled"
     class="empty-button"
-    matTooltip="{{ 'app.common-component.movie-actions.tooltip.add-to-watchlist' | translate }}">
-        <mat-icon class="big-icon" (click)="handleWatchListAction()">playlist_add</mat-icon>
+    matTooltip="{{ watchListToolTip }}">
+        <mat-icon class="big-icon" (click)="handleWatchListAction()">{{ watchListIconValue }}</mat-icon>
     </button>
 </div>

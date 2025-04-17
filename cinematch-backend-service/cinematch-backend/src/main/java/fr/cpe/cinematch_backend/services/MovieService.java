@@ -5,19 +5,13 @@ import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.dtos.ReviewWithFriendFlagDto;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
-import fr.cpe.cinematch_backend.entities.AppUser;
-import fr.cpe.cinematch_backend.entities.MovieEntity;
-import fr.cpe.cinematch_backend.entities.ProfileEntity;
-import fr.cpe.cinematch_backend.entities.ReviewEntity;
+import fr.cpe.cinematch_backend.entities.*;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.MovieMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
-import fr.cpe.cinematch_backend.repositories.AppUserRepository;
-import fr.cpe.cinematch_backend.repositories.MovieRepository;
-import fr.cpe.cinematch_backend.repositories.ProfilRepository;
-import fr.cpe.cinematch_backend.repositories.ReviewRepository;
+import fr.cpe.cinematch_backend.repositories.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +39,12 @@ public class MovieService {
     private FriendshipService friendshipService;
 
     @Autowired
+    private WatchlistMovieService watchlistMovieService;
+
+    @Autowired
     private ProfilRepository profilRepository;
+    @Autowired
+    private LovedMovieRepository lovedMovieRepository;
 
     public List<MovieDto> getAllMovies() throws GenericNotFoundException {
         List<MovieEntity> movies = movieRepository.findAll();
@@ -89,13 +88,15 @@ public class MovieService {
 
         List<ReviewEntity> reviews = reviewRepository.findByMovie(movie);
 
-        boolean hasCommented = false;
+        boolean hasCommented = false, isLoved = false, isInWatchList = false;
         AppUser appUser;
         if (username != null) {
             appUser = appUserRepository.findByUsername(username)
                     .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
                             "username '" + username + "' does not exist"));
             hasCommented = reviews.stream().anyMatch(r -> r.getUser().getId() == appUser.getId());
+            isLoved = lovedMovieRepository.findByUserAndMovie(appUser, movie).isPresent();
+            isInWatchList = watchlistMovieService.getWatchlistByUsername(username).contains(MovieMapper.INSTANCE.toMovieDto(movie));
         } else {
             appUser = null;
         }
@@ -116,7 +117,7 @@ public class MovieService {
 
         MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(movie);
 
-        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, enrichedReviews);
+        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList,enrichedReviews);
     }
 
     public MovieDto createMovie(MovieCreationRequest movieCreationRequest) {

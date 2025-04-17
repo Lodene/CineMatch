@@ -86,14 +86,18 @@ export class AuthService {
 
   // Logout method: Clear JWT from cookie and BehaviorSubject
   logout(): void {
-    this.clearTokenInStorage();
-    this.tokenSubject.next(null);
+    this.clearToken();
     this.router.navigate(['/home']);
   }
 
   // Method to clear token in HttpOnly cookie
   private clearTokenInStorage(): void {
     localStorage.clear();
+  }
+
+  clearToken(): void {
+    this.clearTokenInStorage();
+    this.tokenSubject.next(null);
   }
 
   // Method to check if the user is authenticated

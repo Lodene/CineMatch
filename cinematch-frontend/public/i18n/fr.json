@@ -104,7 +104,8 @@
           "like": "Ajouter ce film à votre liste de favoris",
           "add-to-watchlist": "Ajouter ce film à votre watchlist",
           "unlike": "Retirer ce film de votre liste de favoris",
-          "remove-from-watchlist": "Retirer ce film de votre watchlist"
+          "remove-from-watchlist": "Retirer ce film de votre watchlist",
+          "need-connection": "Vous devez être connecté pour utiliser cette fonctionnalité"
         }
       }
     },

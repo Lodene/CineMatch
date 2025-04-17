@@ -12,5 +12,7 @@ import java.util.List;
 public class MovieDetailsWithReviewsDto {
     private MovieDto movie;
     private boolean isCommented;
+    private boolean isLoved;
+    private boolean isInWatchlist;
     private List<ReviewWithFriendFlagDto> reviews;
 }

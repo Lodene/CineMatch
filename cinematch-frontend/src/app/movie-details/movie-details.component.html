@@ -4,7 +4,14 @@
     <div class="details mx-10">
         <div class="name  mr-10 title-md name-and-action-wrapper">
             <h2>{{movie.title}}</h2>
-            <app-movie-actions [movieId]="movie.id" (watchlistActionEvent)="handleWatchListAction($event)"></app-movie-actions>
+            <app-movie-actions
+                [disabled]="!isLogged"
+                [movieId]="movie.id"
+                [isInWatchList]="isInWatchlist"
+                [isLiked]="isLiked"
+                (watchlistActionEvent)="handleWatchListAction($event)"
+                (likeActionEvent)="handleLikeAction($event)">
+            </app-movie-actions>
         </div>
         <div style="display: flex;" class="my-20">
             <mat-icon class="mr-4" style="color:#ffe234;" aria-hidden="false" aria-label="star"
