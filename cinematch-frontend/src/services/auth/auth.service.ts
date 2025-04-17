@@ -58,6 +58,7 @@ export class AuthService {
           this.setTokenInStorage(token);
           this.tokenSubject.next(token); // Update the BehaviorSubject with new token
           this.toasterService.success(this.translateService.instant('app.common-component.login.response.login-successful'));
+          this.router.navigate(['']);
         },
         error: (error) => {
           this.toasterService.error(error.error.reason, error.error.error);
