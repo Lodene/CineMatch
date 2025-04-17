@@ -11,6 +11,7 @@ import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
 import { ListPersonComponent } from '../list-person/list-person.component';
 import { MovieConsultation } from '../../models/movieConsultation';
 import { MovieImageUtils } from '../../utils/movieImageUtils';
+import { MovieActionsComponent } from '../common-component/movie-actions/movie-actions.component';
 
 @Component({
   selector: 'app-movie-details',
@@ -20,7 +21,8 @@ import { MovieImageUtils } from '../../utils/movieImageUtils';
     CommonModule,
     TranslatePipe,
     TranslateDirective,
-    ListPersonComponent
+    ListPersonComponent,
+    MovieActionsComponent
   ],
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.scss'
@@ -55,5 +57,8 @@ export class MovieDetailsComponent {
         });
     }
     )
+  }
+  handleWatchListAction($event: number): void {
+    console.log($event);
   }
 }

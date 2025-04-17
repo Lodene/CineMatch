@@ -102,6 +102,14 @@
       "movie-details": {
         "not-found": "Movie not found",
         "image-not-found": "No image could be loaded"
+      },
+      "movie-actions": {
+        "tooltip": {
+          "like": "Add the movie to your favorites films",
+          "add-to-watchlist": "Add the movie to your watchlist",
+          "unlike": "Add the movie to your favorites films",
+          "remove-from-watchlist": "Remove the movie from your watchlist"
+        }
       }
     },
     "generic-error": {

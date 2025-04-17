@@ -1,0 +1,13 @@
+<div class="movie-action-wrapper">
+    <button
+    class="empty-button"
+    matTooltip="{{'app.common-component.movie-actions.tooltip.like' | translate}}">
+        <mat-icon class="big-icon" (click)="handleLike()" >favorite_border</mat-icon>
+    </button>
+
+    <button
+    class="empty-button"
+    matTooltip="{{ 'app.common-component.movie-actions.tooltip.add-to-watchlist' | translate }}">
+        <mat-icon class="big-icon" (click)="handleWatchListAction()">playlist_add</mat-icon>
+    </button>
+</div>
