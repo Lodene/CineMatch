@@ -1,0 +1,33 @@
+.contact-us .content {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+    font-family: Arial, sans-serif;
+    color: #2d3748;
+  }
+  
+  .contact-us .content h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #a594f9;
+  }
+  
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  button {
+    align-self: flex-start;
+    border-radius: 8px;
+    background-color: #a594f9 !important;
+  }
+  
+  
+  
+  

@@ -98,6 +98,19 @@
             "title": "Vos films préférés"
           }
         }
+      }, 
+      "about": {
+        "title": "À propos de nous",
+        "intro": "Bienvenue chez CineMatch ! Nous sommes une équipe de passionnés dédiée à fournir des solutions numériques de haute qualité.",
+        "mission": "Notre mission est de créer des expériences belles, fonctionnelles et accessibles qui font la différence.",
+        "experience": "Forts de plusieurs années d'expérience en design, développement et innovation, nous collaborons étroitement avec nos clients pour concrétiser leurs idées."
+      },
+      "contact": {
+        "title": "Contactez-nous",
+        "username": "Nom d'utilisateur",
+        "email": "Adresse e-mail",
+        "message": "Message",
+        "send": "Envoyer"
       },
       "movie-actions": {
         "tooltip": {
