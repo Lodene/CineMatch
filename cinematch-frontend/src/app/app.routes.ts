@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
@@ -13,6 +14,7 @@ import { RecommendationComponent } from './recommendation/recommendation.compone
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
   { path: 'about', component: AboutComponent }, // Page "À propos"
+  { path: 'contact', component: ContactComponent }, 
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},

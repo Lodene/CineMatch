@@ -1,0 +1,26 @@
+<div class="contact-us">
+    <section class="content">
+      <h1>{{ 'app.common-component.contact.title' | translate }}</h1>
+      <form class="contact-form" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'app.common-component.contact.username' | translate }}</mat-label>
+          <input matInput name="username" [(ngModel)]="contact.username" required />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'app.common-component.contact.email' | translate }}</mat-label>
+          <input matInput type="email" name="email" [(ngModel)]="contact.email" required />
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'app.common-component.contact.message' | translate }}</mat-label>
+          <textarea matInput name="message" rows="5" [(ngModel)]="contact.message" required></textarea>
+        </mat-form-field>
+  
+        <button mat-flat-button color="primary" type="submit">
+          {{ 'app.common-component.contact.send' | translate }}
+        </button>
+      </form>
+    </section>
+  </div>
+  

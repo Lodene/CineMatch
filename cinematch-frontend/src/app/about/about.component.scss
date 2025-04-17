@@ -1,0 +1,93 @@
+.about-us .content {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 2rem auto;
+    font-family: Arial, sans-serif;
+    color: #2d3748;
+  }
+  
+  .about-us .content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #a594f9;
+  }
+  
+  .about-us .content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  /* Reuse existing toolbar style */
+  .header-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1.5rem;
+    background: transparent;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e2e8f0;
+    height: 64px;
+    gap: 1rem;
+  }
+  
+  .left-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .left-section .logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: #a594f9;
+  }
+  
+  .left-section .nav-links {
+    display: flex;
+    gap: 1.25rem;
+  }
+  
+  .left-section .nav-links button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+  
+  .left-section .nav-links button.active-link {
+    background-color: #e0d8ff;
+    font-weight: bold;
+  }
+  
+  .right-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .right-section .search-field {
+    margin-top: 20px;
+    width: 240px;
+  }
+  
+  .right-section .search-field ::ng-deep .mat-form-field-outline {
+    border-width: 2px;
+  }
+  
+  .right-section .search-field ::ng-deep .mat-form-field-infix {
+    padding: 0.2rem 0.5rem;
+  }
+  
+  .right-section .login-button {
+    height: 36px;
+    border-radius: 8px;
+    padding: 0 1rem;
+  }
+  
+  .right-section .login-signup-wrapper {
+    display: flex;
+    gap: 0.5em;
+  }
+  

@@ -99,6 +99,19 @@
           }
         }
       },
+      "about": {
+        "title": "About Us",
+        "intro": "Welcome to CineMatch! We are a team of passionate individuals dedicated to delivering high-quality digital solutions.",
+        "mission": "Our mission is to create beautiful, functional, and accessible experiences that make a difference.",
+        "experience": "With years of experience in design, development, and innovation, we collaborate closely with our clients to bring their ideas to life."
+      },
+      "contact": {
+          "title": "Contact Us",
+          "username": "Username",
+          "email": "Email",
+          "message": "Message",
+          "send": "Send"
+      },      
       "movie-details": {
         "not-found": "Movie not found",
         "image-not-found": "No image could be loaded"
