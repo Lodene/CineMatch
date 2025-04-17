@@ -80,8 +80,6 @@ public class MovieService {
 
     public MovieDetailsWithReviewsDto getMovieDetailsWithReviews(Long movieId, String username)
             throws GenericNotFoundException {
-
-
         MovieEntity movie = this.getMovieEntityById(movieId)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
                         "movie with id '" + movieId + "' not found"));
@@ -96,7 +94,8 @@ public class MovieService {
                             "username '" + username + "' does not exist"));
             hasCommented = reviews.stream().anyMatch(r -> r.getUser().getId() == appUser.getId());
             isLoved = lovedMovieRepository.findByUserAndMovie(appUser, movie).isPresent();
-            isInWatchList = watchlistMovieService.getWatchlistByUsername(username).contains(MovieMapper.INSTANCE.toMovieDto(movie));
+            List<MovieDto> watchListMovie = watchlistMovieService.getWatchlistByUsername(username);
+            isInWatchList = watchListMovie.stream().anyMatch(m -> m.getId().equals(movie.getId()));
         } else {
             appUser = null;
         }
