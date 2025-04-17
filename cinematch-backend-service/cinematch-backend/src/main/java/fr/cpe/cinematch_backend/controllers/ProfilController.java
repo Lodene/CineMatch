@@ -7,6 +7,7 @@ import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
 import fr.cpe.cinematch_backend.services.AppUserService;
+import fr.cpe.cinematch_backend.services.ConversationService;
 import fr.cpe.cinematch_backend.services.FriendRequestService;
 import fr.cpe.cinematch_backend.services.FriendshipService;
 import fr.cpe.cinematch_backend.services.LovedMovieService;
@@ -54,6 +55,9 @@ public class ProfilController {
     @Autowired
     private AppUserService appUserService;
 
+    @Autowired
+    private ConversationService conversationService;
+
     @GetMapping
     public ResponseEntity<ProfileDto> getProfile(@AuthenticationPrincipal UserDetails userDetails)
             throws GenericNotFoundException {
@@ -98,6 +102,7 @@ public class ProfilController {
         friendRequestService.deleteAllByUserId(uE.getId());
         friendRequestService.deleteAllByUserId(uE.getId());
         reviewService.deleteAllByUserId(uE.getId());
+        conversationService.deleteAllConversationsAndMessagesByUserId(uE.getId());
 
         profilService.deleteProfil(uE);
         appUserService.deleteUserById(uE);
