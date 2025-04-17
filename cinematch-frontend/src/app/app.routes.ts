@@ -11,6 +11,7 @@ import { WatchListComponent } from './watch-list/watch-list.component';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { SettingsComponent } from './settings/settings.component';
 import { TermServiceComponent } from './term-service/term-service.component';
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent }, 
   { path: 'privacy', component: PrivacyPolicyComponent }, 
   { path: 'terms', component: TermServiceComponent }, 
+  { path: 'settings', component: SettingsComponent }, 
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
