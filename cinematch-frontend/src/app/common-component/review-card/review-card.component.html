@@ -1,0 +1,20 @@
+<mat-card class="card m-10" appearance="outlined">
+    <mat-card-content class="">
+        <div class="date">
+            <div>{{review.createdAt | date:'dd/MM/yyy'}}</div>
+        </div>
+        <div *ngIf="isProfile" class="name  mr-10 title-md">{{review.movieTitle}}</div>
+        <div style="display: flex; flex-direction: column;" class="my-20">
+            <div style="display: flex; flex-direction: row;   align-items: center;">
+                <mat-icon class="mr-10" style="color:#ffe234;" aria-hidden="false" aria-label="star"
+                    fontIcon="star"></mat-icon>
+                <div class="mr-10">{{review?.note}}</div>
+            </div>
+            <div class="mr-10 mt-20">{{review?.description}}</div>
+        </div>
+        <div *ngIf="isProfile" style="display: flex; flex-direction: row;" class="my-20">
+            <button class="m-10" mat-raised-button>Edit</button>
+            <button class="m-10" mat-raised-button>Delete</button>
+        </div>
+    </mat-card-content>
+</mat-card>
