@@ -1,3 +1,11 @@
 <div class="movies">
-    <movie-card-horizontal [showLike]="true" [showWatchList]="false"  *ngFor="let consultationMovie of lovedMovies" [movie]="consultationMovie.movie" [isLoved]="consultationMovie.loved"></movie-card-horizontal>
+    <movie-card-horizontal
+    [showLike]="true"
+    [showWatchList]="false"
+    [movie]="consultationMovie.movie"
+    [isLoved]="consultationMovie.loved"
+    (deleteMovie)="deleteMovie($event)"
+    *ngFor="let consultationMovie of lovedMovies"
+    >
+</movie-card-horizontal>
 </div>

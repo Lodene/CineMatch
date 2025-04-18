@@ -39,4 +39,8 @@ export class FavoriteComponent implements OnInit {
     })
   }
 
+  deleteMovie($event: number): void {
+    this.lovedMovies = this.lovedMovies.filter(el => el.movie.id !== $event);
+  }
+
 }
