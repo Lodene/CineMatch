@@ -8,8 +8,8 @@
                 [showLike]="showLike"
                 [showWatchList]="showWatchList"
                 [movieId]="movie.id"
-                [isInWatchList]="false"
-                [isLiked]="false"
+                [isInWatchList]="isInWatchlist"
+                [isLiked]="isLoved"
                 (watchlistActionEvent)="handleWatchListAction($event)"
                 (likeActionEvent)="handleLikeAction($event)">
             </app-movie-actions>

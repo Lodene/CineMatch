@@ -6,6 +6,7 @@ import { LoaderService } from '../../services/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { MovieCardComponentHorizontal } from "../common-component/movie-card-horizontal/movie-card-horizontal.component";
 import { CommonModule } from '@angular/common';
+import { MovieConsultation } from '../../models/movieConsultation';
 
 @Component({
   selector: 'app-favorite',
@@ -15,7 +16,7 @@ import { CommonModule } from '@angular/common';
 })
 export class FavoriteComponent implements OnInit {
 
-  lovedMovies:Movie[] = [];
+  lovedMovies: MovieConsultation[] = [];
 
   constructor(private lovedMovieService: LovedMovieService,
     private loaderService: LoaderService,
@@ -26,7 +27,7 @@ export class FavoriteComponent implements OnInit {
   ngOnInit(): void {
     this.loaderService.show();
     this.lovedMovieService.getCurrentUserLikedMovie().subscribe({
-      next: (movies: Movie[]) => {
+      next: (movies: MovieConsultation[]) => {
         this.lovedMovies = movies;
         console.log(this.lovedMovies);
       },

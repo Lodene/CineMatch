@@ -1,5 +1,6 @@
 package fr.cpe.cinematch_backend.controllers;
 
+import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.LovedMovieEntity;
@@ -30,14 +31,14 @@ public class LovedMovieController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getCurentUserLovedMovies() throws GenericNotFoundException {
+    public ResponseEntity<List<MovieDetailsWithReviewsDto>> getCurentUserLovedMovies() throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
         return ResponseEntity.ok(lovedMovieService.getCurentUserLovedMovies(uE));
     }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<List<MovieDto>> getLovedMoviesByUsername(@PathVariable String username)
+    public ResponseEntity<List<MovieDetailsWithReviewsDto>> getLovedMoviesByUsername(@PathVariable String username)
             throws GenericNotFoundException {
         return ResponseEntity.ok(lovedMovieService.getLovedMoviesByUsername(username));
     }

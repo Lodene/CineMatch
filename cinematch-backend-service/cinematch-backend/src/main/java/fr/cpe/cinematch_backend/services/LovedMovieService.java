@@ -1,5 +1,6 @@
 package fr.cpe.cinematch_backend.services;
 
+import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
@@ -55,13 +56,18 @@ public class LovedMovieService {
         }
     }
 
-    public List<MovieDto> getCurentUserLovedMovies(AppUser user) throws GenericNotFoundException {
-        return lovedMovieRepository.findByUser(user).stream()
+    public List<MovieDetailsWithReviewsDto> getCurentUserLovedMovies(AppUser user) throws GenericNotFoundException {
+        List<MovieDto> userMovies = lovedMovieRepository.findByUser(user).stream()
                 .map(lovedMovie -> MovieMapper.INSTANCE.toMovieDto(lovedMovie.getMovie()))
                 .toList();
+        List<MovieDetailsWithReviewsDto> lovedMovie = new ArrayList<>();
+        for (MovieDto movieDto : userMovies) {
+               lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, new ArrayList<>()));
+        }
+        return lovedMovie;
     }
 
-    public List<MovieDto> getLovedMoviesByUsername(String username) throws GenericNotFoundException {
+    public List<MovieDetailsWithReviewsDto> getLovedMoviesByUsername(String username) throws GenericNotFoundException {
         Optional<AppUser> user = appUserRepository.findByUsername(username);
         if (user.isEmpty()) {
             throw new GenericNotFoundException(404, "User not found",
@@ -72,7 +78,11 @@ public class LovedMovieService {
         for (LovedMovieEntity lovedMovieEntity : lovedMovieEntityList) {
             movieDtoList.add(MovieMapper.INSTANCE.toMovieDto(lovedMovieEntity.getMovie()));
         }
-        return movieDtoList;
+        List<MovieDetailsWithReviewsDto> lovedMovie = new ArrayList<>();
+        for (MovieDto movieDto : movieDtoList) {
+            lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, new ArrayList<>()));
+        }
+        return lovedMovie;
     }
 
     public void deleteAllByUserId(Long userId) throws GenericNotFoundException {

@@ -28,6 +28,9 @@ export class MovieCardComponentHorizontal implements OnInit {
   @Input() movie: Movie;
   @Input() showWatchList: boolean;
   @Input() showLike: boolean;
+  @Input() isLoved: boolean
+  @Input() isInWatchlist: boolean;
+
   posterPath: string;
 
   ngOnInit(): void {
