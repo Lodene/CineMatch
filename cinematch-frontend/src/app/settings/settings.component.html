@@ -1,15 +1,20 @@
 <div class="settings">
     <section class="content">
       <h1>{{ 'app.common-component.settings.title' | translate }}</h1>
-  
       <div class="setting-section">
         <h2>{{ 'app.common-component.settings.language.title' | translate }}</h2>
-        <p>{{ 'app.common-component.settings.language.description' | translate }}</p>
-        <button mat-flat-button (click)="changeLanguage()">
+        <mat-form-field class="select-language">
+          <mat-label>{{ 'app.common-component.settings.language.description' | translate }}</mat-label>
+          <mat-select (selectionChange)="changeLanguage($event)">
+            <mat-option [value]="'fr'">{{ 'app.common-component.settings.language.french' | translate }}</mat-option>
+            <mat-option [value]="'en'">{{ 'app.common-component.settings.language.english' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <button mat-flat-button (click)="changeLanguage()">
           {{ 'app.common-component.settings.language.change' | translate }}
-        </button>      </div>
-  
-      <div class="setting-section">
+        </button> -->
+      </div>
+      <!-- <div class="setting-section">
         <h2>{{ 'app.common-component.settings.notifications.title' | translate }}</h2>
         <p>{{ 'app.common-component.settings.notifications.description' | translate }}</p>
         <button mat-flat-button>{{ 'app.common-component.settings.notifications.manage' | translate }}</button>
@@ -19,6 +24,11 @@
         <h2>{{ 'app.common-component.settings.security.title' | translate }}</h2>
         <p>{{ 'app.common-component.settings.security.description' | translate }}</p>
         <button mat-flat-button>{{ 'app.common-component.settings.security.update' | translate }}</button>
+      </div> -->
+      <div class="setting-section save-wrapper">
+        <button mat-flat-button (click)="save()">
+          {{ 'app.common-component.settings.save' | translate }}
+        </button>
       </div>
     </section>
 </div>

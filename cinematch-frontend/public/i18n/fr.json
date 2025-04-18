@@ -157,10 +157,13 @@
       },
       "settings": {
         "title": "Paramètres",
+        "save": "Enregistrer",
         "language": {
           "title": "Langue",
-          "description": "Choisissez votre langue préférée pour l’interface.",
-          "change": "Changer la langue"
+          "description": "Choisissez votre langue préférée pour l'interface.",
+          "change": "Changer la langue",
+          "french": "French",
+          "english": "English"
         },
         "notifications": {
           "title": "Notifications",

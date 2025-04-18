@@ -148,10 +148,13 @@
       },
       "settings": {
         "title": "Settings",
+        "save": "Save",
         "language": {
           "title": "Language",
           "description": "Choose your preferred language for the interface.",
-          "change": "Change Language"
+          "change": "Change Language",
+          "french": "French",
+          "english": "English"
         },
         "notifications": {
           "title": "Notifications",
