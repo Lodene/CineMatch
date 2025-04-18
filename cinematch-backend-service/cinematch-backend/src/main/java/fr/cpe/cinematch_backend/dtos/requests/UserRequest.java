@@ -24,16 +24,14 @@ public class UserRequest {
     private String email;
 
     // Email validation pattern
-    private static final Pattern EMAIL_PATTERN =
-            Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
 
     // Username validation pattern
-    private static final Pattern USERNAME_PATTERN =
-            Pattern.compile("^[a-zA-Z0-9._-]+$");
+    private static final Pattern USERNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+$");
 
     // Password validation pattern
-    private static final Pattern PASSWORD_PATTERN =
-            Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$");
+    private static final Pattern PASSWORD_PATTERN = Pattern
+            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$");
 
     public List<String> validate() {
         List<String> errors = new ArrayList<>();
@@ -53,7 +51,8 @@ public class UserRequest {
         } else if (password.length() < 8 || password.length() > 12) {
             errors.add("Password must be between 8 and 12 characters");
         } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            errors.add("Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character");
+            errors.add(
+                    "Password must contain at least one digit, one lowercase letter, one uppercase letter, and one special character");
         }
 
         // Email validation

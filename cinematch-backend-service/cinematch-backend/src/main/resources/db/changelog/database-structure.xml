@@ -455,4 +455,27 @@
 </changeSet>
 
 
+<changeSet id="1745100000000-1" author="Antoine">
+    <createTable tableName="user_config">
+        <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_config"/>
+        </column>
+        <column name="lang" type="VARCHAR(5)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="user_id" type="BIGINT">
+            <constraints nullable="false" unique="true"/>
+        </column>
+    </createTable>
+</changeSet>
+
+<changeSet id="1745100000000-2" author="Antoine">
+    <addForeignKeyConstraint baseColumnNames="user_id"
+                             baseTableName="user_config"
+                             constraintName="fk_user_config_user"
+                             referencedColumnNames="id"
+                             referencedTableName="app_user"/>
+</changeSet>
+
+
 </databaseChangeLog>
