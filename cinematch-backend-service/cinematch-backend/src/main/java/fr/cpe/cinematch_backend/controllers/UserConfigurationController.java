@@ -19,8 +19,8 @@ public class UserConfigurationController {
     @Autowired
     private UserConfigurationService userPreferencesService;
 
-    @PutMapping("/lang")
-    public ResponseEntity<Void> updateLangPreference(@RequestParam String lang)
+    @PutMapping("/lang/{lang}")
+    public ResponseEntity<Void> updateLangPreference(@PathVariable String lang)
             throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) authentication.getPrincipal();
@@ -29,7 +29,7 @@ public class UserConfigurationController {
     }
 
     @GetMapping("/lang")
-    public ResponseEntity<Optional<String>> getLangPreference() throws GenericNotFoundException {
+    public ResponseEntity<String> getLangPreference() throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) authentication.getPrincipal();
         return ResponseEntity.ok(userPreferencesService.getUserLanguage(user.getUsername()));

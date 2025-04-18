@@ -21,7 +21,7 @@ public class UserConfigurationService {
 
     public void updateLanguagePreference(String username, String lang)
             throws GenericNotFoundException {
-        if (lang == "fr" && lang == "en") {
+        if (!lang.equalsIgnoreCase("fr")  && !lang.equalsIgnoreCase( "en")) {
             throw new GenericNotFoundException(400, "Invalid language", "Only 'en' or 'fr' are allowed.");
         }
 
@@ -35,7 +35,7 @@ public class UserConfigurationService {
         userPreferencesRepository.save(pref);
     }
 
-    public Optional<String> getUserLanguage(String username) throws GenericNotFoundException {
+    public String getUserLanguage(String username) throws GenericNotFoundException {
         AppUser user = appUserRepository.findByUsername(username)
                 .orElseThrow(() -> new GenericNotFoundException(404, "User not found", "User does not exist"));
 
@@ -44,8 +44,8 @@ public class UserConfigurationService {
             throw new GenericNotFoundException(404, "User configuration not found",
                     "User configuration does not exist");
         }
-        return userPreferencesRepository.findByUser(user)
-                .map(UserConfiguration::getLang);
+        Optional<UserConfiguration> userConfig = userPreferencesRepository.findByUser(user);
+        return userConfig.isPresent() ? userConfig.get().getLang() : "";
     }
 
     public void createUserConfiguration(Long userId, String lang) throws GenericNotFoundException {
@@ -53,8 +53,7 @@ public class UserConfigurationService {
             throw new GenericNotFoundException(400, "Invalid language", "Only 'en' or 'fr' are allowed.");
         }
         AppUser user = appUserRepository.findById(userId)
-                .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable", "ID: " + userId));
-
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found", "user with id: '" + userId + "' not found"));
         Optional<UserConfiguration> existing = userPreferencesRepository.findByUser(user);
         if (existing.isEmpty()) {
             UserConfiguration preference = new UserConfiguration();

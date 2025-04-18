@@ -5,6 +5,7 @@ import fr.cpe.cinematch_backend.dtos.requests.UserRequest;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.AppUserService;
+import fr.cpe.cinematch_backend.services.UserConfigurationService;
 import fr.cpe.cinematch_backend.services.UserValidateService;
 import fr.cpe.cinematch_backend.services.security.AuthenticationService;
 import fr.cpe.cinematch_backend.services.security.JwtService;
@@ -48,10 +49,12 @@ public class AuthController {
             .getContextHolderStrategy();
 
     private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+    @Autowired
+    private UserConfigurationService userConfigurationService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody UserRequest userRequest, HttpServletRequest request,
-            HttpServletResponse response) throws AuthenticationException {
+            HttpServletResponse response) throws AuthenticationException, GenericNotFoundException {
         Authentication authenticatedUser = authenticationService.authenticate(userRequest);
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authenticatedUser);
@@ -61,6 +64,7 @@ public class AuthController {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        loginResponse.setLang(userConfigurationService.getUserLanguage(userRequest.getUsername()));
         return ResponseEntity.ok(loginResponse);
     }
 

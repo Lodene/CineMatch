@@ -165,6 +165,10 @@
           "title": "Security",
           "description": "Update your password and security settings.",
           "update": "Update Security"
+        },
+        "api-responses": {
+          "update-successful-title": "User config",
+          "update-successful-description": "Your configuration has been sucessfuly updated"
         }
       },  
       "movie-details": {
