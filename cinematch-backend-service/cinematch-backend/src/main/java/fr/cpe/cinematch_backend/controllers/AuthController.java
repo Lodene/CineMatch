@@ -3,6 +3,7 @@ package fr.cpe.cinematch_backend.controllers;
 import fr.cpe.cinematch_backend.dtos.LoginResponse;
 import fr.cpe.cinematch_backend.dtos.requests.UserRequest;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.AppUserService;
 import fr.cpe.cinematch_backend.services.UserValidateService;
 import fr.cpe.cinematch_backend.services.security.AuthenticationService;
@@ -31,8 +32,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtService jwtService;
@@ -45,13 +44,14 @@ public class AuthController {
     @Autowired
     private UserValidateService userValidateService;
 
-    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder
+            .getContextHolderStrategy();
 
-    private SecurityContextRepository securityContextRepository =
-            new HttpSessionSecurityContextRepository();
+    private SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody UserRequest userRequest, HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    public ResponseEntity<LoginResponse> login(@RequestBody UserRequest userRequest, HttpServletRequest request,
+            HttpServletResponse response) throws AuthenticationException {
         Authentication authenticatedUser = authenticationService.authenticate(userRequest);
         SecurityContext context = securityContextHolderStrategy.createEmptyContext();
         context.setAuthentication(authenticatedUser);
@@ -65,7 +65,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserRequest> signup(@RequestBody UserRequest userRequest) throws BadEndpointException {
+    public ResponseEntity<UserRequest> signup(@RequestBody UserRequest userRequest)
+            throws BadEndpointException, GenericNotFoundException {
 
         boolean valid = userValidateService.validateUser(userRequest);
         if (!valid) {
@@ -73,8 +74,7 @@ public class AuthController {
         }
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         boolean res = userService.insertUser(userRequest);
-        if (!res)
-        {
+        if (!res) {
             ResponseEntity.badRequest();
         }
 
