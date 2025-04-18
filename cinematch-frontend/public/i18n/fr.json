@@ -136,6 +136,7 @@
           "description": "Vous avez le droit d'accéder à vos données personnelles, de les corriger ou de les supprimer à tout moment. N'hésitez pas à nous contacter pour exercer vos droits."
         },
         "contact": "Si vous avez des questions concernant cette politique de confidentialité, vous pouvez nous contacter."
+      }
       },
       "terms": {
         "title": "Conditions d'utilisation",
@@ -171,8 +172,17 @@
           "description": "Mettez à jour votre mot de passe et vos paramètres de sécurité.",
           "update": "Mettre à jour"
         }
+      },
+      "movie-details": {
+        "not-found": "Film non trouvé",
+        "image-not-found": "Aucune image n'a pu être chargée"
+      },
+      "watchlist": {
+        "not-found": "Votre watchlist est vide."
+      },
+      "favorite": {
+        "not-found": "Vous n'avez aucun favoris."
       }
-    }
     },
     "generic-error": {
       "error": "Erreur",

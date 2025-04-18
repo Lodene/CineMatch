@@ -1,4 +1,4 @@
-<div class="movies">
+<div class="movies" *ngIf="lovedMovies?.length !== 0; else noMovies">
     <movie-card-horizontal
     [showLike]="true"
     [showWatchList]="false"
@@ -9,3 +9,8 @@
     >
 </movie-card-horizontal>
 </div>
+<ng-template #noMovies>
+    <h1 class="not-found">
+        {{ 'app.common-component.favorite.not-found' | translate}}
+    </h1>
+</ng-template>

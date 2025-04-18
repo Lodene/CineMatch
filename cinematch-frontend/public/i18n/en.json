@@ -176,6 +176,12 @@
           "remove-from-watchlist": "Remove the movie from your watchlist",
           "need-connection": "You need to be logged in to use this feature"
         }
+      },
+      "watchlist": {
+        "not-found": "Your watchlist is empty."
+      },
+      "favorite": {
+        "not-found": "You have no favorites."
       }
     },
     "generic-error": {

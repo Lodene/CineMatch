@@ -1,5 +1,6 @@
 package fr.cpe.cinematch_backend.services;
 
+import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -69,6 +71,16 @@ public class WatchlistMovieService {
                 return watchlistMovieRepository.findByUser(user).stream()
                                 .map(entry -> MovieMapper.INSTANCE.toMovieDto(entry.getMovie()))
                                 .toList();
+
+        }
+
+        public List<MovieDetailsWithReviewsDto> getWatchListWithReviewsByUsername(String username) throws GenericNotFoundException {
+                List<MovieDto> watchlistMovies = this.getWatchlistByUsername(username);
+                List<MovieDetailsWithReviewsDto> watchListMoviesWithDetails = new ArrayList<>();
+                for (MovieDto movieDto : watchlistMovies ) {
+                        watchListMoviesWithDetails.add(new MovieDetailsWithReviewsDto(movieDto, false, false, true, new ArrayList<>()));
+                }
+                return watchListMoviesWithDetails;
         }
 
         public List<MovieDto> getWatchlistByUserId(Long userId) throws GenericNotFoundException {
@@ -79,6 +91,15 @@ public class WatchlistMovieService {
                 return watchlistMovieRepository.findByUser(user).stream()
                                 .map(entry -> MovieMapper.INSTANCE.toMovieDto(entry.getMovie()))
                                 .toList();
+        }
+
+        public List<MovieDetailsWithReviewsDto> getWatchListWithReviewsByUserId(Long userId) throws GenericNotFoundException {
+                List<MovieDto> watchlistMovies = this.getWatchlistByUserId(userId);
+                List<MovieDetailsWithReviewsDto> watchListMoviesWithDetails = new ArrayList<>();
+                for (MovieDto movieDto : watchlistMovies ) {
+                        watchListMoviesWithDetails.add(new MovieDetailsWithReviewsDto(movieDto, false, false, true, new ArrayList<>()));
+                }
+                return watchListMoviesWithDetails;
         }
 
         public void deleteAllByUserId(Long userId) throws GenericNotFoundException {
