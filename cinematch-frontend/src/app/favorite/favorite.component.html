@@ -1,3 +1,16 @@
-<div class="movies">
-    <movie-card-horizontal [showLike]="true" [showWatchList]="false"  *ngFor="let consultationMovie of lovedMovies" [movie]="consultationMovie.movie" [isLoved]="consultationMovie.loved"></movie-card-horizontal>
+<div class="movies" *ngIf="lovedMovies?.length !== 0; else noMovies">
+    <movie-card-horizontal
+    [showLike]="true"
+    [showWatchList]="false"
+    [movie]="consultationMovie.movie"
+    [isLoved]="consultationMovie.loved"
+    (deleteMovie)="deleteMovie($event)"
+    *ngFor="let consultationMovie of lovedMovies"
+    >
+</movie-card-horizontal>
 </div>
+<ng-template #noMovies>
+    <h1 class="not-found">
+        {{ 'app.common-component.favorite.not-found' | translate}}
+    </h1>
+</ng-template>

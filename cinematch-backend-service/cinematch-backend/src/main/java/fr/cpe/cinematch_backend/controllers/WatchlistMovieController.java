@@ -1,5 +1,6 @@
 package fr.cpe.cinematch_backend.controllers;
 
+import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -28,18 +29,18 @@ public class WatchlistMovieController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MovieDto>> getMyWatchlist() throws GenericNotFoundException {
+    public ResponseEntity<List<MovieDetailsWithReviewsDto>> getMyWatchlist() throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) authentication.getPrincipal();
-        return ResponseEntity.ok(watchlistMovieService.getWatchlistByUsername(user.getUsername()));
+        return ResponseEntity.ok(watchlistMovieService.getWatchListWithReviewsByUsername(user.getUsername()));
     }
 
     @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<MovieDto>> getWatchlistByUserId(@PathVariable Long idUser) throws GenericNotFoundException {
-        return ResponseEntity.ok(watchlistMovieService.getWatchlistByUserId(idUser));
+    public ResponseEntity<List<MovieDetailsWithReviewsDto>> getWatchlistByUserId(@PathVariable Long idUser) throws GenericNotFoundException {
+        return ResponseEntity.ok(watchlistMovieService.getWatchListWithReviewsByUserId(idUser));
     }
     @GetMapping("/user/{username}")
-    public ResponseEntity<List<MovieDto>> getWatchlistByUsername(@PathVariable String username) throws GenericNotFoundException {
-        return ResponseEntity.ok(watchlistMovieService.getWatchlistByUsername(username));
+    public ResponseEntity<List<MovieDetailsWithReviewsDto>> getWatchlistByUsername(@PathVariable String username) throws GenericNotFoundException {
+        return ResponseEntity.ok(watchlistMovieService.getWatchListWithReviewsByUsername(username));
     }
 }

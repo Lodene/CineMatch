@@ -148,10 +148,13 @@
       },
       "settings": {
         "title": "Settings",
+        "save": "Save",
         "language": {
           "title": "Language",
           "description": "Choose your preferred language for the interface.",
-          "change": "Change Language"
+          "change": "Change Language",
+          "french": "French",
+          "english": "English"
         },
         "notifications": {
           "title": "Notifications",
@@ -162,6 +165,10 @@
           "title": "Security",
           "description": "Update your password and security settings.",
           "update": "Update Security"
+        },
+        "api-responses": {
+          "update-successful-title": "User config",
+          "update-successful-description": "Your configuration has been sucessfuly updated"
         }
       },  
       "movie-details": {
@@ -176,6 +183,12 @@
           "remove-from-watchlist": "Remove the movie from your watchlist",
           "need-connection": "You need to be logged in to use this feature"
         }
+      },
+      "watchlist": {
+        "not-found": "Your watchlist is empty."
+      },
+      "favorite": {
+        "not-found": "You have no favorites."
       }
     },
     "generic-error": {

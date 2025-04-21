@@ -7,10 +7,11 @@ import { ToastrService } from 'ngx-toastr';
 import { MovieCardComponentHorizontal } from "../common-component/movie-card-horizontal/movie-card-horizontal.component";
 import { CommonModule } from '@angular/common';
 import { MovieConsultation } from '../../models/movieConsultation';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-favorite',
-  imports: [MovieCardComponentHorizontal, CommonModule],
+  imports: [MovieCardComponentHorizontal, CommonModule, TranslatePipe],
   templateUrl: './favorite.component.html',
   styleUrl: './favorite.component.scss'
 })
@@ -37,6 +38,10 @@ export class FavoriteComponent implements OnInit {
     }).add(()=> {
       this.loaderService.hide();
     })
+  }
+
+  deleteMovie($event: number): void {
+    this.lovedMovies = this.lovedMovies.filter(el => el.movie.id !== $event);
   }
 
 }

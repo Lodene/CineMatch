@@ -1,3 +1,16 @@
-<div class="movies">
-    <movie-card-horizontal *ngFor="let movie of movies" [movie]="movie"></movie-card-horizontal>
+<div class="movies" *ngIf="movieConsultations?.length !== 0; else noMovies">
+    <movie-card-horizontal
+    [movie]="movieConsultation.movie"
+    [showLike]="false"
+    [showWatchList]="true"
+    [isLoved]="false"
+    [isInWatchlist]="movieConsultation.inWatchlist"
+    (deleteMovie)="deleteMovie($event)"
+    *ngFor="let movieConsultation of movieConsultations" 
+    ></movie-card-horizontal>
 </div>
+<ng-template #noMovies>
+    <h1 class="not-found">
+        {{ 'app.common-component.watchlist.not-found' | translate}}
+    </h1>
+</ng-template>
