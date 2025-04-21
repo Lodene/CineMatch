@@ -12,6 +12,7 @@ import { Movie } from '../../models/movie';
 import { ProfileService } from '../../services/profile/profile.service';
 import { LoaderService } from '../../services/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
+import { HistoryComponent } from "../history/history.component";
 
 
 
@@ -21,12 +22,13 @@ import { ToastrService } from 'ngx-toastr';
     CommonModule,
     RouterModule,
     MatIconModule,
-    MatTabsModule,       
-    MatCardModule,       
-    MatDividerModule,    
-    MatButtonModule,     
-    TranslatePipe
-  ],  
+    MatTabsModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    TranslatePipe,
+    HistoryComponent
+],  
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.scss']
 
@@ -35,6 +37,7 @@ export class ProfilComponent implements OnInit {
   favoriteMovies: Movie[] = [];
 
   userProfile: User =  new User();   // Stocke le profil récupéré depuis l'API
+  userLoaded: boolean = false;
   
   constructor(
     private profileService: ProfileService,
@@ -57,7 +60,7 @@ export class ProfilComponent implements OnInit {
       },
       complete: () => {
         this.loaderService.hide();
-        console.log(this.userProfile);
+        this.userLoaded = true;
       }
     });
   }
