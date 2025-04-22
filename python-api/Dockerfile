@@ -10,4 +10,6 @@ COPY ./main.py /app/main.py
 
 EXPOSE 8000
 
-CMD gunicorn main:app --bind :8000 --log-level=trace -w 4 -k uvicorn.workers.UvicornWorker
+#CMD gunicorn main:app --bind :8000 --log-level=trace -w 4 -k uvicorn.workers.UvicornWorker --> mise en prod
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--reload"]

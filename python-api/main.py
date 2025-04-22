@@ -96,6 +96,10 @@ activemq_client = ActiveMQClient(
     activemq_queue
 )
 
+print("activemq_client : ", activemq_client.host, "\n")
+print("activemq_client port : ", activemq_client.port, "\n")
+print("activemq_client username : ", activemq_client.username, "\n")
+
 @app.post("/send-message/")
 async def send_message(message: dict):
     """Send a message to ActiveMQ queue"""
@@ -109,34 +113,34 @@ async def get_messages():
     """Get all received messages from ActiveMQ queue"""
     return {"messages": received_messages}
 
-@app.post("/clear-messages/")
-async def clear_messages():
-    """Clear the stored messages"""
-    received_messages.clear()
-    return {"status": "Messages cleared"}
+# @app.post("/clear-messages/")
+# async def clear_messages():
+#     """Clear the stored messages"""
+#     received_messages.clear()
+#     return {"status": "Messages cleared"}
 
-@app.get("/health/")
-async def health_check():
-    """Check if connections to ActiveMQ are alive"""
-    producer_status = activemq_client.producer_conn.is_connected()
-    consumer_status = activemq_client.consumer_conn.is_connected()
+# @app.get("/health/")
+# async def health_check():
+#     """Check if connections to ActiveMQ are alive"""
+#     producer_status = activemq_client.producer_conn.is_connected()
+#     consumer_status = activemq_client.consumer_conn.is_connected()
     
-    # Try to reconnect if connections are down
-    if not producer_status:
-        activemq_client.connect_producer()
-        producer_status = activemq_client.producer_conn.is_connected()
+#     # Try to reconnect if connections are down
+#     if not producer_status:
+#         activemq_client.connect_producer()
+#         producer_status = activemq_client.producer_conn.is_connected()
     
-    if not consumer_status:
-        activemq_client.connect_consumer()
-        consumer_status = activemq_client.consumer_conn.is_connected()
+#     if not consumer_status:
+#         activemq_client.connect_consumer()
+#         consumer_status = activemq_client.consumer_conn.is_connected()
     
-    return {
-        "status": "healthy" if producer_status and consumer_status else "unhealthy",
-        "producer_connected": producer_status,
-        "consumer_connected": consumer_status
-    }
+#     return {
+#         "status": "healthy" if producer_status and consumer_status else "unhealthy",
+#         "producer_connected": producer_status,
+#         "consumer_connected": consumer_status
+#     }
 
-@app.on_event("shutdown")
-def shutdown_event():
-    """Clean up connections when shutting down"""
-    activemq_client.disconnect()
+# @app.on_event("shutdown")
+# def shutdown_event():
+#     """Clean up connections when shutting down"""
+#     activemq_client.disconnect()
