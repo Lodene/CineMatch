@@ -19,7 +19,6 @@ import { SnackbarService } from '../../../services/snackbar.service';
 export class MovieActionsComponent implements OnInit, OnChanges
 {
 
-  
   likeActionEvent = output<number>();
   watchlistActionEvent = output<number>();
   
