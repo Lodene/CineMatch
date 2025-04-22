@@ -93,7 +93,13 @@ services:
     environment:
       - CHOKIDAR_USEPOLLING=true  # Ensures file changes are detected
       - WATCHPACK_POLLING=true
-
+  python-api:
+    container_name: python-api
+    build:
+      context: ./python-api
+      dockerfile: Dockerfile
+    depends_on:
+      - activemq
 volumes:
   local_pgdata:
   pgadmin-data:
