@@ -37,7 +37,6 @@ export class ProfilComponent implements OnInit {
   favoriteMovies: Movie[] = [];
 
   userProfile: User =  new User();   // Stocke le profil récupéré depuis l'API
-  userLoaded: boolean = false;
   
   constructor(
     private profileService: ProfileService,
@@ -57,17 +56,10 @@ export class ProfilComponent implements OnInit {
       },
       error: (error) => {
         this.toasterService.error(error.error.reason, error.error.error);
-      },
-      complete: () => {
-        this.loaderService.hide();
-        this.userLoaded = true;
       }
+    }).add(() => {
+      this.loaderService.hide();
     });
-    this.profileService.usernameSubject.subscribe({
-      next: (username: string | null) => {
-        console.log(username);
-      }
-    })
   }
   
 

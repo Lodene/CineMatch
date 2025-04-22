@@ -85,13 +85,21 @@
         "sections": {
           "activity": {
             "title": "Recent Activity",
-            "like": "You liked {{ film }}",
-            "add": "You added {{ film }} to your watchlist",
+            "like": "You added {{ film }} to your favorites",
+            "unlike": "You removed {{ film }} from your favorites",
+            "watchlist-add": "You added {{ film }} to your watchlist",
+            "watchlist-remove": "You removed {{ film }} to your watchlist",
             "watch": "You watched {{ film }}",
+            "review-add": "You added a review to {{ film }}",
+            "review-edit": "You edited your review of {{ film }}",
+            "review-remove": "You removed your review from {{ film }}",
             "time": {
-              "4h": "4 hours ago",
-              "2d": "2 days ago",
-              "1w": "1 week ago"
+              "minutes": "{{ time }} min ago", 
+              "hour": "{{ time }} hours ago",
+              "day": "{{ time }} days ago",
+              "week": "{{ time }} week ago",
+              "month": "{{ time }} month ago",
+              "year": "{{ time }} year ago"
             }
           },
           "favorites": {

@@ -3,30 +3,12 @@
         <h2>{{ 'app.common-component.profile.sections.activity.title' | translate }}</h2>
         <mat-card class="activity-card">
             <mat-card-content>
-
-                <div *ngFor="let content of history.content" class="activity-item">
-
-                    <div class="activity-item" *ngIf="content.actionType == movieActionType.LIKE">
-                        <mat-icon>favorite</mat-icon>
-                        {{ 'app.common-component.profile.sections.activity.like' | translate:{ film: 'Interstellar' } }}
-                        <p class="timestamp">{{ 'app.common-component.profile.sections.activity.time.4h' | translate }}</p>
-                    </div>
-                    <mat-divider  *ngIf="content.actionType == movieActionType.WATCHLIST_ADD"></mat-divider>
-                    <div class="activity-item" *ngIf="content.actionType == movieActionType.WATCHLIST_ADD">
-                        <mat-icon>playlist_add</mat-icon>
-                        {{ 'app.common-component.profile.sections.activity.add' | translate:{ film: 'Pulp Fiction' } }}
-                        <p class="timestamp">{{ 'app.common-component.profile.sections.activity.time.2d' | translate }}</p>
-                    </div>
-                    <mat-divider *ngIf="content.actionType == movieActionType.WATCHED"></mat-divider >
-                    <div class="activity-item" *ngIf="content.actionType == movieActionType.WATCHED">
-                        <mat-icon>movie</mat-icon>
-                        {{ 'app.common-component.profile.sections.activity.watch' | translate:{ film: 'The Dark Knight' } }}
-                        <p class="timestamp">{{ 'app.common-component.profile.sections.activity.time.1w' | translate }}</p>
-                    </div>
-
+                <div *ngFor="let content of history?.content, index as i" class="activity-item">
+                    <app-history-entry
+                        [historyEntry]="content">                        
+                    </app-history-entry>
+                    <mat-divider *ngIf="i !== history.content.length - 1"></mat-divider>
                 </div>
-
-               
             </mat-card-content>
         </mat-card>
     </mat-tab>

@@ -85,13 +85,21 @@
         "sections": {
           "activity": {
             "title": "Activité récente",
-            "like": "Vous avez aimé {{ film }}",
-            "add": "Vous avez ajouté {{ film }} à votre liste de visionnage",
+            "like": "Vous avez ajouté {{ film }} à vos favoris",
+            "unlike": "Vous avez retiré {{ film }} de vos favoris",
+            "watchlist-add": "Vous avez ajouté {{ film }} à votre liste de visionnage",
+            "watchlist-remove": "Vous avez retiré {{ film }} de votre liste de visionnage",
             "watch": "Vous avez regardé {{ film }}",
+            "review-add": "Vous avez ajouté un avis sur {{ film }}",
+            "review-edit": "Vous avez édité votre avis sur {{ film }}",
+            "review-remove": "Vous avez supprimé votre avis sur {{ film }}",
             "time": {
-              "4h": "il y a 4 heures",
-              "2d": "il y a 2 jours",
-              "1w": "il y a 1 semaine"
+              "minutes": "Il y a {{ time }} minute(s)",
+              "hour": "Il y a {{ time }} heure(s)",
+              "day": "Il y a {{ time }} jour(s)",
+              "week": "Il y a {{ time }} semaine(s)",
+              "month": "Il y a {{ time }} mois",
+              "year": "Il y a {{ time }} année(s)"
             }
           },
           "favorites": {

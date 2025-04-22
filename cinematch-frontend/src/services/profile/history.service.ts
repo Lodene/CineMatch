@@ -15,4 +15,8 @@ export class HistoryService {
         return this.http.get<PaginatedHistoryResponse>(`${this.backendUrl}/history/${userName}`);
     }
 
+    public getCurrentUserMovieHistory(): Observable<PaginatedHistoryResponse> {
+        return this.http.get<PaginatedHistoryResponse>(`${this.backendUrl}/history`);
+    }
+
 }
