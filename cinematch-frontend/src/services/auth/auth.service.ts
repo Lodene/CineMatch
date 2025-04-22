@@ -4,8 +4,6 @@ import { BehaviorSubject, map, Observable, of, Subscription, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { LoaderService } from '../loader/loader.service';
-import { ToastrService } from 'ngx-toastr';
-import { TranslateService } from '@ngx-translate/core';
 
 // Request typing => 
 export type SignupRequest = {
@@ -19,6 +17,12 @@ export type LoginRequest = {
   password: string;
 }
 
+type LoginResponse = {
+  token: string;
+  expiresIn: number;
+  lang: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -26,16 +30,13 @@ export type LoginRequest = {
 export class AuthService {
 
   private readonly apiUrl = 'http://localhost:8081/auth';
-  private tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  public tokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
   private localStorage;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
     @Inject(DOCUMENT) private document: Document,  
     private http: HttpClient, private router: Router,
-    private loaderService: LoaderService,
-    private toasterService: ToastrService,
-    private translateService: TranslateService
   ) {
     this.localStorage = document.defaultView?.localStorage;
     // Check if there is a token in cookies and set it in the subject
@@ -48,29 +49,13 @@ export class AuthService {
     return this.tokenSubject.asObservable();
   }
 
-  // Login method: Assuming you receive the JWT after authentication
-  login(loginRequest: LoginRequest): void {
-    this.loaderService.show();
-    this.http.post<any>(`${this.apiUrl}/login`, loginRequest).subscribe(
-      {
-        next: (res) => {
-          const token = res.token;
-          this.setTokenInStorage(token);
-          this.tokenSubject.next(token); // Update the BehaviorSubject with new token
-          this.toasterService.success(this.translateService.instant('app.common-component.login.response.login-successful'));
-          this.router.navigate(['']);
-        },
-        error: (error) => {
-          this.toasterService.error(error.error.reason, error.error.error);
-        },
+  login(loginRequest: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<any>(`${this.apiUrl}/login`, loginRequest);
       }
-    ).add(() => {
-      this.loaderService.hide();
-    });
-  }
+  
 
   // Method to set token in HttpOnly cookie
-  private setTokenInStorage(token: string): void {
+  public setTokenInStorage(token: string): void {
     if (!!this.localStorage) {
       this.localStorage.setItem("token", token);
     }

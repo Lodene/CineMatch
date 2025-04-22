@@ -173,7 +173,12 @@
       },  
       "movie-details": {
         "not-found": "Movie not found",
-        "image-not-found": "No image could be loaded"
+        "image-not-found": "No image could be loaded",
+        "tabs": {
+          "details": "Details",
+          "reviews": "Reviews",
+          "similar-films": "Similar Films"
+        }
       },
       "movie-actions": {
         "tooltip": {

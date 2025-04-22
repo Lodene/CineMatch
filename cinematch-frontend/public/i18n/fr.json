@@ -188,7 +188,12 @@
       },
       "movie-details": {
         "not-found": "Film non trouvé",
-        "image-not-found": "Aucune image n'a pu être chargée"
+        "image-not-found": "Aucune image n'a pu être chargée",
+        "tabs": {
+          "details": "Détails",
+          "reviews": "Avis",
+          "similar-films": "Films similaires"
+        }
       },
       "watchlist": {
         "not-found": "Votre watchlist est vide."
