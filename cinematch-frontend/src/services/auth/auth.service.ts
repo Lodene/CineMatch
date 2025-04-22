@@ -21,6 +21,7 @@ type LoginResponse = {
   token: string;
   expiresIn: number;
   lang: string;
+  username: string;
 }
 
 
@@ -51,7 +52,7 @@ export class AuthService {
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http.post<any>(`${this.apiUrl}/login`, loginRequest);
-      }
+  }
   
 
   // Method to set token in HttpOnly cookie

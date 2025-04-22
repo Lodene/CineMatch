@@ -65,6 +65,7 @@ public class AuthController {
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
         loginResponse.setLang(userConfigurationService.getUserLanguage(userRequest.getUsername()));
+        loginResponse.setUsername(userRequest.getUsername());
         return ResponseEntity.ok(loginResponse);
     }
 

@@ -63,6 +63,11 @@ export class ProfilComponent implements OnInit {
         this.userLoaded = true;
       }
     });
+    this.profileService.usernameSubject.subscribe({
+      next: (username: string | null) => {
+        console.log(username);
+      }
+    })
   }
   
 

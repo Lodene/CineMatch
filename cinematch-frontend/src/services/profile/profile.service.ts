@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from '../../models/types/components/user/user.model';
 
 @Injectable({
@@ -9,6 +9,9 @@ import { User } from '../../models/types/components/user/user.model';
 export class ProfileService {
 
   backendUrl: string = 'http://localhost:8081/profile';
+
+  public usernameSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  
 
   constructor(private http: HttpClient) { }
 
@@ -43,6 +46,11 @@ export class ProfileService {
 
   public deletePicture(): Observable<any> {
     return this.http.delete(`${this.backendUrl}/picture`);
+  }
+
+  // Get the current token from BehaviorSubject
+  public get currentUsername(): Observable<string | null> {
+    return this.usernameSubject.asObservable();
   }
 
 }

@@ -12,6 +12,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LoaderService } from '../../services/loader/loader.service';
 import { error } from 'console';
 import { LanguageService } from '../../services/language/language.service';
+import { ProfileService } from '../../services/profile/profile.service';
 
 
 
@@ -32,7 +33,8 @@ export class LoginComponent {
     private translateService: TranslateService,
     private loaderService: LoaderService,
     private toasterService: ToastrService,
-    private langService: LanguageService 
+    private langService: LanguageService,
+    private profileService: ProfileService
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -52,6 +54,7 @@ export class LoginComponent {
           this.authService.setTokenInStorage(res.token);
           this.authService.tokenSubject.next(res.token);
           this.langService.setLanguage(res.lang);
+          this.profileService.usernameSubject.next(res.username);
           this.toasterService.success(this.translateService.instant('app.common-component.login.response.login-successful'));
           this.router.navigate(['']);
         }),
