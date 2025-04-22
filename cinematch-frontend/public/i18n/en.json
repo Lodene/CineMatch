@@ -186,11 +186,18 @@
       "movie-details": {
         "not-found": "Movie not found",
         "image-not-found": "No image could be loaded",
+        "reviews-not-found": "No reviews were left on this movie.",
         "tabs": {
           "details": "Details",
           "reviews": "Reviews",
           "similar-films": "Similar Films"
-        }
+        },
+        "added-successfuly": "Review added successfuly",
+        "deleted-successfuly": "Review deleted successfuly",
+        "updated-successfuly": "Review updated successfuly",
+        "failed-to-delete": "Failed to delete review",
+        "failed-to-update": "Failed to update review",
+        "failed-to-create": "Failed to save review"
       },
       "review-card": {
         "edit": "Edit",

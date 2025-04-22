@@ -46,9 +46,17 @@
             <app-about-movie [movie]="movie"></app-about-movie>
         </mat-tab>
         <mat-tab label="{{ 'app.common-component.movie-details.tabs.reviews' | translate }}">
-            <div *ngFor="let review of movieConsultation?.reviews">
-                <app-review-card [review]="review" [isProfile]="false"></app-review-card>
+            <div *ngIf="movieConsultation.reviews.length > 0; else noReviews">
+                <div *ngFor="let review of movieConsultation?.reviews">
+                    <app-review-card [review]="review" [isProfile]="false"></app-review-card>
+                </div>
             </div>
+            <ng-template #noReviews>
+                <h2 class="empty-reviews">
+                    {{ 'app.common-component.movie-details.reviews-not-found' | translate}}
+                </h2>
+            </ng-template>
+
         </mat-tab>
         <mat-tab label="Similar films">"{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}"</mat-tab>
     </mat-tab-group>

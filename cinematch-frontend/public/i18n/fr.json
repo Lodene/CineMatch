@@ -203,11 +203,18 @@
       "movie-details": {
         "not-found": "Film non trouvé",
         "image-not-found": "Aucune image n'a pu être chargée",
+        "reviews-not-found": "Aucun avis n'a été laissé sur ce film",
         "tabs": {
           "details": "Détails",
           "reviews": "Avis",
           "similar-films": "Films similaires"
-        }
+        },
+        "added-successfuly": "Avis ajouté avec succès",
+        "deleted-successfuly": "Avis supprimé avec succès",
+        "updated-successfuly": "Avis mis à jour avec succès",
+        "failed-to-delete": "Erreur lors de la suppression de l'avis",
+        "failed-to-update": "Erreur lors de la mise à jour de votre avis",
+        "failed-to-create": "Erreur lors de la création de votre avis"
       },
       "watchlist": {
         "not-found": "Votre watchlist est vide."
@@ -218,7 +225,8 @@
       },
       "review-card": {
         "edit": "Modifier",
-        "delete": "Supprimer"
+        "delete": "Supprimer",
+        "writen-by": "Écrit par {{ username }}"
       },
       "featured-film": {
         "watch-trailer": "Regarder la bande-annonce",

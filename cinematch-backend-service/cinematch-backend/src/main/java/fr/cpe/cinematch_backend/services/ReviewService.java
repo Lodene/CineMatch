@@ -47,7 +47,7 @@ public class ReviewService {
     @Autowired
     private MovieActionHistoryService movieActionHistoryService;
 
-    public void createReview(ReviewRequest reviewRequest, String username)
+    public ReviewDto createReview(ReviewRequest reviewRequest, String username)
             throws GenericNotFoundException, BadEndpointException {
 
         AppUser user = appUserRepository.findByUsername(username)
@@ -71,8 +71,9 @@ public class ReviewService {
         reviewEntity.setCreatedAt(LocalDateTime.now());
         reviewEntity.setModifiedAt(LocalDateTime.now());
 
-        reviewRepository.save(reviewEntity);
+        reviewEntity = reviewRepository.save(reviewEntity);
         movieActionHistoryService.logAction(user.getId(), movieEntity.getId(), MovieActionType.REVIEW_ADD);
+        return ReviewMapper.INSTANCE.toReviewDto(reviewEntity);
     }
 
     public ReviewDto updateReview(Long id, ReviewRequest reviewRequest)

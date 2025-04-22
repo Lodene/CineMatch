@@ -24,8 +24,8 @@ export class ReviewService {
     return this.http.put<Review>(`${this.backendUrl}/${reviewId}`, review);
   }
 
-  public createReview(review: Review): Observable<void> {
-    return this.http.post<void>(`${this.backendUrl}`, review);
+  public createReview(review: Review): Observable<Review> {
+    return this.http.post<Review>(`${this.backendUrl}`, review);
   }
 // fixme: not implemented yet
   public getReviewByUsername(username: string): Observable<Review[]> {

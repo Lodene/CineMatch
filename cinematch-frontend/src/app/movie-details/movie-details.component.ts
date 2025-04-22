@@ -180,7 +180,7 @@ export class MovieDetailsComponent {
       width: '400px',
       data: {
         review: review,
-        description: review.description
+        description: review.description,
       },
     });
 
@@ -197,7 +197,8 @@ export class MovieDetailsComponent {
             this.reviewService.deleteReview(review.id).pipe(
               catchError(error => {
                 console.error('Error deleting review:', error);
-                this.snackbarService.show('Failed to delete review');
+
+                this.snackbarService.show(this.translateService.instant('app.common-component.movie-details.failed-to-delete'));
                 // Return a fallback value to continue the observable chain
                 return of(null);
               })
@@ -206,12 +207,14 @@ export class MovieDetailsComponent {
           );
           if (deletedReview) {
             this.isReviewAdded = false;
-            this.snackbarService.show('Review deleted successfully');
+            this.snackbarService.show(
+              this.translateService.instant('app.common-component.movie-details.deleted-successfuly'));
           }
         } catch (deleteError) {
           console.error('Unexpected error during delete:', deleteError);
-          this.snackbarService.show('Failed to delete review');
-        }
+          this.snackbarService.show(
+            this.translateService.instant('app.common-component.movie-details.failed-to-delete'));
+          }
 
       }
       else if (result !== undefined) {
@@ -224,10 +227,11 @@ export class MovieDetailsComponent {
 
             this.reviewService.createReview(review).subscribe(
               {
-                next: (() => {
+                next: ((res: Review) => {
                   this.isReviewAdded = true;
-                  this.movieConsultation.reviews.push(review);
-                  this.snackbarService.show('Review added successfully');
+                  this.movieConsultation.reviews.push(res);
+                  this.snackbarService.show(
+                    this.translateService.instant('app.common-component.movie-details.added-successfuly'));
                 }),
                 error: ((err) => {
                   //err
@@ -242,18 +246,20 @@ export class MovieDetailsComponent {
               this.reviewService.updateReview(review.id, review).pipe(
                 catchError(error => {
                   console.error('Error updating review:', error);
-                  this.snackbarService.show('Failed to update review');
+                  this.snackbarService.show(this.translateService.instant('app.common-component.movie-details.failed-to-update'));
                   return of(null);
                 })
               )
             );
             if (updatedReview) {
-              this.snackbarService.show('Review updated successfully');
+              this.snackbarService.show(
+                this.translateService.instant('app.common-component.movie-details.updated-successfuly'));
             }
           }
         } catch (saveError) {
           console.error('Unexpected error during save:', saveError);
-          this.snackbarService.show('Failed to save review');
+          this.snackbarService.show(
+            this.translateService.instant('app.common-component.movie-details.failed-to-create'))
         }
       }
     });

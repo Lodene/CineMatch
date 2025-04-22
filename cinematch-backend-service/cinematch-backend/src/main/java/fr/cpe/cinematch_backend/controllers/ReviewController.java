@@ -24,11 +24,11 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @PostMapping
-    public void createReview(@RequestBody @Valid ReviewRequest reviewRequest)
+    public ResponseEntity<ReviewDto> createReview(@RequestBody @Valid ReviewRequest reviewRequest)
             throws GenericNotFoundException, BadEndpointException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
-        reviewService.createReview(reviewRequest, uE.getUsername());
+        return ResponseEntity.ok(reviewService.createReview(reviewRequest, uE.getUsername())) ;
     }
 
     @PutMapping("/{reviewId}")
