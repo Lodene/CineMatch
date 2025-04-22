@@ -132,7 +132,8 @@
         "intro": "Nous nous engageons à protéger vos informations personnelles et votre droit à la vie privée. Cette politique décrit comment nous collectons, utilisons et protégeons vos données.",
         "data_collection": {
           "title": "Collecte des données",
-          "description": "Nous collectons des données personnelles telles que votre nom, votre adresse e-mail et des données d'utilisation uniquement lorsque cela est nécessaire à la fourniture de nos services.",
+          "description": "Nous collectons des données personnelles telles que votre nom, votre adresse e-mail et des données d'utilisation uniquement lorsque cela est nécessaire à la fourniture de nos services."
+        },
         "usage": {
           "title": "Utilisation des données collectées",
           "description": "Les données que nous collectons sont utilisées pour améliorer nos services, personnaliser votre expérience, et garantir la sécurité et les performances."
@@ -142,7 +143,6 @@
           "description": "Vous avez le droit d'accéder à vos données personnelles, de les corriger ou de les supprimer à tout moment. N'hésitez pas à nous contacter pour exercer vos droits."
         },
         "contact": "Si vous avez des questions concernant cette politique de confidentialité, vous pouvez nous contacter."
-      }
       },
       "terms": {
         "title": "Conditions d'utilisation",
@@ -199,12 +199,45 @@
         "not-found": "Votre watchlist est vide."
       },
       "favorite": {
-        "not-found": "Vous n'avez aucun favoris."
+        "not-found": "Vous n'avez aucun favoris.",
+        "image-not-found": "Aucune image n'a pu être chargée"
+      },
+      "review-card": {
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "featured-film": {
+        "watch-trailer": "Regarder la bande-annonce",
+        "add-to-watchlist": "Ajouter à la liste",
+        "details": "Détails"
+      },
+      "about-movie": {
+        "synopsis": "Synopsis",
+        "details": "Détails",
+        "director": "Réalisateur",
+        "runtime": "Durée",
+        "release-year": "Année de sortie",
+        "rating": "Note",
+        "music-composer": "Compositeur",
+        "director-of-photography": "Directeur de la photographie"
+      },
+      "recommendation": {
+        "title": "Recommandations de films",
+        "filters": "Filtres",
+        "runtime": "Durée (minutes)",
+        "genres": "Genres",
+        "languages": "Langues",
+        "select": "Sélectionner",
+        "search": "Rechercher",
+        "filter": "Filtrer"
       }
     },
     "generic-error": {
-      "error": "Erreur",
-      "image-not-found": "Aucune image n'a pu être chargée"
+      "error": "Error"
     }
+  },
+  "generic-error": {
+    "error": "Erreur",
+    "image-not-found": "Aucune image n'a pu être chargée"
   }
 }

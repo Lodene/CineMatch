@@ -2,7 +2,9 @@
     <h1>{{ 'app.common-component.signup.title' | translate }}</h1>
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Username</mat-label>
+        <mat-label>
+          {{ 'app.common-component.signup.username-label' | translate }}
+        </mat-label>
         <input matInput formControlName="username" placeholder="Enter your username" />
         <mat-error *ngIf="signupForm.get('username')?.hasError('required')">
             {{ 'app.common-component.signup.username-error-required' | translate }}

@@ -106,12 +106,12 @@
         "experience": "With years of experience in design, development, and innovation, we collaborate closely with our clients to bring their ideas to life."
       },
       "contact": {
-          "title": "Contact Us",
-          "username": "Username",
-          "email": "Email",
-          "message": "Message",
-          "send": "Send"
-      }, 
+        "title": "Contact Us",
+        "username": "Username",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send"
+      },
       "privacy": {
         "title": "Privacy Policy",
         "intro": "We are committed to protecting your personal information and your right to privacy. This policy describes how we collect, use, and protect your data.",
@@ -128,7 +128,7 @@
           "description": "You have the right to access, correct, or delete your personal data at any time. Please contact us to exercise your rights."
         },
         "contact": "If you have any questions about this privacy policy, feel free to contact us."
-      }, 
+      },
       "terms": {
         "title": "Terms of Service",
         "intro": "These terms govern your use of our services. By accessing or using our platform, you agree to be bound by these terms.",
@@ -170,7 +170,7 @@
           "update-successful-title": "User config",
           "update-successful-description": "Your configuration has been sucessfuly updated"
         }
-      },  
+      },
       "movie-details": {
         "not-found": "Movie not found",
         "image-not-found": "No image could be loaded",
@@ -179,6 +179,35 @@
           "reviews": "Reviews",
           "similar-films": "Similar Films"
         }
+      },
+      "review-card": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "featured-film": {
+        "watch-trailer": "Watch Trailer",
+        "add-to-watchlist": "Add to Watchlist",
+        "details": "Details"
+      },
+      "about-movie": {
+        "synopsis": "Synopsis",
+        "details": "Details",
+        "director": "Director",
+        "runtime": "Runtime",
+        "release-year": "Release Year",
+        "rating": "Rating",
+        "music-composer": "Music composer",
+        "director-of-photography": "Director of photography"
+      },
+      "recommendation": {
+        "title": "Film Recommendations",
+        "filters": "Filters",
+        "runtime": "Runtime (minutes)",
+        "genres": "Genres",
+        "languages": "Languages",
+        "select": "Select",
+        "search": "Search",
+        "filter": "Filter"
       },
       "movie-actions": {
         "tooltip": {
