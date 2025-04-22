@@ -13,7 +13,7 @@ public interface ReviewMapper {
 
     @Mapping(target = "idMovie", expression = "java(reviewEntity.getMovie().getId())")
     @Mapping(target = "movieTitle", expression = "java(reviewEntity.getMovie().getTitle())")
-
+    @Mapping(target = "username", expression = "java(reviewEntity.getUser().getUsername())")
     public ReviewDto toReviewDto(ReviewEntity reviewEntity);
 
     public ReviewEntity toReviewEntity(ReviewDto dto);

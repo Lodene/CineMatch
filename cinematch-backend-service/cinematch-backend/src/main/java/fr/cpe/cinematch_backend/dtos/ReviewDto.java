@@ -20,4 +20,5 @@ public class ReviewDto {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private String username;
 }
