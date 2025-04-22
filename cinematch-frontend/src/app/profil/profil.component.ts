@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -6,13 +6,15 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { User } from '../../models/types/components/user/user.model';
 import { Movie } from '../../models/movie';
 import { ProfileService } from '../../services/profile/profile.service';
 import { LoaderService } from '../../services/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { HistoryComponent } from "../history/history.component";
+import { MatDialog } from '@angular/material/dialog';
+import { EditProfileDialogComponent } from '../common-component/edit-profile-dialog/edit-profile-dialog.component';
 
 
 
@@ -37,12 +39,14 @@ export class ProfilComponent implements OnInit {
   favoriteMovies: Movie[] = [];
 
   userProfile: User =  new User();   // Stocke le profil récupéré depuis l'API
-  userLoaded: boolean = false;
+ 
+  readonly dialog = inject(MatDialog);
   
   constructor(
     private profileService: ProfileService,
     private loaderService: LoaderService,
-    private toasterService: ToastrService
+    private toasterService: ToastrService,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -57,16 +61,38 @@ export class ProfilComponent implements OnInit {
       },
       error: (error) => {
         this.toasterService.error(error.error.reason, error.error.error);
-      },
-      complete: () => {
-        this.loaderService.hide();
-        this.userLoaded = true;
       }
+    }).add(() => {
+      this.loaderService.hide();
     });
-    this.profileService.usernameSubject.subscribe({
-      next: (username: string | null) => {
-        console.log(username);
+  }
+
+  editProfile() {
+    const dialogRef = this.dialog.open(EditProfileDialogComponent, {
+      width: '80%',
+      // height: '70%',
+      data: {
+        profile: this.userProfile
       }
+    })
+    dialogRef.afterClosed().subscribe({
+      next:((res) => {
+        if (res !== undefined) {
+          this.loaderService.show();
+          this.profileService.updateProfile(res).subscribe({
+            next: (() => {
+              this.toasterService.success(this.translateService.instant('app.common-component.profile.update-successfuly.reason'),
+               this.translateService.instant('app.common-component.profile.update-successfuly.message'));
+            }),
+            error: (err => {
+              console.error(err);
+              this.toasterService.error(err.error.reason, err.error.error);
+            })
+          }).add(() => {
+            this.loaderService.hide();
+          })
+        }
+      })
     })
   }
   

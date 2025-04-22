@@ -1,6 +1,6 @@
 <main class="profile-wrapper">
   <div class="profile-header">
-    <img class="avatar" src="userProfile.profilPicture" alt="'generic-error.image-not-found' | translate" />
+    <!-- <img class="avatar" src="userProfile.profilPicture" alt="'generic-error.image-not-found' | translate" /> -->
     <div class="profile-info">
       <h1 class="username">{{ userProfile.username }} </h1>
       <p class="bio">{{ userProfile.description }}</p>
@@ -10,10 +10,10 @@
         <div><span class="bold">{{ userProfile.watchlistCount }}</span> {{ 'app.common-component.profile.stats.watchlist' | translate }}</div>
       </div>
     </div>
-    <button mat-stroked-button>{{ 'app.common-component.profile.actions.edit' | translate }}</button>
+    <button mat-stroked-button (click)="editProfile()">{{ 'app.common-component.profile.actions.edit' | translate }}</button>
   </div>
 
-  <app-history class="history" *ngIf="userLoaded" [user]="userProfile"></app-history>
+  <app-history class="history"></app-history>
   <!-- <mat-tab-group>
     <mat-tab label="{{ 'app.common-component.profile.tabs.activity' | translate }}">
       <h2>{{ 'app.common-component.profile.sections.activity.title' | translate }}</h2>
