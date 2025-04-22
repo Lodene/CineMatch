@@ -25,6 +25,7 @@ public class PaginatedHistoryResponseDto {
     @NoArgsConstructor
     public static class HistoryEntryDto {
         private Long movieId;
+        private String movieTitle;
         private MovieActionType actionType;
         private LocalDateTime timestamp;
     }

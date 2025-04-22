@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
+import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.MovieActionHistoryEntity;
 import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 import fr.cpe.cinematch_backend.repositories.MovieActionHistoryRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
+import fr.cpe.cinematch_backend.repositories.MovieRepository;
 import fr.cpe.cinematch_backend.dtos.PaginatedHistoryResponseDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 
@@ -23,6 +25,9 @@ public class MovieActionHistoryService {
 
     @Autowired
     private AppUserRepository appUserRepository;
+
+    @Autowired
+    private MovieRepository movieRepository;
 
     public void logAction(Long userId, Long movieId, MovieActionType actionType) {
         MovieActionHistoryEntity history = new MovieActionHistoryEntity();
@@ -37,10 +42,17 @@ public class MovieActionHistoryService {
         Page<MovieActionHistoryEntity> pageResult = repository.findByUserIdOrderByTimestampDesc(userId, pageable);
 
         List<PaginatedHistoryResponseDto.HistoryEntryDto> simplified = pageResult.getContent().stream()
-                .map(entry -> new PaginatedHistoryResponseDto.HistoryEntryDto(
-                        entry.getMovieId(),
-                        entry.getActionType(),
-                        entry.getTimestamp()))
+                .map(entry -> {
+                    String title = movieRepository.findById(entry.getMovieId())
+                            .map(MovieEntity::getTitle)
+                            .orElse("Unknown Title");
+                    return new PaginatedHistoryResponseDto.HistoryEntryDto(
+                            entry.getMovieId(),
+                            title,
+                            entry.getActionType(),
+                            entry.getTimestamp()
+                    );
+                })
                 .toList();
 
         return PaginatedHistoryResponseDto.builder()
