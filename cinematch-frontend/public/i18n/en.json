@@ -182,7 +182,8 @@
       },
       "review-card": {
         "edit": "Edit",
-        "delete": "Delete"
+        "delete": "Delete",
+        "writen-by": "Writen by {{ username }}"
       },
       "featured-film": {
         "watch-trailer": "Watch Trailer",
@@ -215,6 +216,8 @@
           "add-to-watchlist": "Add the movie to your watchlist",
           "unlike": "Remove the movie to your favorites films",
           "remove-from-watchlist": "Remove the movie from your watchlist",
+          "add-review": "Add your review",
+          "edit-review": "Edit your review",
           "need-connection": "You need to be logged in to use this feature"
         },
         "snackbar": {
@@ -233,7 +236,9 @@
       "add-review-dialog": {
         "review": "Review",
         "save": "Save",
-        "delete": "Delete"
+        "delete": "Delete",
+        "cancel": "Cancel"
+        
 
       }
     },

@@ -46,10 +46,10 @@ export class MovieActionsComponent implements OnInit, OnChanges {
 
   @Input() isLiked: boolean;
   @Input() isInWatchList: boolean;
-  @Input() isCommentAdded: boolean;
+  @Input() isReviewAdded: boolean;
 
   @Input() showWatchList: boolean;
-  @Input() showAddComment: boolean;
+  @Input() showAddReview: boolean;
   @Input() showLike: boolean;
 
   constructor(private translateService: TranslateService) { }
@@ -91,8 +91,8 @@ export class MovieActionsComponent implements OnInit, OnChanges {
         this.translateService.instant('app.common-component.movie-actions.tooltip.add-to-watchlist');
 
     this.reviewToolTip = this.disabled ? this.translateService.instant('app.common-component.movie-actions.tooltip.need-connection') :
-      this.isCommentAdded ? this.translateService.instant('app.common-component.movie-actions.tooltip.remove-from-watchlist') :
-        this.translateService.instant('app.common-component.movie-actions.tooltip.add-to-watchlist');
+      this.isReviewAdded ? this.translateService.instant('app.common-component.movie-actions.tooltip.edit-review') :
+        this.translateService.instant('app.common-component.movie-actions.tooltip.add-review');
 
   }
 
@@ -102,7 +102,7 @@ export class MovieActionsComponent implements OnInit, OnChanges {
   private setIcons(): void {
     this.favoriteValue = this.disabled || !this.isLiked ? "favorite_border" : "favorite";
     this.watchListIconValue = this.disabled || !this.isInWatchList ? "playlist_add" : "playlist_remove";
-    this.addReviewIconValue  = this.disabled || !this.isCommentAdded ? "add_comment" : "chat_error";
+    this.addReviewIconValue  = this.disabled || !this.isReviewAdded ? "add_comment" : "edit";
   }
 
 

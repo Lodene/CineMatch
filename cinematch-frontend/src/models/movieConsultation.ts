@@ -4,7 +4,7 @@ import { Review } from "./review";
 export class MovieConsultation {
     movie: Movie;
     reviews: Review[];
-    isCommented: boolean;
+    commented: boolean;
     loved: boolean;
     inWatchlist: boolean;
 }

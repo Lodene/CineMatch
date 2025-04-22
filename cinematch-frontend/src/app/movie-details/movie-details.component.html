@@ -10,10 +10,12 @@
             <app-movie-actions
                 [disabled]="!isLogged"
                 [showLike]="true"
+                [showAddReview]="true"
                 [showWatchList]="true"
                 [movieId]="movie.id"
                 [isInWatchList]="isInWatchlist"
                 [isLiked]="isLiked"
+                [isReviewAdded]="isReviewAdded"
                 (watchlistActionEvent)="handleWatchListAction($event)"
                 (reviewActionEvent)="handleReviewAction($event)"
                 (likeActionEvent)="handleLikeAction($event)">
@@ -44,7 +46,7 @@
             <app-about-movie [movie]="movie"></app-about-movie>
         </mat-tab>
         <mat-tab label="{{ 'app.common-component.movie-details.tabs.reviews' | translate }}">
-            <div *ngFor="let review of movieConsultation.reviews">
+            <div *ngFor="let review of movieConsultation?.reviews">
                 <app-review-card [review]="review" [isProfile]="false"></app-review-card>
             </div>
         </mat-tab>

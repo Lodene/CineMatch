@@ -1,8 +1,8 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Params } from '@angular/router';
-import { finalize, firstValueFrom } from 'rxjs';
+import { catchError, finalize, firstValueFrom, of } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { MovieService } from '../../services/movie/movie.service';
 import { LoaderService } from '../../services/loader/loader.service';
@@ -24,6 +24,7 @@ import { ReviewService } from '../../services/review/review.service';
 import { Review } from '../../models/review';
 import { MatDialog } from '@angular/material/dialog';
 import { AddReviewDialogComponent } from '../common-component/add-review-dialog/add-review-dialog.component';
+import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -51,29 +52,33 @@ export class MovieDetailsComponent {
     private loaderService: LoaderService,
     private toasterService: ToastrService,
     private favoriteMovieService: FavoriteMovieService,
-    private reviwService: ReviewService,
+    private reviewService: ReviewService,
     private watchlistService: WatchlistService,
     private authService: AuthService,
+    private profileService: ProfileService,
     private snackbarService: SnackbarService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) { }
 
   idMovie: number;
   movie: Movie;
   isLogged = false;
   isLiked = false;
+  isReviewAdded = false;
   isInWatchlist = false;
   movieConsultation: MovieConsultation;
   reviews: Review[];
+  username: string | null;
 
   // used for image
   backdropUrl: string;
   posterUrl: string
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.loaderService.show();
     this.isLogged = this.authService.isAuthenticated();
+    this.username = await firstValueFrom(this.profileService.currentUsername)
     this.route.params.subscribe({
       next: (params: Params) => {
         this.idMovie = +params['id'];
@@ -87,6 +92,8 @@ export class MovieDetailsComponent {
               this.isInWatchlist = movieConsultation.inWatchlist;
               this.isLiked = movieConsultation.loved;
               this.reviews = movieConsultation.reviews;
+              this.isReviewAdded = movieConsultation.commented;
+
             },
             error: (error) => {
               if (error?.err) {
@@ -130,7 +137,7 @@ export class MovieDetailsComponent {
     });
   }
 
-  
+
   /**
    * 
    * @param action either removed or added (false = remove, true = added)
@@ -138,7 +145,7 @@ export class MovieDetailsComponent {
   showLovedSnackbar(action: boolean) {
     this.snackbarService.show(
       action ? this.translateService.instant('app.common-component.movie-actions.snackbar.like') :
-      this.translateService.instant('app.common-component.movie-actions.snackbar.unlike')
+        this.translateService.instant('app.common-component.movie-actions.snackbar.unlike')
     );
   }
   /**
@@ -148,24 +155,108 @@ export class MovieDetailsComponent {
   showWatchListSnackbar(action: boolean) {
     this.snackbarService.show(
       action ? this.translateService.instant('app.common-component.movie-actions.snackbar.add-watchlist') :
-      this.translateService.instant('app.common-component.movie-actions.snackbar.remove-watchlist')
+        this.translateService.instant('app.common-component.movie-actions.snackbar.remove-watchlist')
     );
   }
 
 
   readonly dialog = inject(MatDialog);
-  handleReviewAction($event: number): void {
-    console.log($event);
+
+  handleReviewAction(movieId: number): void {
+    const existingReview = this.movieConsultation.reviews.find(m => m.username === this.username);
+    let review: Review;
+
+    if (existingReview) {
+      review = existingReview;
+    } else {
+      review = new Review();
+      review.username = this.username as string;
+      review.idMovie = movieId;
+      review.movieTitle = this.movie.title;
+      review.createdAt = new Date();
+    }
 
     const dialogRef = this.dialog.open(AddReviewDialogComponent, {
-      // data: {review: this.movieConsultation.reviews.find()},
+      width: '400px',
+      data: {
+        review: review,
+        description: review.description
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        this.movieConsultation.reviews.push(result);
+    dialogRef.afterClosed().subscribe(async result => {
+      if (result === 'DELETE' && existingReview) {
+        const index = this.movieConsultation.reviews.findIndex(r => r.id === review.id);
+        if (index !== -1) {
+          this.movieConsultation.reviews.splice(index, 1);
+        }
+
+        try {
+          // Example of handling API call with firstValueFrom
+          var deletedReview = await firstValueFrom(
+            this.reviewService.deleteReview(review.id).pipe(
+              catchError(error => {
+                console.error('Error deleting review:', error);
+                this.snackbarService.show('Failed to delete review');
+                // Return a fallback value to continue the observable chain
+                return of(null);
+              })
+            )
+
+          );
+          if (deletedReview) {
+            this.isReviewAdded = false;
+            this.snackbarService.show('Review deleted successfully');
+          }
+        } catch (deleteError) {
+          console.error('Unexpected error during delete:', deleteError);
+          this.snackbarService.show('Failed to delete review');
+        }
+
+      }
+      else if (result !== undefined) {
+        // Update the description
+        review.description = result;
+        review.modifiedAt = new Date();
+        try {
+          if (!existingReview) {
+            this.loaderService.show()
+
+            this.reviewService.createReview(review).subscribe(
+              {
+                next: (() => {
+                  this.isReviewAdded = true;
+                  this.movieConsultation.reviews.push(review);
+                  this.snackbarService.show('Review added successfully');
+                }),
+                error: ((err) => {
+                  //err
+                }),
+              }
+            ).add(() => {
+              this.loaderService.hide()
+
+            })
+          } else {
+            var updatedReview = await firstValueFrom(
+              this.reviewService.updateReview(review.id, review).pipe(
+                catchError(error => {
+                  console.error('Error updating review:', error);
+                  this.snackbarService.show('Failed to update review');
+                  return of(null);
+                })
+              )
+            );
+            if (updatedReview) {
+              this.snackbarService.show('Review updated successfully');
+            }
+          }
+        } catch (saveError) {
+          console.error('Unexpected error during save:', saveError);
+          this.snackbarService.show('Failed to save review');
+        }
       }
     });
   }
+
 }

@@ -14,6 +14,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { Review } from '../../../models/review';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-review-dialog',
@@ -26,7 +27,8 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
-    TranslatePipe
+    TranslatePipe,
+    CommonModule
   ],
   templateUrl: './add-review-dialog.component.html',
   styleUrl: './add-review-dialog.component.scss'
@@ -34,16 +36,28 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 })
 export class AddReviewDialogComponent {
   
-  readonly dialogRef = inject(MatDialogRef<AddReviewDialogComponent>);
-  readonly data = inject<Review>(MAT_DIALOG_DATA);
-  readonly review = model(this.data);
 
+  readonly dialogRef = inject(MatDialogRef<AddReviewDialogComponent>);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
+  
+  // Create a model for the description that's initialized with the data
+  readonly description = model(this.data.description);
+  
+
+
+  ngOnInit() {
+    console.log('Initial description:', this.description());
+    console.log('Dialog data:', this.data.review.id);
+  }
+  
   onNoClick(): void {
     this.dialogRef.close();
   }
-
-  deleteReviwe(){
-
+  
+  deleteReview(): void {
+    this.dialogRef.close('DELETE');
   }
+
+  
 }
 

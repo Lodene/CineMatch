@@ -118,6 +118,8 @@
           "add-to-watchlist": "Ajouter ce film à votre watchlist",
           "unlike": "Retirer ce film de votre liste de favoris",
           "remove-from-watchlist": "Retirer ce film de votre watchlist",
+          "add-review": "Ajouter votre avis",
+          "edit-review": "Editer votre avis",
           "need-connection": "Vous devez être connecté pour utiliser cette fonctionnalité"
         },
         "snackbar": {
@@ -232,7 +234,10 @@
         "filter": "Filtrer"
       },
       "add-review-dialog": {
-        "review": "Avis"
+        "review": "Avis",
+        "save": "Sauvegarder",
+        "delete": "Supprimer",
+        "cancel": "Fermer"
       }
     },
     "generic-error": {

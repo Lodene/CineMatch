@@ -15,6 +15,7 @@ import { firstValueFrom } from 'rxjs';
     MatCardModule,
     MatButtonModule,
     CommonModule,
+    TranslatePipe
   ],
   templateUrl: './review-card.component.html',
   styleUrl: './review-card.component.scss'
@@ -25,7 +26,7 @@ export class ReviewCardComponent {
   @Input() isProfile : boolean;
 
   ngOnInit(){
-    this.review = new Review()
+    console.log(this.review)
   }
 
 }
