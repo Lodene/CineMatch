@@ -2,6 +2,8 @@ package fr.cpe.cinematch_backend.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import java.sql.Types;
 
 @Entity
 @Table(name = "profile")
@@ -19,9 +21,11 @@ public class ProfileEntity {
 
     private String description;
 
-    private String profilPicture; // Path vers l'image
+    @Column(name = "profil_picture", columnDefinition = "BYTEA")
+    @JdbcTypeCode(Types.BINARY)
+    private byte[] profilPicture;
 
     @OneToOne
-    @JoinColumn(name = "idUser", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
     private AppUser user;
 }

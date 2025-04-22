@@ -9,8 +9,11 @@ import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
+import java.util.Arrays;
 
 @Service
 public class ProfilService {
@@ -27,24 +30,24 @@ public class ProfilService {
     }
 
     public void updateProfile(String username, ProfileDto dto) throws GenericNotFoundException {
-        ProfileEntity profileEntity = this.checkAndRetrieveProfile(username);
-        profileEntity.setDescription(dto.getDescription());
-        profileEntity.setChild(dto.isChild());
-        if (dto.getProfilPicture() != null) {
-            profileEntity.setProfilPicture(dto.getProfilPicture());
-        }
-        profilRepository.save(profileEntity);
-    }
+        ProfileEntity e = checkAndRetrieveProfile(username);
 
-    public void updateProfilePicture(String username, String path) throws GenericNotFoundException {
-        ProfileEntity profileEntity = this.checkAndRetrieveProfile(username);
-        profileEntity.setProfilPicture(path);
-        profilRepository.save(profileEntity);
+        // on ne touche plus du tout à la photo ici
+        e.setDescription(dto.getDescription());
+        e.setChild(dto.isChild());
+
+        profilRepository.save(e);
     }
 
     public void deleteProfilePicture(String username) throws GenericNotFoundException {
         ProfileEntity profileEntity = this.checkAndRetrieveProfile(username);
-        profileEntity.setProfilPicture(null);
+        profileEntity.setProfilPicture(new byte[0]);
+        profilRepository.save(profileEntity);
+    }
+
+    public void saveProfilePicture(String username, MultipartFile file) throws GenericNotFoundException, IOException {
+        ProfileEntity profileEntity = this.checkAndRetrieveProfile(username);
+        profileEntity.setProfilPicture(file.getBytes());
         profilRepository.save(profileEntity);
     }
 

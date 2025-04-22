@@ -6,9 +6,10 @@ import fr.cpe.cinematch_backend.entities.ProfileEntity;
 import fr.cpe.cinematch_backend.dtos.ReviewDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(uses = ImageMapper.class)
 public interface ReviewWithFriendFlagMapper {
 
     ReviewWithFriendFlagMapper INSTANCE = Mappers.getMapper(ReviewWithFriendFlagMapper.class);
@@ -25,5 +26,6 @@ public interface ReviewWithFriendFlagMapper {
     ReviewWithFriendFlagDto fromReviewDtoAndProfile(ReviewDto base, ProfileDto profile);
 
     @Mapping(source = "user.username", target = "username")
+    @Mapping(target = "profilPicture", source = "profilPicture", qualifiedByName = "bytesToBase64")
     ProfileDto profileEntityToDto(ProfileEntity entity);
 }

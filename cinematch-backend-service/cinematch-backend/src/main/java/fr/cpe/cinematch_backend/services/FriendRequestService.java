@@ -10,11 +10,11 @@ import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.FriendRequestRepository;
 import fr.cpe.cinematch_backend.repositories.FriendShipRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +61,6 @@ public class FriendRequestService {
         friendRequestRepository.save(request);
     }
 
-    // return true if demand was accepted, false otherwise
     public void acceptFriendRequest(Long requestId, Long currentUserId) throws GenericNotFoundException {
         FriendRequestEntity request = friendRequestRepository.findById(requestId)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Demande introuvable", "Aucune demande avec cet identifiant"));
@@ -111,10 +110,14 @@ public class FriendRequestService {
                     .orElseThrow(() -> new GenericNotFoundException(404, "Profile is missing",
                             "The sender's profile was not found"));
 
+            String base64Image = profil.getProfilPicture() != null
+                    ? Base64.getEncoder().encodeToString(profil.getProfilPicture())
+                    : null;
+
             result.add(new IncomingFriendRequestDto(
                     request.getId(),
                     sender.getUsername(),
-                    profil.getProfilPicture()));
+                    base64Image));
         }
 
         return result;
@@ -124,7 +127,6 @@ public class FriendRequestService {
         Optional<FriendRequestEntity> friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(senderId,
                 userId);
         if (friendRequestEntity.isEmpty()) {
-            // on vérifie dans l'autre sens
             friendRequestEntity = friendRequestRepository.findByToIdAndAskedById(userId, senderId);
             return friendRequestEntity.isPresent();
         } else {
@@ -140,5 +142,4 @@ public class FriendRequestService {
 
         friendRequestRepository.deleteAll(toDelete);
     }
-
 }
