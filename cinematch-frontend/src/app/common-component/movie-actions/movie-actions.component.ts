@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {TooltipPosition, MatTooltipModule} from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { SnackbarService } from '../../../services/snackbar.service';
 @Component({
   selector: 'app-movie-actions',
   imports: [MatIconModule,
@@ -41,8 +42,8 @@ export class MovieActionsComponent implements OnInit, OnChanges
 
   @Input() showWatchList: boolean
   @Input() showLike: boolean;
-  constructor(private translateService: TranslateService
-  ) { }
+
+  constructor(private translateService: TranslateService) { }
 
   ngOnInit(): void {
     this.setToolTips();

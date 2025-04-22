@@ -7,7 +7,7 @@ import { Movie } from '../../models/movie';
 import { MovieService } from '../../services/movie/movie.service';
 import { LoaderService } from '../../services/loader/loader.service';
 import { ToastrService } from 'ngx-toastr';
-import { TranslateDirective, TranslatePipe } from '@ngx-translate/core';
+import { TranslateDirective, TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ListPersonComponent } from '../list-person/list-person.component';
 import { MovieConsultation } from '../../models/movieConsultation';
 import { MovieImageUtils } from '../../utils/movieImageUtils';
@@ -19,6 +19,7 @@ import { WatchlistService } from '../../services/watchlist/watchlist.service';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AboutMovieComponent } from './about-movie/about-movie.component';
 import { ReviewCardComponent } from '../common-component/review-card/review-card.component';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-movie-details',
@@ -47,7 +48,9 @@ export class MovieDetailsComponent {
     private toasterService: ToastrService,
     private favoriteMovieService: FavoriteMovieService,
     private watchlistService: WatchlistService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackbarService: SnackbarService,
+    private translateService: TranslateService
   ) { }
 
   idMovie: number;
@@ -99,6 +102,7 @@ export class MovieDetailsComponent {
     this.watchlistService.addOrRemoveMovieFromWatchlist($event).subscribe({
       next: () => {
         this.isInWatchlist = !this.isInWatchlist;
+        this.showWatchListSnackbar(this.isInWatchlist);
       },
       error: (err) => {
         this.toasterService.error(err.error.reason, err.error.error);
@@ -111,11 +115,35 @@ export class MovieDetailsComponent {
       next: () => {
         // inversion
         this.isLiked = !this.isLiked;
-        console.log(this.isLiked);
+        this.showLovedSnackbar(this.isLiked);
       },
       error: (err) => {
         this.toasterService.error(err.error.reason, err.error.error);
       }
     });
   }
+
+  
+  /**
+   * 
+   * @param action either removed or added (false = remove, true = added)
+   */
+  showLovedSnackbar(action: boolean) {
+    this.snackbarService.show(
+      action ? this.translateService.instant('app.common-component.movie-actions.snackbar.like') :
+      this.translateService.instant('app.common-component.movie-actions.snackbar.unlike')
+    );
+  }
+  /**
+   * 
+   * @param action either removed or added (false = remove, true = added)
+   */
+  showWatchListSnackbar(action: boolean) {
+    this.snackbarService.show(
+      action ? this.translateService.instant('app.common-component.movie-actions.snackbar.add-watchlist') :
+      this.translateService.instant('app.common-component.movie-actions.snackbar.remove-watchlist')
+    );
+  }
+
+
 }

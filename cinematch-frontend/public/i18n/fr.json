@@ -119,6 +119,12 @@
           "unlike": "Retirer ce film de votre liste de favoris",
           "remove-from-watchlist": "Retirer ce film de votre watchlist",
           "need-connection": "Vous devez être connecté pour utiliser cette fonctionnalité"
+        },
+        "snackbar": {
+          "like": "Le film a été ajouté à vos favoris",
+          "unlike": "Le film a été retiré de vos favoris",
+          "add-watchlist": "Le film a été ajouté à votre watchlist",
+          "remove-watchlist": "Le film a été retiré de votre watchlist"
         }
       },
       "privacy": {

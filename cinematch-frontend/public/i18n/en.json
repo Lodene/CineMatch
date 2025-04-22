@@ -182,6 +182,12 @@
           "unlike": "Remove the movie to your favorites films",
           "remove-from-watchlist": "Remove the movie from your watchlist",
           "need-connection": "You need to be logged in to use this feature"
+        },
+        "snackbar": {
+          "like": "The movie has been added to your favorites",
+          "unlike": "The movie has been removed from your favorites",
+          "add-watchlist": "The movie has been added to your watchlist",
+          "remove-watchlist": "The movie has been removed from your watchlist"
         }
       },
       "watchlist": {
