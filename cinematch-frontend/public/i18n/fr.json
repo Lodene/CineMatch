@@ -78,6 +78,10 @@
         "actions": {
           "edit": "Modifier le profil"
         },
+        "update-successfuly": {
+          "message": "Profil mis à jour",
+          "reason": "Vos informations ont été correctement mise à jour"
+        },
         "tabs": {
           "activity": "Activité",
           "favorites": "Favoris"
@@ -241,6 +245,11 @@
       },
       "add-review-dialog": {
         "review": "Avis"
+      },
+      "edit-profile-dialog": {
+        "title": "Éditer le profil",
+        "description-label": "Description de votre profil",
+        "child-label": "Compte pour enfant ?"
       }
     },
     "generic-error": {

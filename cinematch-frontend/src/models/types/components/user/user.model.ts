@@ -7,6 +7,7 @@ export class User {
   watchedMoviesCount: number;
   reviewsCount: number;
   watchlistCount: number;
+  child: boolean;
 
   constructor(data?: Partial<User>) {
     this.username = data?.username || '';
@@ -16,5 +17,6 @@ export class User {
     this.watchedMoviesCount = data?.watchedMoviesCount || 0;
     this.reviewsCount = data?.reviewsCount || 0;
     this.watchlistCount = data?.watchlistCount || 0;
+    this.child = data?.child || false;
   }
 }

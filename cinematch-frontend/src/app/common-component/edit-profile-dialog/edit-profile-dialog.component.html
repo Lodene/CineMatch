@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{ 'app.common-component.edit-profile-dialog.title' | translate }}</h2>
+<mat-dialog-content class="dialog-content-wrapper">
+
+    <mat-form-field appearance="outline" class="large-form-field three-row-textarea">
+        <mat-label>{{ 'app.common-component.edit-profile-dialog.description-label' | translate }}</mat-label>
+        <textarea
+        matInput
+        rows="3"
+        [cdkTextareaAutosize]="false"
+        cdkTextareaAutosize
+        class="no-resize"
+        [(ngModel)]="description"
+        maxlength="150"
+        ></textarea>
+        <mat-hint align="end">{{ description()!.length }} / 150</mat-hint>
+    </mat-form-field>
+    <mat-checkbox [(ngModel)]="isChild">{{ 'app.common-component.edit-profile-dialog.child-label' | translate }}</mat-checkbox>
+
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
+</mat-dialog-actions>

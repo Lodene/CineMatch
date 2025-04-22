@@ -78,6 +78,10 @@
         "actions": {
           "edit": "Edit Profile"
         },
+        "update-successfuly": {
+          "message": "Profile updated",
+          "reason": "Your information were successfuly updated"
+        },
         "tabs": {
           "activity": "Activity",
           "favorites": "Favorites"
@@ -243,6 +247,11 @@
         "save": "Save",
         "delete": "Delete"
 
+      },
+      "edit-profile-dialog": {
+        "title": "Edit profile",
+        "description-label": "Profile's description",
+        "child-label": "Children account ?"
       }
     },
     "generic-error": {

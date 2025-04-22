@@ -1,0 +1,19 @@
+.large-form-field {
+    width: 100%;
+}
+
+.no-resize {
+resize: none !important;       /* Prevent manual resizing */
+overflow: auto;                /* Optional: show scrollbar */
+line-height: 1.5rem;           /* Tweak based on font */
+height: calc(1.5rem * 3 + 2px); /* 3 rows exactly */
+}
+
+.three-row-textarea .mat-form-field-infix {
+height: auto;
+width: 100%;
+}
+
+.dialog-content-wrapper {
+    padding-top: 1em !important;
+}
