@@ -4,25 +4,19 @@ import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
-import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
-import fr.cpe.cinematch_backend.services.AppUserService;
-import fr.cpe.cinematch_backend.services.ConversationService;
-import fr.cpe.cinematch_backend.services.FriendRequestService;
-import fr.cpe.cinematch_backend.services.FriendshipService;
-import fr.cpe.cinematch_backend.services.LovedMovieService;
-import fr.cpe.cinematch_backend.services.ProfilService;
-import fr.cpe.cinematch_backend.services.ReviewService;
-import fr.cpe.cinematch_backend.services.WatchedMovieService;
-import fr.cpe.cinematch_backend.services.WatchlistMovieService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import fr.cpe.cinematch_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/profile")
@@ -30,31 +24,22 @@ public class ProfilController {
 
     @Autowired
     private ProfilService profilService;
-
     @Autowired
     private ProfilRepository profilRepository;
-
     @Autowired
     private LovedMovieService lovedMovieService;
-
     @Autowired
     private WatchedMovieService watchedMovieService;
-
     @Autowired
     private WatchlistMovieService watchlistMovieService;
-
     @Autowired
     private FriendshipService friendshipService;
-
     @Autowired
     private FriendRequestService friendRequestService;
-
     @Autowired
     private ReviewService reviewService;
-
     @Autowired
     private AppUserService appUserService;
-
     @Autowired
     private ConversationService conversationService;
 
@@ -66,16 +51,28 @@ public class ProfilController {
 
     @PutMapping
     public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody ProfileDto profileDto) throws GenericNotFoundException {
+                                              @RequestBody ProfileDto profileDto)
+            throws GenericNotFoundException {
+        // on ne transmet que les champs description + isChild
         profilService.updateProfile(userDetails.getUsername(), profileDto);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/picture")
-    public ResponseEntity<Void> updatePicture(@AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody String path) throws GenericNotFoundException {
-        profilService.updateProfilePicture(userDetails.getUsername(), path);
-        return ResponseEntity.ok().build();
+    @PutMapping(value = "/picture/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadProfilePicture(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            if (file.getSize() > 150 * 1024) {
+                return ResponseEntity.badRequest().body("Image trop lourde (max 100 Ko).");
+            }
+
+            profilService.saveProfilePicture(userDetails.getUsername(), file);
+            return ResponseEntity.ok().build();
+
+        } catch (IOException | GenericNotFoundException e) {
+            return ResponseEntity.badRequest().body("Erreur lors de l’upload : " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/picture")
@@ -95,11 +92,11 @@ public class ProfilController {
     public ResponseEntity<Void> deleteUserByUserId() throws GenericNotFoundException, BadEndpointException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUser uE = (AppUser) authentication.getPrincipal();
+
         lovedMovieService.deleteAllByUserId(uE.getId());
         watchedMovieService.deleteAllByUserId(uE.getId());
         watchlistMovieService.deleteAllByUserId(uE.getId());
         friendshipService.deleteAllByUserId(uE.getId());
-        friendRequestService.deleteAllByUserId(uE.getId());
         friendRequestService.deleteAllByUserId(uE.getId());
         reviewService.deleteAllByUserId(uE.getId());
         conversationService.deleteAllConversationsAndMessagesByUserId(uE.getId());
