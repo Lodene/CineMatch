@@ -1,5 +1,5 @@
 import { CommonModule, NgIf } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Params } from '@angular/router';
 import { finalize, firstValueFrom } from 'rxjs';
@@ -20,6 +20,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AboutMovieComponent } from './about-movie/about-movie.component';
 import { ReviewCardComponent } from '../common-component/review-card/review-card.component';
 import { SnackbarService } from '../../services/snackbar.service';
+import { ReviewService } from '../../services/review/review.service';
+import { Review } from '../../models/review';
+import { MatDialog } from '@angular/material/dialog';
+import { AddReviewDialogComponent } from '../common-component/add-review-dialog/add-review-dialog.component';
 
 @Component({
   selector: 'app-movie-details',
@@ -47,6 +51,7 @@ export class MovieDetailsComponent {
     private loaderService: LoaderService,
     private toasterService: ToastrService,
     private favoriteMovieService: FavoriteMovieService,
+    private reviwService: ReviewService,
     private watchlistService: WatchlistService,
     private authService: AuthService,
     private snackbarService: SnackbarService,
@@ -59,6 +64,7 @@ export class MovieDetailsComponent {
   isLiked = false;
   isInWatchlist = false;
   movieConsultation: MovieConsultation;
+  reviews: Review[];
 
   // used for image
   backdropUrl: string;
@@ -80,6 +86,7 @@ export class MovieDetailsComponent {
               this.posterUrl = MovieImageUtils.constructUrl(movieConsultation.movie.posterPath);
               this.isInWatchlist = movieConsultation.inWatchlist;
               this.isLiked = movieConsultation.loved;
+              this.reviews = movieConsultation.reviews;
             },
             error: (error) => {
               if (error?.err) {
@@ -146,4 +153,19 @@ export class MovieDetailsComponent {
   }
 
 
+  readonly dialog = inject(MatDialog);
+  handleReviewAction($event: number): void {
+    console.log($event);
+
+    const dialogRef = this.dialog.open(AddReviewDialogComponent, {
+      // data: {review: this.movieConsultation.reviews.find()},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        this.movieConsultation.reviews.push(result);
+      }
+    });
+  }
 }

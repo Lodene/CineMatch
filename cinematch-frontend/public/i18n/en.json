@@ -229,6 +229,12 @@
       },
       "favorite": {
         "not-found": "You have no favorites."
+      },
+      "add-review-dialog": {
+        "review": "Review",
+        "save": "Save",
+        "delete": "Delete"
+
       }
     },
     "generic-error": {

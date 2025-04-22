@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>{{'app.common-component.favorite.add-reviwe-dialog.reviwe' | translate }}</h2>
+<mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{'app.common-component.favorite.add-reviwe-dialog.reviwe' | translate }}</mat-label>
+    <input matInput [(ngModel)]="review().description" />
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="warn" (click)="deleteReviwe()">{{'app.common-component.favorite.add-reviwe-dialog.delete' | translate }}</button>
+  <button mat-button [mat-dialog-close]="review()" cdkFocusInitial>{{'app.common-component.favorite.add-reviwe-dialog.save' | translate }}</button>
+</mat-dialog-actions>

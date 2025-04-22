@@ -1,5 +1,6 @@
 export class Review {
     id: number = 1;
+    username: number = 1;
     idMovie: number = 1;
     movieTitle: string = "TEst";
     note: number = 9.1;

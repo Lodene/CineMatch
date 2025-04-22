@@ -14,4 +14,12 @@
     matTooltip="{{ watchListToolTip }}">
         <mat-icon class="big-icon" (click)="handleWatchListAction()">{{ watchListIconValue }}</mat-icon>
     </button>
+
+    <button
+    *ngIf="showAddComment"
+    [disabled]="disabled"
+    class="empty-button"
+    matTooltip="{{ reviewToolTip }}">   
+        <mat-icon class="big-icon" (click)="handleReviewAction()">{{ addReviewIconValue }}</mat-icon>
+    </button>
 </div>

@@ -98,7 +98,7 @@
             "title": "Vos films préférés"
           }
         }
-      }, 
+      },
       "about": {
         "title": "À propos de nous",
         "intro": "Bienvenue chez CineMatch ! Nous sommes une équipe de passionnés dédiée à fournir des solutions numériques de haute qualité.",
@@ -230,6 +230,9 @@
         "select": "Sélectionner",
         "search": "Rechercher",
         "filter": "Filtrer"
+      },
+      "add-review-dialog": {
+        "review": "Avis"
       }
     },
     "generic-error": {
