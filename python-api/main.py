@@ -2,14 +2,25 @@ from fastapi import FastAPI
 import stomp
 import json
 import uuid
+from pydantic import BaseModel
+from typing import Dict
 
 app = FastAPI(title="FastAPI ActiveMQ Integration")
+
+
+
+
+class MessageRequest(BaseModel):
+    requestId: str
+    serviceId: str
+    payload: Dict
+
 
 # ActiveMQ connection settings
 activemq_host = "activemq"
 activemq_port = 61613  # STOMP port
-activemq_queue = "/queue/first_queue"
-activemq_queue_response = "/queue/second_queue"
+activemq_queue = "/queue/service-movie.queue"
+activemq_queue_response = "/queue/model-in.queue"
 activemq_user = "admin"
 activemq_password = "cine"
 
@@ -24,11 +35,25 @@ class MessageListener(stomp.ConnectionListener):
         print(f'Error: {frame.body}')
 
     def on_message(self, frame):
-        message = json.loads(frame.body)
-        print(f'Received: {message}')
-        received_messages.append(message)
-        activemq_client.send_message(f"This is a answer to the message received : {message}", destination_queue=activemq_queue_response)
+        # message = json.loads(frame.body)
+        # print(f'[Orchestrator → FastAPI]: {message}')
+        # received_messages.append(message)
+        # activemq_client.send_message(f"This is a answer to the message received : {message}", destination_queue=activemq_queue_response)
 
+        try:
+            parsed_message = MessageRequest.parse_raw(frame.body)
+            print("partie MSG-----------------")
+            print(f"[Orchestrator → FastAPI] Message reçu et validé : {parsed_message}")
+
+            # Enregistre la version dict pour l’API
+            received_messages.append(parsed_message.dict())
+
+            # Envoie à model-in.queue
+            self.activemq_client.send_message(parsed_message.dict(), destination_queue=activemq_queue_response)
+        except Exception as e:
+            print(f"[FastAPI] Erreur de parsing du message : {e}")
+
+       
 class ActiveMQClient:
     def __init__(self, host, port, username, password, queue):
         self.host = host
@@ -59,6 +84,7 @@ class ActiveMQClient:
             try:
                 self.consumer_conn.connect(self.username, self.password, wait=True)
                 self.consumer_conn.subscribe(destination=self.queue, id=1, ack='auto')
+                print(f"[FastAPI] Subscribed to {self.queue}")
             except Exception as e:
                 print(e)
 
@@ -96,10 +122,6 @@ activemq_client = ActiveMQClient(
     activemq_queue
 )
 
-print("activemq_client : ", activemq_client.host, "\n")
-print("activemq_client port : ", activemq_client.port, "\n")
-print("activemq_client username : ", activemq_client.username, "\n")
-
 @app.post("/send-message/")
 async def send_message(message: dict):
     """Send a message to ActiveMQ queue"""
@@ -113,34 +135,34 @@ async def get_messages():
     """Get all received messages from ActiveMQ queue"""
     return {"messages": received_messages}
 
-# @app.post("/clear-messages/")
-# async def clear_messages():
-#     """Clear the stored messages"""
-#     received_messages.clear()
-#     return {"status": "Messages cleared"}
+@app.post("/clear-messages/")
+async def clear_messages():
+    """Clear the stored messages"""
+    received_messages.clear()
+    return {"status": "Messages cleared"}
 
-# @app.get("/health/")
-# async def health_check():
-#     """Check if connections to ActiveMQ are alive"""
-#     producer_status = activemq_client.producer_conn.is_connected()
-#     consumer_status = activemq_client.consumer_conn.is_connected()
+@app.get("/health/")
+async def health_check():
+    """Check if connections to ActiveMQ are alive"""
+    producer_status = activemq_client.producer_conn.is_connected()
+    consumer_status = activemq_client.consumer_conn.is_connected()
     
-#     # Try to reconnect if connections are down
-#     if not producer_status:
-#         activemq_client.connect_producer()
-#         producer_status = activemq_client.producer_conn.is_connected()
+    # Try to reconnect if connections are down
+    if not producer_status:
+        activemq_client.connect_producer()
+        producer_status = activemq_client.producer_conn.is_connected()
     
-#     if not consumer_status:
-#         activemq_client.connect_consumer()
-#         consumer_status = activemq_client.consumer_conn.is_connected()
+    if not consumer_status:
+        activemq_client.connect_consumer()
+        consumer_status = activemq_client.consumer_conn.is_connected()
     
-#     return {
-#         "status": "healthy" if producer_status and consumer_status else "unhealthy",
-#         "producer_connected": producer_status,
-#         "consumer_connected": consumer_status
-#     }
+    return {
+        "status": "healthy" if producer_status and consumer_status else "unhealthy",
+        "producer_connected": producer_status,
+        "consumer_connected": consumer_status
+    }
 
-# @app.on_event("shutdown")
-# def shutdown_event():
-#     """Clean up connections when shutting down"""
-#     activemq_client.disconnect()
+@app.on_event("shutdown")
+def shutdown_event():
+    """Clean up connections when shutting down"""
+    activemq_client.disconnect()
