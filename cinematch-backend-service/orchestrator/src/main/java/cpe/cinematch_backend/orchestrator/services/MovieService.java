@@ -1,5 +1,6 @@
 package cpe.cinematch_backend.orchestrator.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projet_asi_ii.MessageRequest;
 import cpe.cinematch_backend.orchestrator.entities.MovieEntity;
 import cpe.cinematch_backend.orchestrator.repositories.MovieRepository;
@@ -42,8 +43,21 @@ public class MovieService
 			String serviceId = entry.getKey();
 			String queueName = entry.getValue();
 
-			MessageRequest message = new MessageRequest(requestId.toString(), serviceId, Map.of("name", promptRequest.getName(), "prompt", promptRequest.getPrompt()));
-			jmsTemplate.convertAndSend(queueName, message);
+			//MessageRequest message = new MessageRequest(requestId.toString(), serviceId, Map.of("name", promptRequest.getName(), "prompt", promptRequest.getPrompt()));
+			//jmsTemplate.convertAndSend(queueName, message);
+			MessageRequest message = new MessageRequest(
+					requestId.toString(),
+					serviceId,
+					Map.of("name", promptRequest.getName(), "prompt", promptRequest.getPrompt())
+			);
+
+			try {
+				ObjectMapper objectMapper = new ObjectMapper();
+				String jsonMessage = objectMapper.writeValueAsString(message); // on convertit l'objet Java en JSON
+				jmsTemplate.convertAndSend(queueName, jsonMessage); // on envoie du JSON texte, pas un objet
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
