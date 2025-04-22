@@ -476,6 +476,9 @@
                              referencedColumnNames="id"
                              referencedTableName="app_user"/>
 </changeSet>
+    <changeSet id="1745344427464-1" author="T-H-O-M-A-S">
+        <modifyDataType tableName="reviews" columnName="note" newDataType="float"/>
+    </changeSet>
 
 
 </databaseChangeLog>

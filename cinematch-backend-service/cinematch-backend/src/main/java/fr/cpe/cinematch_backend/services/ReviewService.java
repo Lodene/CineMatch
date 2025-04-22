@@ -82,9 +82,6 @@ public class ReviewService {
         ReviewEntity reviewEntity = reviewRepository.findById(id)
                 .orElseThrow(() -> new GenericNotFoundException(404,
                         "Review not found", "ReviewEntity with id '" + id + "' does not exist"));
-        if (reviewRequest.getNote() == null) {
-            throw new BadEndpointException(400, "Error while updating review", "No note found");
-        }
         if (reviewRequest.getDescription() == null) {
             throw new BadEndpointException(400, "Error while updating review", "No description found");
         }

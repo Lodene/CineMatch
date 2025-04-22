@@ -1,12 +1,28 @@
+
 <h2 mat-dialog-title>{{'app.common-component.add-review-dialog.review' | translate }}</h2>
-<mat-dialog-content>
-  <mat-form-field>
+<mat-dialog-content class="dialog-content-wrapper">
+
+  <app-star-rating [(rating)]="userRating"></app-star-rating>
+
+  <mat-form-field appearance="outline" class="large-form-field three-row-textarea">
     <mat-label>{{'app.common-component.add-review-dialog.review' | translate }}</mat-label>
-    <input matInput [(ngModel)]="description" />
-  </mat-form-field>
+    <textarea
+    required="true"
+    matInput
+    rows="3"
+    [cdkTextareaAutosize]="false"
+    cdkTextareaAutosize
+    class="no-resize"
+    [(ngModel)]="description"    
+    maxlength="150"
+    (ngModelChange)="descriptionChanged($event)"
+    ></textarea>
+    <mat-hint align="end">{{ description()!.length }} / 150</mat-hint>
+</mat-form-field>
+
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button (click)="onNoClick()">{{'app.common-component.add-review-dialog.cancel' | translate }}</button>
   <button mat-button color="warn" (click)="deleteReview()" *ngIf="data.review.id">{{'app.common-component.add-review-dialog.delete' | translate }}</button>
-  <button mat-button [mat-dialog-close]="description()" color="primary" cdkFocusInitial>{{'app.common-component.add-review-dialog.save' | translate }}</button>
+  <button mat-button [disabled]="!isFormValid" [mat-dialog-close]="{description: description(), userRating: userRating()}" color="primary" cdkFocusInitial>{{'app.common-component.add-review-dialog.save' | translate }}</button>
 </mat-dialog-actions>

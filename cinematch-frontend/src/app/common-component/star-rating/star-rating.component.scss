@@ -1,0 +1,32 @@
+.star-rating {
+  display: flex;
+
+  .material-icons {
+    font-size: 32px;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+
+    // All stars are grey by default
+    color: #ccc;
+  }
+
+  // Make filled or half-filled stars golden
+  .material-icons:not(.material-icons-outlined) {
+    color: #ffca28;
+  }
+}
+// .star-rating {
+//   display: flex;
+
+//   .material-icons {
+//     font-size: 32px;
+//     cursor: pointer;
+//     color: #ccc;
+//     transition: color 0.2s;
+//   }
+
+//   .filled {
+//     color: #ffca28;
+//   }
+// }
+

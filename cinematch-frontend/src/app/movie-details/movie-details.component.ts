@@ -23,7 +23,7 @@ import { SnackbarService } from '../../services/snackbar.service';
 import { ReviewService } from '../../services/review/review.service';
 import { Review } from '../../models/review';
 import { MatDialog } from '@angular/material/dialog';
-import { AddReviewDialogComponent } from '../common-component/add-review-dialog/add-review-dialog.component';
+import { AddReviewDialogComponent, AddReviewDialogData } from '../common-component/add-review-dialog/add-review-dialog.component';
 import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
@@ -175,13 +175,18 @@ export class MovieDetailsComponent {
       review.movieTitle = this.movie.title;
       review.createdAt = new Date();
     }
-
+    console.log(review);
     const dialogRef = this.dialog.open(AddReviewDialogComponent, {
-      width: '400px',
+      width: '70%',
+      height: '60%',
+
       data: {
         review: review,
-        description: review.description,
-      },
+        description: review.description !== undefined && 
+          review.description !== null ? review.description : '',
+        // 0.5 to have a semi star at minimal
+        note: review.note !== undefined && review.note !== null ? review.note : 0.5
+      } as AddReviewDialogData,
     });
 
     dialogRef.afterClosed().subscribe(async result => {
@@ -218,13 +223,15 @@ export class MovieDetailsComponent {
 
       }
       else if (result !== undefined) {
-        // Update the description
-        review.description = result;
+        console.log(result);
+        // Update the review
+        review.description = result.description;
+        review.note = result.userRating;
         review.modifiedAt = new Date();
+        console.log(review);
         try {
           if (!existingReview) {
             this.loaderService.show()
-
             this.reviewService.createReview(review).subscribe(
               {
                 next: ((res: Review) => {

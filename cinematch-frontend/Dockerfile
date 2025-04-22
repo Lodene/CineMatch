@@ -1,9 +1,9 @@
-FROM node:alpine
+FROM node:slim
 
 WORKDIR /app
 COPY . .
 RUN npm install -g @angular/cli
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps && npm cache clean --force
 
 EXPOSE 4200
 

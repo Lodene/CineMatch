@@ -1,0 +1,14 @@
+<div class="star-rating">
+    <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+        <span
+        class="material-icons"
+        [ngClass]="{ 'filled': (currentHover || rating) >= i + 0.5 }"
+        (mousemove)="onMouseMove($event, i + 1)"
+        (mouseleave)="clearHover()"
+        (click)="setRating(currentHover || (i + 1))">
+        {{ getStarIcon(i + 1) }}
+      </span>
+      
+    </ng-container>
+  </div>
+  

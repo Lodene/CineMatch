@@ -12,8 +12,8 @@ public class ReviewRequest {
     private Long idMovie;
 
     @Min(0)
-    @Max(10)
-    private Integer note;
+    @Max(5)
+    private float note;
 
     private String description;
 }

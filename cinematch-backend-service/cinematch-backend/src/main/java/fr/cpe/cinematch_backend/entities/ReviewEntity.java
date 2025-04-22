@@ -19,7 +19,7 @@ public class ReviewEntity {
     @Column(length = 1000)
     private String description;
 
-    private Integer note;
+    private Float note;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_movie", nullable = false)
