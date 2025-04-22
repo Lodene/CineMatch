@@ -21,6 +21,7 @@ public interface ReviewWithFriendFlagMapper {
     @Mapping(source = "base.createdAt", target = "createdAt")
     @Mapping(source = "base.modifiedAt", target = "modifiedAt")
     @Mapping(target = "writtenByFriend", ignore = true)
+    @Mapping(target = "username", source = "profile.username")
     ReviewWithFriendFlagDto fromReviewDtoAndProfile(ReviewDto base, ProfileDto profile);
 
     @Mapping(source = "user.username", target = "username")
