@@ -1,7 +1,7 @@
 package cpe.cinematch_backend.orchestrator.controllers;
 
-import cpe.cinematch_backend.orchestrator.requests.PromptRequest;
-import cpe.cinematch_backend.orchestrator.services.MovieService;
+import cpe.cinematch_backend.orchestrator.requests.SimilarMovieRequest;
+import cpe.cinematch_backend.orchestrator.services.SimilarMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +13,14 @@ public class OrchestratorController
 {
 
 	@Autowired
-	private MovieService movieService;
+	private SimilarMovieService similarMovieService;
 
-	@PostMapping("/generateCard")
-	public String generateCard(@RequestHeader("Authorization") String bearerToken, @RequestBody PromptRequest promptRequest) {
-		movieService.sendRequests(UUID.randomUUID(), bearerToken, promptRequest);
-		return "Request sent";
+
+
+	@PostMapping("/similar-film")
+	public String getSimiliarFilm(@RequestBody SimilarMovieRequest similarMovieRequest) {
+		UUID uuid = UUID.randomUUID();
+		similarMovieService.sendRequest(uuid, similarMovieRequest);
+		return uuid.toString() ;
 	}
 }

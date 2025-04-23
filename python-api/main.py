@@ -17,9 +17,9 @@ class MessageRequest(BaseModel):
 
 
 # ActiveMQ connection settings
-activemq_host = "activemq"
+activemq_host = "localhost"
 activemq_port = 61613  # STOMP port
-activemq_queue = "/queue/service-movie.queue"
+activemq_queue = "/queue/similar-movie.queue"
 activemq_queue_response = "/queue/model-in.queue"
 activemq_user = "admin"
 activemq_password = "cine"
