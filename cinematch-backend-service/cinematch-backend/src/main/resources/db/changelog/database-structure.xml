@@ -479,6 +479,11 @@
     <changeSet id="1745344427464-1" author="T-H-O-M-A-S">
         <modifyDataType tableName="reviews" columnName="note" newDataType="float"/>
     </changeSet>
+    <changeSet id="1745408401903-1" author="T-H-O-M-A-S" labels="add timestamp for loved movie for recommendation">
+        <addColumn tableName="loved_movies">
+            <column name="loved_at" type="datetime"/>
+        </addColumn>
+    </changeSet>
 
 
 </databaseChangeLog>

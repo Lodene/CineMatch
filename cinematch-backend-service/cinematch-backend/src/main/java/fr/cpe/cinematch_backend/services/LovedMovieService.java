@@ -17,8 +17,10 @@ import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LovedMovieService {
@@ -92,6 +94,18 @@ public class LovedMovieService {
 
         List<LovedMovieEntity> lovedMovies = lovedMovieRepository.findByUser(user);
         lovedMovieRepository.deleteAll(lovedMovies);
+    }
+
+    // used for recommendation
+    public List<MovieEntity> getRecentlyLikedMovies(String username, int limit) throws GenericNotFoundException {
+        AppUser user = appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "User with username '" + username + "' not found"));
+        List<LovedMovieEntity> lovedMovieEntityList = lovedMovieRepository.findByUser(user).stream()
+                .sorted(Comparator.comparing(LovedMovieEntity::getLovedAt).reversed())
+                .limit(limit)
+                .toList();
+        return lovedMovieEntityList.stream().map(LovedMovieEntity::getMovie).collect(Collectors.toList());
     }
 
 }

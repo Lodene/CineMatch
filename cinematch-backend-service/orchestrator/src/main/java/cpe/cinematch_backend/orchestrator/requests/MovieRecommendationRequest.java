@@ -6,11 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimilarMovieRequest {
+public class MovieRecommendationRequest {
     String fromUsername;
-    MovieDto movie;
+    List<MovieDto> recentlyLikedMovies;
 }

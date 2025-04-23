@@ -15,4 +15,6 @@ public interface LovedMovieRepository extends JpaRepository<LovedMovieEntity, Lo
     Optional<LovedMovieEntity> findByUserAndMovie(AppUser user, MovieEntity movie);
 
     List<LovedMovieEntity> findByUser(AppUser user);
+
+    List<LovedMovieEntity> findByUserOrderByLovedAtDesc(AppUser user);
 }

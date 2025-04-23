@@ -113,20 +113,20 @@ services:
       - WATCHPACK_POLLING=true
     networks:
       - cinematch-network
-
-  python-api:
-    container_name: python-api
-    build:
-      context: ./python-api
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    depends_on:
-      - activemq
-    volumes:
-      - ./python-api:/app
-    networks:
-      - cinematch-network
+# run in localhost 
+  # python-api:
+  #   container_name: python-api
+  #   build:
+  #     context: ./python-api
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - activemq
+  #   volumes:
+  #     - ./python-api:/app
+  #   networks:
+  #     - cinematch-network
 
 volumes:
   local_pgdata:
