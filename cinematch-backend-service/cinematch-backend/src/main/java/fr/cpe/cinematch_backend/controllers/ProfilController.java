@@ -1,6 +1,7 @@
 package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
+import fr.cpe.cinematch_backend.dtos.ProfileDetailsDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -47,7 +48,7 @@ public class ProfilController {
     private UserConfigurationService userConfigurationService;
 
     @GetMapping
-    public ResponseEntity<ProfileDto> getProfile(@AuthenticationPrincipal UserDetails userDetails)
+    public ResponseEntity<ProfileDetailsDto> getProfile(@AuthenticationPrincipal UserDetails userDetails)
             throws GenericNotFoundException {
         return ResponseEntity.ok(profilService.getProfileByUsername(userDetails.getUsername()));
     }
@@ -86,7 +87,7 @@ public class ProfilController {
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<ProfileDto> getProfileByUsername(@PathVariable String username)
+    public ResponseEntity<ProfileDetailsDto> getProfileByUsername(@PathVariable String username)
             throws GenericNotFoundException {
         return ResponseEntity.ok(profilService.getProfileByUsername(username));
     }
