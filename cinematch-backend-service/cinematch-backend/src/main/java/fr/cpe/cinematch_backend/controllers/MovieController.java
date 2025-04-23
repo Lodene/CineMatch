@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("movie")
@@ -39,40 +40,49 @@ public class MovieController {
             username = currentUser.getUsername();
         }
 
-
         return ResponseEntity
                 .ok(this.movieService.getMovieDetailsWithReviews(movieId, username));
     }
 
+    @GetMapping("/genres")
+    public ResponseEntity<Set<String>> getAllGenres() {
+        return ResponseEntity.ok(this.movieService.getAllGenres());
+    }
+
     // Used for testing purpose
     /*
-    @PostMapping
-    public ResponseEntity<MovieDto> createMovie(@RequestBody MovieCreationRequest movieCreationRequest) {
-        return ResponseEntity.ok(this.movieService.createMovie(movieCreationRequest));
-    }
-
-    @PutMapping("/{movieId}")
-    public ResponseEntity<MovieDto> updateMovie(@PathVariable(value = "movieId") String movieId,
-            @RequestBody MovieDto movieDto) throws GenericNotFoundException {
-        long id;
-        try {
-            id = Long.parseLong(movieId);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(this.movieService.updateMovie(id, movieDto));
-    }
-
-    @DeleteMapping("/{movieId}")
-    public ResponseEntity<Boolean> deleteMovie(@PathVariable(value = "movieId") String movieId)
-            throws GenericNotFoundException {
-        long id;
-        try {
-            id = Long.parseLong(movieId);
-        } catch (NumberFormatException e) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(this.movieService.deleteMovie(id));
-    }
-    */
+     * @PostMapping
+     * public ResponseEntity<MovieDto> createMovie(@RequestBody MovieCreationRequest
+     * movieCreationRequest) {
+     * return
+     * ResponseEntity.ok(this.movieService.createMovie(movieCreationRequest));
+     * }
+     * 
+     * @PutMapping("/{movieId}")
+     * public ResponseEntity<MovieDto> updateMovie(@PathVariable(value = "movieId")
+     * String movieId,
+     * 
+     * @RequestBody MovieDto movieDto) throws GenericNotFoundException {
+     * long id;
+     * try {
+     * id = Long.parseLong(movieId);
+     * } catch (NumberFormatException e) {
+     * return ResponseEntity.badRequest().build();
+     * }
+     * return ResponseEntity.ok(this.movieService.updateMovie(id, movieDto));
+     * }
+     * 
+     * @DeleteMapping("/{movieId}")
+     * public ResponseEntity<Boolean> deleteMovie(@PathVariable(value = "movieId")
+     * String movieId)
+     * throws GenericNotFoundException {
+     * long id;
+     * try {
+     * id = Long.parseLong(movieId);
+     * } catch (NumberFormatException e) {
+     * return ResponseEntity.badRequest().build();
+     * }
+     * return ResponseEntity.ok(this.movieService.deleteMovie(id));
+     * }
+     */
 }

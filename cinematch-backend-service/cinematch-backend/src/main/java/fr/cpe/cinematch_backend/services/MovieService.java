@@ -17,8 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class MovieService {
@@ -116,7 +118,7 @@ public class MovieService {
 
         MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(movie);
 
-        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList,enrichedReviews);
+        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList, enrichedReviews);
     }
 
     public MovieDto createMovie(MovieCreationRequest movieCreationRequest) {
@@ -152,4 +154,18 @@ public class MovieService {
     public Optional<MovieEntity> getMovieEntityById(long id) {
         return this.movieRepository.findById(id);
     }
+
+    public Set<String> getAllGenres() {
+        List<MovieEntity> movies = movieRepository.findAll();
+        Set<String> genres = new HashSet<>();
+
+        for (MovieEntity movie : movies) {
+            if (movie.getGenres() != null) {
+                genres.addAll(movie.getGenres());
+            }
+        }
+
+        return genres;
+    }
+
 }
