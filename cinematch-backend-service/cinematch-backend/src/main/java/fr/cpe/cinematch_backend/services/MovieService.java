@@ -5,6 +5,7 @@ import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.dtos.ReviewWithFriendFlagDto;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
+import fr.cpe.cinematch_backend.dtos.requests.MovieSearchRequest;
 import fr.cpe.cinematch_backend.entities.*;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -166,6 +167,41 @@ public class MovieService {
         }
 
         return genres;
+    }
+
+    public List<MovieDto> searchMovies(MovieSearchRequest request) throws GenericNotFoundException {
+        if (request == null ||
+                (request.getTitle() == null &&
+                        (request.getGenres() == null || request.getGenres().isEmpty()) &&
+                        (request.getDirector() == null || request.getDirector().isEmpty()) &&
+                        (request.getCast() == null || request.getCast().isEmpty()) &&
+                        request.getMinRating() == null &&
+                        request.getMaxRating() == null &&
+                        request.getStartDate() == null &&
+                        request.getEndDate() == null)) {
+            throw new GenericNotFoundException(400, "Invalid search request",
+                    "At least one search criterion must be provided.");
+        }
+
+        List<MovieEntity> allMovies = movieRepository.findAll();
+
+        return allMovies.stream()
+                .filter(movie -> request.getTitle() == null
+                        || movie.getTitle().toLowerCase().contains(request.getTitle().toLowerCase()))
+                .filter(movie -> request.getGenres() == null || !request.getGenres().isEmpty() &&
+                        movie.getGenres().stream().anyMatch(request.getGenres()::contains))
+                .filter(movie -> request.getDirector() == null || !request.getDirector().isEmpty() &&
+                        movie.getDirector().stream().anyMatch(request.getDirector()::contains))
+                .filter(movie -> request.getCast() == null || !request.getCast().isEmpty() &&
+                        movie.getCast().stream().anyMatch(request.getCast()::contains))
+                .filter(movie -> request.getMinRating() == null || movie.getImdbRating() >= request.getMinRating())
+                .filter(movie -> request.getMaxRating() == null || movie.getImdbRating() <= request.getMaxRating())
+                .filter(movie -> request.getStartDate() == null
+                        || (movie.getReleaseDate() != null && movie.getReleaseDate().after(request.getStartDate())))
+                .filter(movie -> request.getEndDate() == null
+                        || (movie.getReleaseDate() != null && movie.getReleaseDate().before(request.getEndDate())))
+                .map(MovieMapper.INSTANCE::toMovieDto)
+                .toList();
     }
 
 }
