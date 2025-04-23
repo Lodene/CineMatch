@@ -14,6 +14,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { SettingsComponent } from './settings/settings.component';
 import { TermServiceComponent } from './term-service/term-service.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { FriendsListComponent } from './friends-list/friends-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
@@ -29,6 +30,8 @@ export const routes: Routes = [
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: 'recommendations', component: RecommendationComponent, canActivate:[AuthGuard]},
   { path: 'favorites', component: FavoriteComponent, canActivate:[AuthGuard]},
+  //{ path: 'friends', component: FriendsListComponent, canActivate:[AuthGuard]},
+  { path: 'friends', component: FriendsListComponent},
   { path: 'movie/:id', component: MovieDetailsComponent },
   // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
   
