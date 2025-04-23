@@ -55,6 +55,7 @@ public class MovieController {
             throws GenericNotFoundException {
         return ResponseEntity.ok(movieService.searchMovies(request));
     }
+
     // Used for testing purpose
     /*
      * @PostMapping
