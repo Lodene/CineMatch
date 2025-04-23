@@ -1,23 +1,47 @@
 <h2 mat-dialog-title>{{ 'app.common-component.edit-profile-dialog.title' | translate }}</h2>
 <mat-dialog-content class="dialog-content-wrapper">
 
-    <mat-form-field appearance="outline" class="large-form-field three-row-textarea">
-        <mat-label>{{ 'app.common-component.edit-profile-dialog.description-label' | translate }}</mat-label>
-        <textarea
-        matInput
-        rows="3"
-        [cdkTextareaAutosize]="false"
-        cdkTextareaAutosize
-        class="no-resize"
-        [(ngModel)]="description"
-        maxlength="150"
-        ></textarea>
-        <mat-hint align="end">{{ description()!.length }} / 150</mat-hint>
-    </mat-form-field>
-    <mat-checkbox [(ngModel)]="isChild">{{ 'app.common-component.edit-profile-dialog.child-label' | translate }}</mat-checkbox>
+  <mat-form-field appearance="outline" class="large-form-field three-row-textarea">
+    <mat-label>{{ 'app.common-component.edit-profile-dialog.description-label' | translate }}</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      [cdkTextareaAutosize]="false"
+      cdkTextareaAutosize
+      class="no-resize"
+      [(ngModel)]="description"
+      maxlength="150"
+    ></textarea>
+    <mat-hint align="end">{{ description()!.length }} / 150</mat-hint>
+  </mat-form-field>
+
+  <mat-checkbox [(ngModel)]="isChild">{{ 'app.common-component.edit-profile-dialog.child-label' | translate }}</mat-checkbox>
+
+  <div class="image-upload-wrapper" *ngIf="!deletePicture()">
+    <label>{{ 'app.common-component.edit-profile-dialog.image-label' | translate }}</label>
+    <input type="file" accept="image/*" (change)="onFileSelected($event)" />
+  </div>
+
+  <div class="picture-delete-wrapper">
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="toggleDeletePicture()"
+      [disabled]="selectedPicture() !== null"
+    >
+      {{ deletePicture()
+      ? ('app.common-component.edit-profile-dialog.cancel-delete-picture' | translate)
+      : ('app.common-component.edit-profile-dialog.delete-picture' | translate) }}
+    </button>
+
+    <span *ngIf="deletePicture()" class="delete-warning">
+      {{ 'app.common-component.edit-profile-dialog.delete-warning' | translate }}
+    </span>
+  </div>
 
 </mat-dialog-content>
+
 <mat-dialog-actions>
-    <button mat-button (click)="cancel()">Cancel</button>
-    <button mat-button (click)="save()">Save</button>
+  <button mat-button (click)="cancel()">{{ 'app.common-component.edit-profile-dialog.actions.cancel' | translate }}</button>
+  <button mat-button (click)="save()">{{ 'app.common-component.edit-profile-dialog.actions.save' | translate }}</button>
 </mat-dialog-actions>

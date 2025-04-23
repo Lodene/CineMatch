@@ -16,10 +16,9 @@ import { HistoryComponent } from "../history/history.component";
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileDialogComponent } from '../common-component/edit-profile-dialog/edit-profile-dialog.component';
 
-
-
 @Component({
   selector: 'app-profil',
+  standalone: true,
   imports: [
     CommonModule,
     RouterModule,
@@ -30,18 +29,16 @@ import { EditProfileDialogComponent } from '../common-component/edit-profile-dia
     MatButtonModule,
     TranslatePipe,
     HistoryComponent
-],  
+  ],
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.scss']
-
 })
 export class ProfilComponent implements OnInit {
   favoriteMovies: Movie[] = [];
+  userProfile: User = new User();
 
-  userProfile: User =  new User();   // Stocke le profil récupéré depuis l'API
- 
   readonly dialog = inject(MatDialog);
-  
+
   constructor(
     private profileService: ProfileService,
     private loaderService: LoaderService,
@@ -70,31 +67,57 @@ export class ProfilComponent implements OnInit {
   editProfile() {
     const dialogRef = this.dialog.open(EditProfileDialogComponent, {
       width: '80%',
-      // height: '70%',
-      data: {
-        profile: this.userProfile
-      }
-    })
+      data: { profile: this.userProfile }
+    });
+
     dialogRef.afterClosed().subscribe({
-      next:((res) => {
-        if (res !== undefined) {
-          this.loaderService.show();
-          this.profileService.updateProfile(res).subscribe({
-            next: (() => {
-              this.toasterService.success(this.translateService.instant('app.common-component.profile.update-successfuly.reason'),
-               this.translateService.instant('app.common-component.profile.update-successfuly.message'));
-            }),
-            error: (err => {
+      next: (res) => {
+        if (!res) return;
+
+        this.loaderService.show();
+
+        const { profile, picture, deletePicture } = res;
+
+        const updateProfileCall = () => this.profileService.updateProfile(profile).subscribe({
+          next: () => {
+            this.toasterService.success(
+              this.translateService.instant('app.common-component.profile.update-successfuly.reason'),
+              this.translateService.instant('app.common-component.profile.update-successfuly.message')
+            );
+            this.loadUserProfile(); // Refresh
+          },
+          error: (err) => {
+            console.error(err);
+            this.toasterService.error(err.error.reason, err.error.error);
+          },
+          complete: () => this.loaderService.hide()
+        });
+
+        if (deletePicture && !picture) {
+          this.profileService.deletePicture().subscribe({
+            next: () => updateProfileCall(),
+            error: (err) => {
               console.error(err);
               this.toasterService.error(err.error.reason, err.error.error);
-            })
-          }).add(() => {
-            this.loaderService.hide();
-          })
-        }
-      })
-    })
-  }
-  
+              this.loaderService.hide();
+            }
+          });
+        } else {
+          updateProfileCall();
 
+          if (picture) {
+            const formData = new FormData();
+            formData.append('file', picture);
+
+            this.profileService.updatePicture(formData).subscribe({
+              error: (err) => {
+                console.error(err);
+                this.toasterService.error(err.error.reason, err.error.error);
+              }
+            });
+          }
+        }
+      }
+    });
+  }
 }
