@@ -1,0 +1,45 @@
+<div class="settings">
+    <div class="content">
+      <h1>Mes amis</h1>
+  
+      <!-- Barre de recherche -->
+      <div class="search-bar mat-elevation-z2">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Rechercher un utilisateur</mat-label>
+          <input
+            matInput
+            [(ngModel)]="searchTerm"
+            (input)="search()"
+            placeholder="Ex: JohnDoe42"
+          />
+        </mat-form-field>
+        <button
+          *ngIf="searchResult"
+          mat-flat-button
+          color="primary"
+          (click)="addFriend()"
+        >
+          Ajouter {{ searchResult?.username }}
+        </button>
+      </div>
+  
+      <!-- Liste d'amis -->
+      <div *ngIf="friends.length > 0; else noFriends">
+        <div *ngFor="let friend of friends" class="friend-card mat-elevation-z1">
+          <div class="friend-info">
+            <h2>{{ friend.name }}</h2>
+            <p>{{ friend.username }}</p>
+            <p>{{ friend.description }}</p>
+          </div>
+          <button mat-icon-button color="warn" (click)="removeFriend(friend)">
+            <mat-icon>person_remove</mat-icon>
+          </button>
+        </div>
+      </div>
+  
+      <ng-template #noFriends>
+        <p>Vous n'avez pas encore d'amis. Ajoutez-en via la barre de recherche !</p>
+      </ng-template>
+    </div>
+  </div>
+  

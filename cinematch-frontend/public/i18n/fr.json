@@ -14,7 +14,8 @@
           "profile": "Profil",
           "about": "À propos",
           "settings": "Réglage",
-          "explore": "Explorer"
+          "explore": "Explorer",
+          "friends": "Amis"
         },
         "logout": "Se déconnecter"
       },
