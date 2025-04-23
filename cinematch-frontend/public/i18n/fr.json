@@ -264,7 +264,20 @@
       "edit-profile-dialog": {
         "title": "Éditer le profil",
         "description-label": "Description de votre profil",
-        "child-label": "Compte pour enfant ?"
+        "child-label": "Compte pour enfant ?",
+        "upload-label": "Choisir une image de profil",
+        "image-too-large": "L’image dépasse la taille maximale autorisée (100 Ko)",
+        "image-upload-success": "Image de profil mise à jour avec succès",
+        "image-upload-error": "Erreur lors de l’upload de l’image",
+        "cancel-delete-picture": "Annuler la suppression",
+        "delete-picture": "Supprimer l'image",
+        "delete-warning": "Attention l'image sera supprimer",
+        "remove-image-label": "Supprimer la photo",
+        "image-label": "Photo de profil",
+        "actions": {
+          "save": "Sauvegarder",
+          "cancel": "Annuler"
+        }
       },
       "search": {
         "title": "",
@@ -282,8 +295,6 @@
         "search-by-year": "Année",
         "search-by-note": "Note IMDB",
         "search-description": "Entrer vos paramètres de recherche"
-
-
       }
     },
     "generic-error": {

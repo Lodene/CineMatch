@@ -263,7 +263,20 @@
       "edit-profile-dialog": {
         "title": "Edit profile",
         "description-label": "Profile's description",
-        "child-label": "Children account ?"
+        "child-label": "Children account?",
+        "upload-label": "Choose a profile picture",
+        "image-too-large": "The image exceeds the maximum allowed size (100 KB)",
+        "image-upload-success": "Profile picture updated successfully",
+        "image-upload-error": "Error uploading the profile picture",
+        "cancel-delete-picture": "Cancel deleting",
+        "delete-picture": "Delete picture",
+        "delete-warning": "Warning picture will be deleted",
+        "remove-image-label": "Delete picture",
+        "image-label": "Picture profil",
+        "actions": {
+          "save": "Save",
+          "cancel": "Cancel"
+        }
       },
       "search": {
         "title": "",

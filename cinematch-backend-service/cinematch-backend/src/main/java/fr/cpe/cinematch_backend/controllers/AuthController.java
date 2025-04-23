@@ -2,6 +2,7 @@ package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.LoginResponse;
 import fr.cpe.cinematch_backend.dtos.requests.UserRequest;
+import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.AppUserService;
@@ -22,7 +23,9 @@ import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -83,6 +86,16 @@ public class AuthController {
             ResponseEntity.badRequest();
         }
 
+        return ResponseEntity.ok().build();
+    }
+
+    // modify password
+    @PutMapping("/password/{password}")
+    public ResponseEntity<Void> updatePassword(@PathVariable String password)
+            throws GenericNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser user = (AppUser) authentication.getPrincipal();
+        authenticationService.updatePassword(user.getUsername(), password);
         return ResponseEntity.ok().build();
     }
 }

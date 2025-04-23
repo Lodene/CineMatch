@@ -2,6 +2,7 @@ package fr.cpe.cinematch_backend.configs;
 
 import fr.cpe.cinematch_backend.dtos.ErrorDto;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
+import fr.cpe.cinematch_backend.exceptions.ConfigErrorException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -42,5 +43,11 @@ public class CustomExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDto processGenericNotFoundException(GenericNotFoundException e) {
         return new ErrorDto(HttpStatus.NOT_FOUND.value(), e.getMessage(), e.getReason());
+    }
+
+    @ExceptionHandler(ConfigErrorException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorDto processConfigErrorException(ConfigErrorException e) {
+        return new ErrorDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), e.getReason());
     }
 }
