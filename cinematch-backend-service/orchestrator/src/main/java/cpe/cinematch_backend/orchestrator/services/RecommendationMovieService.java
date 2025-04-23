@@ -11,9 +11,13 @@ import cpe.cinematch_backend.orchestrator.requests.MovieRecommendationRequest;
 import cpe.cinematch_backend.orchestrator.responses.MovieRecommendationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -27,6 +31,7 @@ public class RecommendationMovieService {
     @Autowired
     MovieRecommendationRepository movieRecommendationRepository;
 
+    RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private Environment env;
@@ -75,9 +80,11 @@ public class RecommendationMovieService {
 
     @JmsListener(destination = "recommendation-movie-response.queue", containerFactory = "myFactory")
     public void receiveRequest(byte[] movieRecommendationResponseJson){
+
+
         String serviceId = env.getProperty("activemq.recommendation-movie-response.queue");
         String serviceName = env.getProperty("activemq.recommendation-movie.service");
-        if (serviceName == null || serviceId == null) {
+        if (serviceName == null || serviceId == null || nodeJsUrl == null) {
             throw new RuntimeException("Error: serviceName or serviceId is null");
         }
         MovieRecommendationResponse response;
@@ -90,13 +97,33 @@ public class RecommendationMovieService {
             throw new RuntimeException(e);
         }
 
-        Optional<MovieRecommendationEntity> similarMovieRequest = movieRecommendationRepository.findById(movieRecommendationResponse.getRequestId());
-        if (similarMovieRequest.isPresent()) {
+        Optional<MovieRecommendationEntity> movieRecommendationEntity = movieRecommendationRepository.findById(movieRecommendationResponse.getRequestId());
+        if (movieRecommendationEntity.isPresent()) {
             // save in db for rollback purpose
-            similarMovieRequest.get().setRecommendationsId(response.getRecommendationsId());
-            movieRecommendationRepository.save(similarMovieRequest.get());
-            
+            movieRecommendationEntity.get().setRecommendationsId(response.getRecommendationsId());
+            movieRecommendationRepository.save(movieRecommendationEntity.get());
             // todo: make an api call to the node js to notify the frontend
+            this.postRequest(response, movieRecommendationEntity.get());
+        }
+    }
+
+    private void postRequest(MovieRecommendationResponse response, MovieRecommendationEntity movieRecommendationEntity) {
+        String nodeJsUrl = env.getProperty("nodejs.url");
+        if (nodeJsUrl == null) {
+            // bad config
+            return;
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<MovieRecommendationResponse> requestEntity = new HttpEntity<>(response, headers);
+        String result = restTemplate.postForObject(nodeJsUrl.concat("/orchestrator/recommendation-film"), requestEntity, String.class);
+        if (result != null) {
+            // everything went well, we can delete
+            movieRecommendationRepository.delete(movieRecommendationEntity);
+        } else {
+            // retry until succes
+            // fixme: add max retry count with static var
+            this.postRequest(response, movieRecommendationEntity);
         }
 
     }
