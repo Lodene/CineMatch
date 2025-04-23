@@ -1,5 +1,6 @@
 package cpe.cinematch_backend.orchestrator.entities;
 
+import cpe.cinematch_backend.orchestrator.dto.MovieDto;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,11 +13,13 @@ import java.util.UUID;
  */
 @Document
 @Data
-public class SimilarMovieRequestEntity {
+public class MovieRecommendationEntity {
     @Id
     private UUID id;
 
-    List<Long> similarMoviesId;
+    List<MovieDto> recentlyLikedMovies;
 
-    Long originalMovieId;
+    String fromUsername;
+
+    List<Long> recommendationsId;
 }

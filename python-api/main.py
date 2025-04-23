@@ -4,11 +4,54 @@ import json
 import uuid
 from pydantic import BaseModel
 from typing import Dict
+import json
+import re
+from dataclasses import dataclass
+from typing import Optional, List
 
 app = FastAPI(title="FastAPI ActiveMQ Integration")
 
 
 
+class MovieDto(BaseModel):
+    id: int
+    title: str
+    voteAverage: Optional[float]
+    voteCount: Optional[float]
+    status: Optional[str]
+    releaseDate: Optional[str]
+    revenue: Optional[float]
+    runtime: Optional[float]
+    budget: Optional[float]
+    imdbId: Optional[str]
+    originalLanguage: Optional[str] 
+    originalTitle: Optional[str]
+    overview: Optional[str]
+    popularity: Optional[float]
+    genres: Optional[list[str]]
+    productionCompanies: Optional[list[str]]
+    productionCountries: Optional[list[str]]
+    spokenLanguages: Optional[list[str]]
+    cast: Optional[list[str]]
+    director: Optional[list[str]]
+    directorOfPhotography: Optional[list[str]]
+    writers: Optional[list[str]]
+    producers: Optional[list[str]]
+    musicComposer: Optional[list[str]]
+    imdbRating: Optional[float]
+    imdbVotes: Optional[float]
+    posterPath: Optional[str]
+    backdropPath: Optional[str]
+
+class RequestDict(BaseModel):
+    fromUsername: Optional[str]
+    recentlyLikedMovies: List[MovieDto]
+
+
+class Request:
+    requestId: str
+    serviceId: str
+    payload: MovieDto
 
 class MessageRequest(BaseModel):
     requestId: str
@@ -19,8 +62,8 @@ class MessageRequest(BaseModel):
 # ActiveMQ connection settings
 activemq_host = "localhost"
 activemq_port = 61613  # STOMP port
-activemq_queue = "/queue/similar-movie.queue"
-activemq_queue_response = "/queue/model-in.queue"
+activemq_queue = "/queue/recommendation-movie.queue"
+activemq_queue_response = "/queue/recommendation-movie-response.queue"
 activemq_user = "admin"
 activemq_password = "cine"
 
@@ -44,6 +87,21 @@ class MessageListener(stomp.ConnectionListener):
             parsed_message = MessageRequest.parse_raw(frame.body)
             print("partie MSG-----------------")
             print(f"[Orchestrator → FastAPI] Message reçu et validé : {parsed_message}")
+            # vibe coding :
+
+            movie_json_string = parsed_message.payload.get("movie")
+            if movie_json_string:
+                try:
+                    movie_dict = json.loads(movie_json_string)
+                    # print(f"🎬 Movie data: {movie_dict}")
+                    request_obj = RequestDict.parse_obj(movie_dict)
+                    print(request_obj)
+                except json.JSONDecodeError as e:
+                    print(f"❌ Error decoding movie JSON: {e}")
+            else:
+                print("❗No 'movie' key in payload")
+
+
 
             # Enregistre la version dict pour l’API
             received_messages.append(parsed_message.dict())
@@ -51,7 +109,7 @@ class MessageListener(stomp.ConnectionListener):
             # Envoie à model-in.queue
             self.activemq_client.send_message(parsed_message.dict(), destination_queue=activemq_queue_response)
         except Exception as e:
-            print(f"[FastAPI] Erreur de parsing du message : {e}")
+            print(f"[FastAPI] Erreur de parsing du message : {e, frame.body}")
 
        
 class ActiveMQClient:
