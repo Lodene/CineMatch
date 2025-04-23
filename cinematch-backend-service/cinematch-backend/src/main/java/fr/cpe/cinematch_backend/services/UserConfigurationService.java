@@ -21,7 +21,7 @@ public class UserConfigurationService {
 
     public void updateLanguagePreference(String username, String lang)
             throws GenericNotFoundException {
-        if (!lang.equalsIgnoreCase("fr")  && !lang.equalsIgnoreCase( "en")) {
+        if (!lang.equalsIgnoreCase("fr") && !lang.equalsIgnoreCase("en")) {
             throw new GenericNotFoundException(400, "Invalid language", "Only 'en' or 'fr' are allowed.");
         }
 
@@ -53,13 +53,28 @@ public class UserConfigurationService {
             throw new GenericNotFoundException(400, "Invalid language", "Only 'en' or 'fr' are allowed.");
         }
         AppUser user = appUserRepository.findById(userId)
-                .orElseThrow(() -> new GenericNotFoundException(404, "User not found", "user with id: '" + userId + "' not found"));
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "user with id: '" + userId + "' not found"));
         Optional<UserConfiguration> existing = userPreferencesRepository.findByUser(user);
         if (existing.isEmpty()) {
             UserConfiguration preference = new UserConfiguration();
             preference.setUser(user);
             preference.setLang(lang); // valeur par défaut
             userPreferencesRepository.save(preference);
+        }
+    }
+    
+
+    public void deleteUserConfiguration(Long userId) throws GenericNotFoundException {
+        AppUser user = appUserRepository.findById(userId)
+                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                        "user with id: '" + userId + "' not found"));
+        Optional<UserConfiguration> existing = userPreferencesRepository.findByUser(user);
+        if (existing.isPresent()) {
+            userPreferencesRepository.delete(existing.get());
+        } else {
+            throw new GenericNotFoundException(404, "User configuration not found",
+                    "User configuration does not exist");
         }
     }
 }
