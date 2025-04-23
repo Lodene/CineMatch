@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/profile")
@@ -110,5 +111,10 @@ public class ProfilController {
         appUserService.deleteUserById(uE);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ProfileDto>> getAllProfiles() {
+        return ResponseEntity.ok(profilService.getAllProfiles());
     }
 }
