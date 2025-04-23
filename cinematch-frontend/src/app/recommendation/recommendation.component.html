@@ -1,6 +1,6 @@
-<div class="container">
+<div class="container" *ngIf="recommendedMovies?.length !== 0; else noMovies">
     <div class="m-20 title-xl">Film Recommendations</div>
-    <div class="filter border mx-20">
+    <!-- <div class="filter border mx-20">
         <div class="title-md m-10">
             Filters
         </div>
@@ -24,9 +24,7 @@
                 <mat-label>Genres</mat-label>
                 <mat-select multiple (selectionChange)="onSelectionChange()" [formControl]="selectedGeners"
                     placeholder="Select" (closed)="onClosedPanel()">
-                    <!-- Search input -->
-                    <!-- <mat-select-trigger>
-                    </mat-select-trigger> -->
+                    
                     <div class="search-wrapper">
                         <mat-form-field class="search-field">
                             <input matInput type="text" [formControl]="genersSearchControl" placeholder="Search"
@@ -38,7 +36,6 @@
                         </mat-form-field>
                     </div>
 
-                    <!-- Options -->
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option}}
                     </mat-option>
@@ -49,9 +46,7 @@
                 <mat-label>Languages</mat-label>
                 <mat-select multiple (selectionChange)="onSelectionChange()" [formControl]="selectedLanguages"
                     placeholder="Select" (closed)="onClosedPanel()">
-                    <!-- Search input -->
-                    <!-- <mat-select-trigger>
-                    </mat-select-trigger> -->
+                    
                     <div class="search-wrapper">
                         <mat-form-field class="search-field">
                             <input matInput type="text" [formControl]="languageSearchControl" placeholder="Search"
@@ -63,20 +58,24 @@
                         </mat-form-field>
                     </div>
 
-                    <!-- Options -->
                     <mat-option *ngFor="let option of filteredLanguagesOptions | async" [value]="option">
                         {{option}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-    </div>
-    <button mat-raised-button class="select m-20" (click)="getRecommendations()">
+    </div> -->
+    <!-- <button mat-raised-button class="select m-20" (click)="getRecommendations()">
         Filter
-    </button>
+    </button> -->
     <div class="list">
         <div *ngFor="let recommendedMovie of recommendedMovies">
             <movie-card [movie]="recommendedMovie"></movie-card>
         </div>
     </div>
 </div>
+<ng-template #noMovies>
+    <h1 class="not-found">
+        {{ 'app.common-component.recommendation.not-found' | translate}}
+    </h1>
+</ng-template>

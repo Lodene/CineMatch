@@ -251,7 +251,8 @@
         "languages": "Langues",
         "select": "Sélectionner",
         "search": "Rechercher",
-        "filter": "Filtrer"
+        "filter": "Filtrer",
+        "not-found": "Vous n'avez aucune recommandation."
       },
       "add-review-dialog": {
         "save": "Sauvegarder",

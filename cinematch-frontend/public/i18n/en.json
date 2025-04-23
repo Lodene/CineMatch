@@ -227,7 +227,8 @@
         "languages": "Languages",
         "select": "Select",
         "search": "Search",
-        "filter": "Filter"
+        "filter": "Filter",
+        "not-found": "You have no recommendations."
       },
       "movie-actions": {
         "tooltip": {

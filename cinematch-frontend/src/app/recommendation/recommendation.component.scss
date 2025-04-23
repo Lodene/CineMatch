@@ -42,3 +42,11 @@
 .search-field{
     width: 100%;
 }
+
+.not-found{
+    text-align: center;
+}
+
+:host {
+    flex: 1;
+}

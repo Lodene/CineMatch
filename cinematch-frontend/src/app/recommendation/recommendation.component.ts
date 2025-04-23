@@ -11,6 +11,7 @@ import { map, Observable, startWith } from 'rxjs';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-recommendation',
@@ -24,9 +25,9 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatInputModule,
     MatIconModule,
-    AsyncPipe,
     MatDividerModule,
-    MatButtonModule
+    MatButtonModule,
+    TranslatePipe
   ],
   templateUrl: './recommendation.component.html',
   styleUrl: './recommendation.component.scss'
@@ -99,7 +100,6 @@ export class RecommendationComponent {
 
   async getRecommendations(){
     //TODO : call API to get recommendations
-    this.recommendedMovies.push(new Movie());
   }
 
   filterRecommendations(){
