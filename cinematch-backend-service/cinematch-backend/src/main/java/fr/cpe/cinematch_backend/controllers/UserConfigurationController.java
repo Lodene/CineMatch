@@ -34,4 +34,8 @@ public class UserConfigurationController {
         AppUser user = (AppUser) authentication.getPrincipal();
         return ResponseEntity.ok(userPreferencesService.getUserLanguage(user.getUsername()));
     }
+
+    
 }
+
+    

@@ -43,6 +43,9 @@ public class ProfilController {
     @Autowired
     private ConversationService conversationService;
 
+    @Autowired
+    private UserConfigurationService userConfigurationService;
+
     @GetMapping
     public ResponseEntity<ProfileDto> getProfile(@AuthenticationPrincipal UserDetails userDetails)
             throws GenericNotFoundException {
@@ -51,7 +54,7 @@ public class ProfilController {
 
     @PutMapping
     public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal UserDetails userDetails,
-                                              @RequestBody ProfileDto profileDto)
+            @RequestBody ProfileDto profileDto)
             throws GenericNotFoundException {
         // on ne transmet que les champs description + isChild
         profilService.updateProfile(userDetails.getUsername(), profileDto);
@@ -100,6 +103,7 @@ public class ProfilController {
         friendRequestService.deleteAllByUserId(uE.getId());
         reviewService.deleteAllByUserId(uE.getId());
         conversationService.deleteAllConversationsAndMessagesByUserId(uE.getId());
+        userConfigurationService.deleteUserConfiguration(uE.getId());
 
         profilService.deleteProfil(uE);
         appUserService.deleteUserById(uE);
