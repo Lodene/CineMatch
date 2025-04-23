@@ -1,12 +1,12 @@
 package cpe.cinematch_backend.orchestrator.responses;
-
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 
 import java.util.List;
-import java.util.UUID;
 
 @Data
+// @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 public class MovieRecommendationResponse {
-    private UUID requestId;
+    private String requestId;
     private List<Long> recommendationsId;
 }

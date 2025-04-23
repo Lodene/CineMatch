@@ -8,8 +8,8 @@ RUN pip install --no-cache-dir --upgrade -r /app/requirements.txt
 
 COPY ./main.py /app/main.py
 
-EXPOSE 8000
+EXPOSE 8001
 
-#CMD gunicorn main:app --bind :8000 --log-level=trace -w 4 -k uvicorn.workers.UvicornWorker --> mise en prod
+CMD gunicorn main:app --bind :8001 --log-level=trace -w 1 -k uvicorn.workers.UvicornWorker
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--reload"]
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--reload"]
