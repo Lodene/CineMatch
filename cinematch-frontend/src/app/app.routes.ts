@@ -14,6 +14,7 @@ import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.componen
 import { SettingsComponent } from './settings/settings.component';
 import { TermServiceComponent } from './term-service/term-service.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { SearchComponent } from './search/search.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
@@ -24,6 +25,7 @@ export const routes: Routes = [
   { path: 'settings', component: SettingsComponent }, 
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
+  { path: 'search', component: SearchComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
   { path: 'profile', component: ProfilComponent, canActivate:[AuthGuard]},
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},

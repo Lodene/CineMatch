@@ -32,12 +32,13 @@ export class HeaderComponent implements OnInit{
 
   headerMenuItem = [
     { id: 1, shortLink: '/', icon: 'home', textKey: 'app.common-component.header.menu-item.home' },
-    { id: 2, shortLink: '/recommendations', icon: 'thumb_up', textKey: 'app.common-component.header.menu-item.recommendations' },
-    { id: 3, shortLink: '/watchlist', icon: 'list', textKey: 'app.common-component.header.menu-item.watchlist' },
-    { id: 4, shortLink: '/diary', icon: 'menu_book', textKey: 'app.common-component.header.menu-item.diary' },
-    { id: 5, shortLink: '/favorites', icon: 'favorite_border', textKey: 'app.common-component.header.menu-item.favorites' },
-    { id: 6, shortLink: '/profile', icon: 'person', textKey: 'app.common-component.header.menu-item.profile' },
-    { id: 6, shortLink: '/settings', icon: 'settings', textKey: 'app.common-component.header.menu-item.settings' }
+    { id: 2, shortLink: '/search', icon: 'search', textKey: 'app.common-component.header.menu-item.search' },
+    { id: 3, shortLink: '/recommendations', icon: 'thumb_up', textKey: 'app.common-component.header.menu-item.recommendations' },
+    { id: 4, shortLink: '/watchlist', icon: 'list', textKey: 'app.common-component.header.menu-item.watchlist' },
+    { id: 5, shortLink: '/diary', icon: 'menu_book', textKey: 'app.common-component.header.menu-item.diary' },
+    { id: 6, shortLink: '/favorites', icon: 'favorite_border', textKey: 'app.common-component.header.menu-item.favorites' },
+    { id: 7, shortLink: '/profile', icon: 'person', textKey: 'app.common-component.header.menu-item.profile' },
+    { id: 8, shortLink: '/settings', icon: 'settings', textKey: 'app.common-component.header.menu-item.settings' }
   ];
   
   constructor(private authService: AuthService) {

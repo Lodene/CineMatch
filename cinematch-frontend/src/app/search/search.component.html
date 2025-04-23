@@ -1,0 +1,126 @@
+<mat-accordion  class="example-headers-align filter m-20">
+    
+    <mat-expansion-panel class="m-20">
+        <mat-expansion-panel-header>
+            <mat-panel-title> {{'app.common-component.search.search' | translate}} </mat-panel-title>
+            <mat-panel-description>
+                {{'app.common-component.search.search-description' | translate}}
+                <mat-icon>search</mat-icon>
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="select-container my-20">
+
+
+            <mat-form-field class="select">
+                <mat-label>{{'app.common-component.search.search-by-title' | translate}}</mat-label>
+                <input matInput type="text" [(ngModel)]="titleSearch">
+                @if (titleSearch) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="titleSearch=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="select">
+                <mat-label>{{'app.common-component.search.search-by-actor' | translate}}</mat-label>
+                <input matInput type="text" [(ngModel)]="actorSearch">
+                @if (actorSearch) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="actorSearch=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+
+            <mat-form-field class="select">
+                <mat-label>{{'app.common-component.search.search-by-director' | translate}}</mat-label>
+                <input matInput type="text" [(ngModel)]="directorSearch">
+                @if (directorSearch) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="directorSearch=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+
+            <!-- <mat-form-field class="select">
+                <mat-label>{{'app.common-component.search.search-by-year' | translate}}</mat-label>
+                <input matInput type="number" [(ngModel)]="yearSearch">
+                @if (yearSearch) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="yearSearch=undefined">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field> -->
+
+            <mat-form-field class="select">
+                <mat-label>{{'app.common-component.search.search-by-note' | translate}}</mat-label>
+                <input matInput type="number" [(ngModel)]="notrSearch">
+                @if (notrSearch) {
+                <button matSuffix mat-icon-button aria-label="Clear" (click)="notrSearch=undefined">
+                    <mat-icon>close</mat-icon>
+                </button>
+                }
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill" class="select my-20">
+                <mat-label> {{'app.common-component.search.genres' | translate}}
+                </mat-label>
+                <mat-select multiple (selectionChange)="onGenersSelectionChange()" [formControl]="selectedGeners"
+                    placeholder="Select" (closed)="onGenersClosedPanel()">
+                    <div class="search-wrapper">
+                        <mat-form-field class="search-field">
+                            <input matInput type="text" [formControl]="genersSearchControl" placeholder="Search"
+                                autocomplete="off">
+                            <button *ngIf="genersSearchControl.value" matSuffix mat-icon-button aria-label="Clear"
+                                (click)="$event.stopPropagation(); genersSearchControl.setValue('')">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <mat-divider></mat-divider>
+
+
+            <div class="slider-container my-20">
+                {{'app.common-component.search.search-by-year' | translate}}
+                <mat-slider [min]="1920" [max]="currentYear" class="runtime-slider">
+                    <input [(ngModel)]="minYear" matSliderStartThumb (ngModelChange)="onSliderChange()">
+                    <input [(ngModel)]="maxYear" matSliderEndThumb (ngModelChange)="onSliderChange()">
+                </mat-slider>
+                <div class="runtime-values mx-10 subtitle-sm">
+                    <div>{{minYear}}</div>
+                    <div>{{maxYear}}</div>
+                </div>
+            </div>
+
+            <div class="select-container">
+                <button mat-raised-button class="select m-20" (click)="getMovies()">
+                    {{'app.common-component.search.search' | translate}}
+                </button>
+            </div>
+        </div>
+    </mat-expansion-panel>
+</mat-accordion >
+
+
+<div class="container" *ngIf="moviesFound?.length !== 0; else noMovies">
+    <div class="list">
+        <div *ngFor="let m of moviesFound">
+            <movie-card [movie]="m"></movie-card>
+        </div>
+    </div>
+</div>
+
+<ng-template #noMovies>
+    <h1 class="not-found">
+        {{ 'app.common-component.search.not-found' | translate}}
+    </h1>
+</ng-template>

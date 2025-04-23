@@ -7,6 +7,7 @@
         "search-placeholder": "Search for films...",
         "menu-item": {
           "home": "Home",
+          "search": "Search",
           "recommendations": "Recommendations",
           "watchlist": "Watchlist",
           "diary": "Diary",
@@ -98,7 +99,7 @@
             "review-edit": "You edited your review of {{ film }}",
             "review-remove": "You removed your review from {{ film }}",
             "time": {
-              "minutes": "{{ time }} min ago", 
+              "minutes": "{{ time }} min ago",
               "hour": "{{ time }} hours ago",
               "day": "{{ time }} days ago",
               "week": "{{ time }} week ago",
@@ -258,13 +259,28 @@
         "save": "Save",
         "delete": "Delete",
         "cancel": "Cancel"
-        
-
       },
       "edit-profile-dialog": {
         "title": "Edit profile",
         "description-label": "Profile's description",
         "child-label": "Children account ?"
+      },
+      "search": {
+        "title": "",
+        "filters": "Filters",
+        "runtime": "Runtime (minutes)",
+        "genres": "Genres",
+        "languages": "Languages",
+        "select": "Select",
+        "search": "Search",
+        "filter": "Filter",
+        "not-found": "No results has been found.",
+        "search-by-title": "Title",
+        "search-by-actor": "Actor",
+        "search-by-director": "Director",
+        "search-by-year": "Year",
+        "search-by-note": "Note IMDB",
+        "search-description": "Enter your search parametres"
       }
     },
     "generic-error": {
