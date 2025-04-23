@@ -1,6 +1,7 @@
 package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
+import fr.cpe.cinematch_backend.dtos.ProfileDetailsDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.ProfileEntity;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -24,9 +25,31 @@ public class ProfilService {
     @Autowired
     private AppUserRepository appUserRepository;
 
-    public ProfileDto getProfileByUsername(String username) throws GenericNotFoundException {
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private WatchlistMovieService watchlistMovieService;
+
+    @Autowired
+    private WatchedMovieService watchedMovieService;
+
+    public ProfileDetailsDto getProfileByUsername(String username) throws GenericNotFoundException {
         ProfileEntity profileEntity = this.checkAndRetrieveProfile(username);
-        return ProfileMapper.INSTANCE.toProfileDto(profileEntity);
+        AppUser user = profileEntity.getUser();
+
+        int reviewsCount = reviewService.getUserReviews(username).size();
+        int watchlistCount = watchlistMovieService.getWatchlistByUsername(username).size();
+        int watchedMoviesCount = watchedMovieService.getWatchedMoviesByUsername(username).size();
+
+        return ProfileDetailsDto.builder()
+                .description(profileEntity.getDescription())
+                .isChild(profileEntity.isChild())
+                .profilPicture(profileEntity.getProfilPicture())
+                .reviewsCount(reviewsCount)
+                .watchlistCount(watchlistCount)
+                .watchedMoviesCount(watchedMoviesCount)
+                .build();
     }
 
     public void updateProfile(String username, ProfileDto dto) throws GenericNotFoundException {
