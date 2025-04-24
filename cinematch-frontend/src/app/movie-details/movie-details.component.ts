@@ -155,6 +155,21 @@ export class MovieDetailsComponent {
   }
 
 
+  watchTrailer(): void {
+    if (!this.movie?.id) return;
+    this.movieService.getTrailerUrl(this.movie.id).subscribe({
+      next: (url: string) => {
+        window.open(url, '_blank');
+      },
+      error: () => {
+        this.snackbarService.show(
+          this.translateService.instant('app.common-component.movie-details.trailer-not-found')
+        );
+      }
+    });
+  }
+
+
   /**
    *
    * @param action either removed or added (false = remove, true = added)

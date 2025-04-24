@@ -219,7 +219,9 @@
         "updated-successfuly": "Review updated successfuly",
         "failed-to-delete": "Failed to delete review",
         "failed-to-update": "Failed to update review",
-        "failed-to-create": "Failed to save review"
+        "failed-to-create": "Failed to save review",
+        "watch-trailer": "Watch the trailer",
+        "trailer-not-found": "No trailer available for this movie."
       },
       "review-card": {
         "edit": "Edit",

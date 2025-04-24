@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { Movie } from '../../models/movie';
 import { MovieImageUtils } from '../../utils/movieImageUtils';
 import { TranslatePipe } from '@ngx-translate/core';
-import { MovieService } from '../../services/movie/movie.service'; // ✅ Import du service
+import { MovieService } from '../../services/movie/movie.service';
 
 @Component({
   selector: 'app-featured-film',
@@ -34,7 +34,6 @@ export class FeaturedFilmComponent implements OnInit, OnChanges {
     }
   }
 
-  // ✅ Nouvelle méthode pour ouvrir la bande-annonce
   watchTrailer(): void {
     if (!this.movie?.id) return;
     this.movieService.getTrailerUrl(this.movie.id).subscribe(url => {

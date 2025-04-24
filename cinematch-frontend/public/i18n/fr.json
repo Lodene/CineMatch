@@ -240,7 +240,9 @@
         "updated-successfuly": "Avis mis à jour avec succès",
         "failed-to-delete": "Erreur lors de la suppression de l'avis",
         "failed-to-update": "Erreur lors de la mise à jour de votre avis",
-        "failed-to-create": "Erreur lors de la création de votre avis"
+        "failed-to-create": "Erreur lors de la création de votre avis",
+        "watch-trailer": "Voir la bande-annonce",
+        "trailer-not-found": "Aucune bande-annonce disponible pour ce film."
       },
       "watchlist": {
         "not-found": "Votre watchlist est vide."

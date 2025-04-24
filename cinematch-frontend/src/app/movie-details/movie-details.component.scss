@@ -103,3 +103,15 @@ app-person-card span {
 .empty-reviews {
   text-align: center;
 }
+
+.watch-trailer-button {
+  margin-top: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  text-transform: none;
+
+  mat-icon {
+    vertical-align: middle;
+  }
+}
