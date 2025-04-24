@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../models/types/components/user/user.model';
+import { User } from '../../../models/types/components/user/user.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
-import { FriendsService } from '../../services/friends/friends.service';
+import { FriendsService } from '../../../services/friends/friends.service';
 
 
 
@@ -36,7 +36,7 @@ export class FriendsListComponent{
   ngOnInit(): void {
     this.loadFriends();
     // Optionnel : précharger tous les utilisateurs pour la recherche
-    this.loadAllUsers();
+    // this.loadAllUsers();
   }
 
   loadFriends(): void {
