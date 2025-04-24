@@ -59,6 +59,11 @@ public class MovieController {
         return ResponseEntity.ok(movieService.searchMovies(request));
     }
 
+    @PostMapping("/search")
+    public ResponseEntity<List<MovieDto>> searchMovies(@RequestBody MovieSearchRequest request)
+            throws GenericNotFoundException {
+        return ResponseEntity.ok(movieService.searchMovies(request));
+    }
     // Used for testing purpose
     /*
      * @PostMapping
