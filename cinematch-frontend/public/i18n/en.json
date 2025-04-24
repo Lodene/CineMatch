@@ -321,7 +321,28 @@
         "search-by-director": "Director",
         "search-by-year": "Year",
         "search-by-note": "Note IMDB (min)",
-        "search-description": "Enter your search parametres"
+        "search-description": "Enter your search parametres",
+        "genre": {
+          "Action": "Action",
+          "Adventure": "Adventure",
+          "Horror": "Horror",
+          "Romance": "Romance",
+          "War": "War",
+          "History": "History",
+          "Science Fiction": "Science Fiction",
+          "Western": "Western",
+          "Documentary": "Documentary",
+          "Drama": "Drama",
+          "Thriller": "Thriller",
+          "TV Movie": "TV Movie",
+          "Music": "Music",
+          "Crime": "Crime",
+          "Fantasy": "Fantasy",
+          "Animation": "Animation",
+          "Family": "Family",
+          "Comedy": "Comedy",
+          "Mystery": "Mystery"
+        }
       }
     },
     "generic-error": {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -11,12 +11,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSliderModule } from '@angular/material/slider';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { firstValueFrom, map, Observable, startWith } from 'rxjs';
+import { firstValueFrom, map, Observable, startWith, tap } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { MovieSearchRequest } from '../../models/movie-search-request';
 import { LoaderService } from '../../services/loader/loader.service';
 import { MovieService } from '../../services/movie/movie.service';
 import { MovieCardComponent } from '../common-component/movie-card/movie-card.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { PaginatedMovieResponse } from '../../models/paginated-movie-reponse';
 
 @Component({
   selector: 'app-search',
@@ -34,11 +36,12 @@ import { MovieCardComponent } from '../common-component/movie-card/movie-card.co
     MatDividerModule,
     MatButtonModule,
     MatExpansionModule,
+    MatPaginatorModule
   ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })
-export class SearchComponent {
+export class SearchComponent implements OnInit {
 
   movieService = inject(MovieService);
   loaderService = inject(LoaderService);
@@ -58,19 +61,16 @@ export class SearchComponent {
 
   genersSearchControl = new FormControl('');
   selectedGeners = new FormControl([]);
-  genersOptions: string[] = ['Action', 'Adventure', 'Comedy', 'Drama', 'Horror', 'Romance', 'Sci-Fi', 'Thriller'];
+  genersOptions: string[] = [];
   filteredOptions: Observable<string[]>;
-  currentPage: any;
-  totalPages: any;
-  totalElements: any;
-  hasNextPage: any;
+  currentPage: number = 0;
+  totalPages: number = 0;
+  totalElements: number = 100;
+  hasNextPage: boolean;
 
   async ngOnInit() {
-    console.log(this.startYear, this.endYear, this.currentYear);
-    // var generes = await firstValueFrom(this.movieService.getAllGeneres());
-
     this.loaderService.show();
-    this.movieService.getAllGeneres().subscribe({
+    this.movieService.getAllGenres().subscribe({
       next: (g: string[]) => {
         this.genersOptions = g;
         console.log(this.genersOptions);
@@ -118,9 +118,9 @@ export class SearchComponent {
       director.push(this.directorSearch);
     }
 
-    var generes = null;
+    var genres = null;
     if(this.selectedGeners.value && this.selectedGeners.value.length > 0){
-      generes = this.selectedGeners.value as string[];
+      genres = this.selectedGeners.value as string[];
 
     }
 
@@ -129,7 +129,7 @@ export class SearchComponent {
     searchRequest.minRating = !!this.noteSearch && this.noteSearch > 1? this.noteSearch : null;
     searchRequest.cast = cast;
     searchRequest.director = director;
-    searchRequest.genres = generes;
+    searchRequest.genres = genres;
     searchRequest.startDate = new Date(this.startYear, 0, 1);
     searchRequest.startDate = new Date(this.startYear, 0, 1);
     searchRequest.endDate = new Date(this.endYear, 0, 1);
@@ -161,9 +161,9 @@ export class SearchComponent {
       director.push(this.directorSearch);
     }
     
-    var generes = null;
+    var genres = null;
     if(this.selectedGeners.value && this.selectedGeners.value.length > 0){
-      generes = this.selectedGeners.value as string[];
+      genres = this.selectedGeners.value as string[];
     }
     
     var searchRequest = new MovieSearchRequest();
@@ -171,14 +171,14 @@ export class SearchComponent {
     searchRequest.minRating = !!this.noteSearch && this.noteSearch > 1? this.noteSearch : null;
     searchRequest.cast = cast;
     searchRequest.director = director;
-    searchRequest.genres = generes;
+    searchRequest.genres = genres;
     searchRequest.startDate = new Date(this.startYear, 0, 1);
     searchRequest.endDate = new Date(this.endYear, 0, 1);
     
     this.loaderService.show();
     
     this.movieService.searchMovies(searchRequest, page, size).subscribe({
-      next: (response: any) => {
+      next: (response: PaginatedMovieResponse) => {
         this.moviesFound = response.content;
         this.currentPage = response.currentPage;
         this.totalPages = response.totalPages;

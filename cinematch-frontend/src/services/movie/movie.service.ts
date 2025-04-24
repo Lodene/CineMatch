@@ -37,7 +37,7 @@ export class MovieService {
     return this.http.get<number>(`${this.backendUrl}/getMovieCount`)
   }
 
-  public getAllGeneres() {
+  public getAllGenres() {
     return this.http.get<string[]>(`${this.backendUrl}/genres`);
   }
 

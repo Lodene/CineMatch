@@ -1,5 +1,5 @@
-<mat-accordion  class="example-headers-align filter m-20">
-    
+<mat-accordion class="example-headers-align filter m-20">
+
     <mat-expansion-panel class="m-20">
         <mat-expansion-panel-header>
             <mat-panel-title> {{'app.common-component.search.search' | translate}} </mat-panel-title>
@@ -62,9 +62,6 @@
                 }
             </mat-form-field>
 
-            {{noteSearch}}
-
-
             <mat-form-field appearance="fill" class="select my-20">
                 <mat-label> {{'app.common-component.search.genres' | translate}}
                 </mat-label>
@@ -84,6 +81,8 @@
                     <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
                         {{option}}
                     </mat-option>
+                    <!-- {{'app.common-component.search.genre.'+option | translate}} -->
+
                 </mat-select>
             </mat-form-field>
 
@@ -110,10 +109,22 @@
             </div>
         </div>
     </mat-expansion-panel>
-</mat-accordion >
+</mat-accordion>
 
 
 <div class="container" *ngIf="moviesFound?.length !== 0; else noMovies">
+    <mat-paginator 
+        [length]="totalElements" 
+        [pageSize]="10" 
+        [pageSizeOptions]="[5, 10, 25, 50]"
+        attr.aria-label="{{'app.home.paginator-items-per-page' | translate}}"
+        attr.firstPageLabel="{{'app.home.first-page' | translate}}"
+        attr.lastPageLabel="{{'app.home.last-page' | translate}}"
+        attr.nextPageLabel="{{'app.home.next-page' | translate}}"
+        attr.previousPageLabel="{{'app.home.prev-page' | translate}}" 
+        (page)="getMovies($event.pageIndex, $event.pageSize)"
+        showFirstLastButtons>
+    </mat-paginator>
     <div class="list">
         <div *ngFor="let m of moviesFound">
             <movie-card [movie]="m"></movie-card>
