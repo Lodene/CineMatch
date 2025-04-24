@@ -15,7 +15,7 @@ import java.util.UUID;
 @Data
 public class MovieRecommendationEntity {
     @Id
-    private UUID id;
+    private String id;
 
     List<MovieDto> recentlyLikedMovies;
 
