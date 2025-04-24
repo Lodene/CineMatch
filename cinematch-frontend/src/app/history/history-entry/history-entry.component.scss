@@ -13,11 +13,21 @@
 }
 
 .loved {
-    color: red; 
+    color: red;
 }
 
 .entry-icon-with-text {
     display: flex;
     align-items: center;
     gap: 1em;
+}
+
+.film-link {
+  color: #bbaef1;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.film-link:hover {
+  text-decoration: none;
 }

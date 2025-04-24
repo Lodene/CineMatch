@@ -14,5 +14,6 @@ public class MovieDetailsWithReviewsDto {
     private boolean isCommented;
     private boolean isLoved;
     private boolean isInWatchlist;
+    private boolean isWatched;
     private List<ReviewWithFriendFlagDto> reviews;
 }

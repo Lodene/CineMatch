@@ -7,4 +7,5 @@ export class MovieConsultation {
     commented: boolean;
     loved: boolean;
     inWatchlist: boolean;
+    watched: boolean;
 }

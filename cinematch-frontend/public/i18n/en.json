@@ -92,7 +92,10 @@
         },
         "tabs": {
           "activity": "Activity",
-          "favorites": "Favorites"
+          "favorites": "Favorites",
+          "diary": "Diary",
+          "watchlist": "Watchlist",
+          "review": "Reviews"
         },
         "sections": {
           "activity": {
@@ -102,6 +105,7 @@
             "watchlist-add": "You added {{ film }} to your watchlist",
             "watchlist-remove": "You removed {{ film }} to your watchlist",
             "watch": "You watched {{ film }}",
+            "unwatch": "You removed {{ film }} from your watched list",
             "review-add": "You added a review to {{ film }}",
             "review-edit": "You edited your review of {{ film }}",
             "review-remove": "You removed your review from {{ film }}",
@@ -116,6 +120,15 @@
           },
           "favorites": {
             "title": "Your Favorite Films"
+          },
+          "diary": {
+            "title": "Your Watched Films"
+          },
+          "review": {
+            "title": "Your reviews"
+          },
+          "watchlist": {
+            "title": "Your watchlist"
           }
         }
       },
@@ -246,13 +259,17 @@
           "remove-from-watchlist": "Remove the movie from your watchlist",
           "add-review": "Add your review",
           "edit-review": "Edit your review",
-          "need-connection": "You need to be logged in to use this feature"
+          "need-connection": "You need to be logged in to use this feature",
+          "add-to-watched": "Add the movie to the watched list",
+          "remove-from-watched" : "Remove the movie from the watched list"
         },
         "snackbar": {
           "like": "The movie has been added to your favorites",
           "unlike": "The movie has been removed from your favorites",
           "add-watchlist": "The movie has been added to your watchlist",
-          "remove-watchlist": "The movie has been removed from your watchlist"
+          "remove-watchlist": "The movie has been removed from your watchlist",
+          "add-to-watched": "The movie has been added to the watched list",
+          "remove-from-watched" : "The movie has been removed from the watched list"
         }
       },
       "watchlist": {
@@ -260,6 +277,9 @@
       },
       "favorite": {
         "not-found": "You have no favorites."
+      },
+      "diary": {
+        "not-found": "You have no watched movies."
       },
       "add-review-dialog": {
         "review": "Review",

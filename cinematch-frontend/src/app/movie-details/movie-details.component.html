@@ -12,13 +12,16 @@
                 [showLike]="true"
                 [showAddReview]="true"
                 [showWatchList]="true"
+                [showWatched] = "true"
                 [movieId]="movie.id"
                 [isInWatchList]="isInWatchlist"
                 [isLiked]="isLiked"
                 [isReviewAdded]="isReviewAdded"
+                [isWatched] = "isWatched"
                 (watchlistActionEvent)="handleWatchListAction($event)"
                 (reviewActionEvent)="handleReviewAction($event)"
-                (likeActionEvent)="handleLikeAction($event)">
+                (likeActionEvent)="handleLikeAction($event)"
+                (watchedActionEvent)="handleWatchAction($event)">
             </app-movie-actions>
         </div>
         <div style="display: flex;" class="my-20">
