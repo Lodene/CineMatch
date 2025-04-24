@@ -481,4 +481,32 @@
     </changeSet>
 
 
+    <changeSet id="1745400000000-1" author="Thomas">
+    <createTable tableName="related_movies">
+        <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints nullable="false" primaryKey="true" primaryKeyName="pk_related_movies"/>
+        </column>
+        <column name="movie1_id" type="BIGINT">
+            <constraints nullable="false"/>
+        </column>
+        <column name="movie2_id" type="BIGINT">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+</changeSet>
+
+<changeSet id="1745400000000-2" author="Thomas">
+    <addForeignKeyConstraint baseColumnNames="movie1_id" baseTableName="related_movies"
+                             constraintName="fk_related_movie1" referencedColumnNames="id"
+                             referencedTableName="movie"/>
+</changeSet>
+
+<changeSet id="1745400000000-3" author="Thomas">
+    <addForeignKeyConstraint baseColumnNames="movie2_id" baseTableName="related_movies"
+                             constraintName="fk_related_movie2" referencedColumnNames="id"
+                             referencedTableName="movie"/>
+</changeSet>
+
+
+
 </databaseChangeLog>

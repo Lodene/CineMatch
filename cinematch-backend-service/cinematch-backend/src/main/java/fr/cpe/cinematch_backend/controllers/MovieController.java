@@ -2,6 +2,7 @@ package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
+import fr.cpe.cinematch_backend.dtos.PaginatedMoviesResponse;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
 import fr.cpe.cinematch_backend.dtos.requests.MovieSearchRequest;
 import fr.cpe.cinematch_backend.entities.AppUser;
@@ -23,8 +24,10 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("/movies")
-    public ResponseEntity<List<MovieDto>> getAllMovies() throws GenericNotFoundException {
-        return ResponseEntity.ok(this.movieService.getAllMovies());
+    public ResponseEntity<PaginatedMoviesResponse> getAllMoviesPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(this.movieService.getAllMoviesPaginated(page, size));
     }
 
     @GetMapping("/{movieId}")
