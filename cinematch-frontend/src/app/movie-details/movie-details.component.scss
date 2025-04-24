@@ -1,71 +1,105 @@
-
-
-
 .not-found-container {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .not-found-text {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .container-movie {
-    display: flex;
-    flex-direction: row;
-    max-width: 100%;
-    
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
 }
 
-
 .image {
-    max-height: 100%;
-    min-width: 500px;
-    max-width: 500px;
-    text-align: center;
-    min-height: 750px;
-    max-height: 750px;
-    line-height: 750px;
-    width: auto;
+  max-height: 100%;
+  min-width: 500px;
+  max-width: 500px;
+  text-align: center;
+  min-height: 750px;
+  max-height: 750px;
+  line-height: 750px;
+  width: auto;
 }
 
 .details {
-    width: calc(100% - 550px);
-    padding: 20px;
+  width: calc(100% - 550px);
+  padding: 20px;
 }
 
-.list-peson {
-    overflow: scroll;
-    max-width: 100%;
-    overflow: scroll;
-    display: flex;
-    flex-direction: column;
+/* Partie Cast */
+.cast-container {
+  margin-top: 30px;
+}
+
+.cast-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding: 10px;
+  z-index: 10;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.person-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;  /* Espacement entre les cartes */
+  overflow-y: auto;
+  max-height: 400px; /* Scrollable area */
+  padding: 10px 0;
+}
+
+app-person-card {
+  width: 120px;
+  height: 160px;
+  background-color: #f4f4f4;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+app-person-card:hover {
+  transform: scale(1.05);
+}
+
+app-person-card span {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: 500;
 }
 .not-found-container {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .not-found-text {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .name-and-action-wrapper {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
 }
 
-.mat-mdc-tab-group{
-    width: 100% !important;
-
+.mat-mdc-tab-group {
+  width: 100% !important;
 }
-.mat-mdc-tab-body-wrapper{
-    height: 500px !important;
-    // width: 100% !important;
-    padding: 2em 2em 0 2em;
+
+.mat-mdc-tab-body-wrapper {
+  height: 500px !important;
+  padding: 2em 2em 0 2em;
 }
 
 .empty-reviews {
-    text-align: center;
+  text-align: center;
 }
