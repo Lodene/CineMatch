@@ -3,11 +3,11 @@
       <img [src]="backdropPath" [alt]="'generic-error.image-not-found' | translate" />
       <div class="gradient-overlay"></div>
     </div>
-  
+
     <div class="content-container">
       <div class="text-content">
         <h1 class="film-title">{{ movie.title }}</h1>
-  
+
         <div class="film-meta">
           <span class="badge">{{ movie.releaseDate | date:'y'}}</span>
           <span class="rating">
@@ -15,24 +15,24 @@
           </span>
           <span class="runtime">{{ movie.runtime }} min</span>
         </div>
-  
+
         <div class="genres">
           <span class="badge secondary" *ngFor="let genre of movie.genres">{{ genre }}</span>
         </div>
-  
+
         <p class="overview">{{ movie.overview }}</p>
-  
+
         <div class="actions">
-          <button mat-flat-button color="primary">
+          <button mat-flat-button color="primary" (click)="watchTrailer()">
             <mat-icon>play_circle</mat-icon>
             Watch Trailer
           </button>
-  
+
           <button mat-stroked-button>
             <mat-icon>add</mat-icon>
             Add to Watchlist
           </button>
-  
+
           <button mat-flat-button color="accent" [routerLink]="'/film/' + movie.id">
             <mat-icon>info</mat-icon>
             Details
@@ -41,4 +41,3 @@
       </div>
     </div>
   </div>
-  

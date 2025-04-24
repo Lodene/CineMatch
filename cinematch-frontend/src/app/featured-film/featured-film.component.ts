@@ -6,33 +6,41 @@ import { RouterModule } from '@angular/router';
 import { Movie } from '../../models/movie';
 import { MovieImageUtils } from '../../utils/movieImageUtils';
 import { TranslatePipe } from '@ngx-translate/core';
+import { MovieService } from '../../services/movie/movie.service'; // ✅ Import du service
 
 @Component({
   selector: 'app-featured-film',
+  standalone: true,
   imports: [CommonModule, MatButtonModule, MatIconModule, RouterModule, TranslatePipe],
   templateUrl: './featured-film.component.html',
   styleUrl: './featured-film.component.scss'
 })
 export class FeaturedFilmComponent implements OnInit, OnChanges {
-  
-  constructor() {
-  }
-  
 
   @Input() movie: Movie;
   backdropPath: string;
-  
+
+  constructor(private movieService: MovieService) {} // ✅ Injection du service
+
   ngOnInit(): void {
-  // Movie can be null when component is mounting 
     if (!!this.movie) {
       this.backdropPath = MovieImageUtils.constructUrl(this.movie.backdropPath);
     }
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (!!this.movie) {
       this.backdropPath = MovieImageUtils.constructUrl(this.movie.backdropPath);
     }
   }
-  
+
+  // ✅ Nouvelle méthode pour ouvrir la bande-annonce
+  watchTrailer(): void {
+    if (!this.movie?.id) return;
+    this.movieService.getTrailerUrl(this.movie.id).subscribe(url => {
+      window.open(url, '_blank');
+    }, () => {
+      alert('Aucune bande-annonce disponible.');
+    });
+  }
 }
