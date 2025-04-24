@@ -1,6 +1,33 @@
+/* Liste des personnes dans le casting */
 .person-wrapper {
-    display: flex;
-    flex-direction: row;
-    gap: 2em;
-    flex-wrap: nowrap;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  padding-left: 1em;
+  overflow-y: auto;
+  max-height: 400px; /* Pour que la liste devienne scrollable */
+}
+/* Cards de chaque acteur ou personne */
+app-person-card {
+  flex: 1 1 120px;
+  max-width: 120px;
+  height: 160px;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+app-person-card:hover {
+  transform: scale(1.05);
+}
+
+app-person-card span {
+  font-size: 0.9em;
+  color: #444;
+  font-weight: 500;
+  margin-top: 10px;
 }
