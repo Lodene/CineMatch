@@ -1,0 +1,142 @@
+# Recommendation de film par IA
+
+Ce dépôt a pour objectif d'entraîner un modèle d'IA de recommandation de films, basé sur le modèle [Doc2Vec](https://radimrehurek.com/gensim/auto_examples/tutorials/run_doc2vec_lee.html). Concrètement, le modèle vectorise une description de film, puis analyse sa similarité sémantique avec d'autres films afin de proposer des recommandations.
+
+Le modèle est entraîné sur ce [jeu de données](https://www.kaggle.com/datasets/alanvourch/tmdb-movies-daily-updates), nettoyé et enrichi pour de meilleures performances.
+
+
+## Dépendances
+
+- Python 3.10 (non testé sur d'autres versions)
+- Doc2Vec de Gensim (pour l'entraînement du modèle)
+- nltk, tqdm and pandas (pour le traitement des données)
+- requests (pour l'enrichissement des données)
+
+La gestion des dépendances se fait avec [uv](https://github.com/astral-sh/uv). Vous pouvez créer le même environnement virtuel avec les commandes suivantes depuis le répertoire racine (après avoir installé `uv`) :
+```sh
+uv venv --python 3.10
+.venv/Scripts/activate              # Windows
+source .venv/Scripts/activate       # Linux / MacOS
+uv pip install -r pyproject.toml
+```
+
+> Remarque : Si Python 3.10 n'est pas encore installé, vous pouvez l'installer avec la commande `uv` suivante :
+
+```sh
+uv python install 3.10
+```
+
+
+## Configuration
+
+### 1. Fichier .env
+
+Ce projet utilise un fichier .env pour centraliser les variables du projet. Si vous prévoyez de réentraîner le modèle ou d'enrichir le jeu de données, vous pouvez modifier les *hyperparamètres* et *paramètres d'entraînement*, et ajouter une ou plusieurs [clés API OMDB](https://www.omdbapi.com/) dans le fichier `.env.default`. Ensuite, copiez et renommez-le en `.env`.
+
+> Remarque : La variable *MODEL_VERSION* définit le modèle utilisé pour l'inférence, mais aussi le chemin d'enregistrement lors de l'entraînement. Ainsi, en réentraînant le modèle avec les mêmes paramètres et la même *MODEL_VERSION*, l'ancien modèle sera **écrasé**.
+
+
+## Architecture
+
+Tout le code est centralisé dans le dossier `core`. On y trouve plusieurs sous-dossiers :
+- `data`, avec les jeux de données bruts et enrichis,
+- `models`, avec les modèles entraînés,
+- `output`, avec les fichiers enrichis temporairement et autres fichiers de sortie,
+- `core/scripts`, avec les scripts Python d'entraînement et d'enrichissement,
+- `utils`, avec les fonctions utilitaires communes en Python.
+
+
+## Utilisation
+
+### 1. Enrichissement
+
+Le jeu de données de base contient des résumés très courts et basiques de films, peu adaptés à un entraînement sémantique. Pour pallier cela, nous avons enrichi nos données depuis d'autres sources.
+
+Deux sources sont disponibles ici pour enrichir le jeu de données : OMDB et Wikimedia. OMDB fournit des résumés plus complets, mais ses limitations gratuites sont assez restrictives. Wikimedia, quant à lui, propose des résumés plus génériques (depuis Wikipedia, indexés par ID IMDB), mais l'accès est plus simple.
+
+Le choix d'utiliser les deux sources permet de comparer leur qualité et d'avoir davantage d'options pour l'entraînement.
+
+Pour lancer l'enrichissement, exécutez le bon fichier dans le dossier `core/scripts`.
+Nous recommandons d'utiliser le gestionnaire `uv`, qui lit automatiquement les variables d'environnement :
+```sh
+# Pour OMDB
+uv run --env-file=.env enrich_omdb
+# Pour  Wikimedia
+uv run --env-file=.env enrich_wiki
+```
+
+> Remarque : Pour utiliser les alias de scripts, il peut être nécessaire de lancer d'abord :
+```sh
+uv pip install -e .
+```
+> Sinon, vous pouvez lancer manuellement les fichiers listés dans les commandes du fichier `pyproject.toml`.
+
+Chaque script génère un nouveau jeu de données dans `core/data`, utilisable pour l'entraînement.
+
+
+### 2. Entraînement
+
+L'entraînement est assez simple, mais peut être long selon la taille du dataset.
+
+Pour en réduire la durée et en améliorer la qualité, nous avons filtré le dataset selon les critères suivants :
+- Résumé de film non vide
+- Note moyenne supérieure à 0
+- Nombre de votes supérieur à 20
+
+> Remarque : Ces critères ont aussi été utilisés pour l'enrichissement, afin de ne traiter que les données pertinentes.
+
+Cela nous a donné les "meilleurs" 50 000 films environ. Ensuite, seuls ceux enrichis par les deux sources ont été retenus, soit environ 39 000 films.
+
+L'entraînement a nécessité plusieurs essais pour ajuster les hyperparamètres et choisir les données à vectoriser sans ajouter trop de bruit. Les paramètres retenus sont :
+- VECTOR_SIZE = 200
+- WINDOW = 8
+- MIN_COUNT = 3
+- NB_EPOCHS = 50
+- DM = 1
+
+pour Doc2Vec, et nous avons inclus pour la vectorisation :
+- le résumé de base
+- le résumé OMDB
+- le résumé Wikimedia
+- les genres du film
+- 5 acteurs principaux
+- le réalisateur
+
+Tout cela nous a permis d'obtenir un modèle assez performant.
+
+Pour réentraîner le modèle, vous pouvez ajuster les paramètres et lancer le fichier correspondant dans le dossier `core/scripts`.
+Nous recommandons d'utiliser le gestionnaire `uv`, qui lit automatiquement les variables d'environnement :
+```sh
+uv run --env-file=.env training
+```
+
+> Remarque : Pour utiliser les alias de scripts, il peut être nécessaire de lancer d'abord :
+```sh
+uv pip install -e .
+```
+> Sinon, vous pouvez lancer manuellement les fichiers listés dans les commandes du fichier `pyproject.toml`.
+
+Le script génère un fichier de modèle dans `core/models`, utilisable pour l'inférence.
+
+
+### 3. Inférence
+
+L'inférence est la partie la plus rapide. Il suffit de passer un ou plusieurs ID(s) de films au modèle. S'il les connaît déjà (*via* entraînement), le modèle retourne les films les plus similaires. Sinon, il infère un vecteur et compare.
+
+Le modèle étant léger (39 000 éléments), les résultats sont disponibles en moins d'une seconde, idéal pour une intégration API.
+
+Pour faire une inférence, vérifiez que les paramètres dans le fichier .env soient à jour avec la version du modèle. Ensuite, entrez un ou plusieurs ID(s) de films dans la variable `movie_ids` du script `core/scripts/inference.py`, ou utilisez la méthode `get_random_movie_id`, selon vos préférences.
+
+Enfin, il ne vous reste qu'à exécuter le bon fichier du dossier `core/scripts`.
+Nous recommandons d'utiliser le gestionnaire `uv`, qui lit automatiquement les variables d'environnement :
+```sh
+uv run --env-file=.env inference
+```
+
+> Remarque : Pour utiliser les alias de scripts, il peut être nécessaire de lancer d'abord :
+```sh
+uv pip install -e .
+```
+> Sinon, vous pouvez lancer manuellement les fichiers listés dans les commandes du fichier `pyproject.toml`.
+
+Le script affichera les films recommandés selon votre ou vos film(s) de départ.

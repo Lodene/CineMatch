@@ -1,1 +1,5 @@
 __pycache__
+core/data/films_enriched_full
+core/data/films_enriched_omdb
+core/data/films_enriched_wiki
+core/data/subset
