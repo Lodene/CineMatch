@@ -13,6 +13,7 @@ import fr.cpe.cinematch_backend.services.MovieService;
 import fr.cpe.cinematch_backend.services.SocketService;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -72,12 +73,23 @@ public class MovieController {
 
     @PostMapping("/getRecommendedFilm")
     public ResponseEntity<String> getRecommendedFilm(@RequestBody MovieRecommendationRequest request) {
-        SocketRequest socketRequest  = movieService.getRecommendedFilm(request);
+        SocketRequest socketRequest = movieService.getRecommendedFilm(request);
         return ResponseEntity.ok(socketService.sendMoviesInfoToSocket(socketRequest));
     }
+
     @GetMapping("/getMovieCount")
     public ResponseEntity<Long> getMovieCount() {
         return ResponseEntity.ok(movieService.getMovieCount());
+    }
+
+    @GetMapping("/trailer/{tmdbId}")
+    public ResponseEntity<String> getTrailerUrl(@PathVariable Long tmdbId) {
+        String trailerUrl = movieService.fetchTrailerUrl(tmdbId);
+        if (trailerUrl != null) {
+            return ResponseEntity.ok(trailerUrl);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trailer not found.");
+        }
     }
 
     // Used for testing purpose

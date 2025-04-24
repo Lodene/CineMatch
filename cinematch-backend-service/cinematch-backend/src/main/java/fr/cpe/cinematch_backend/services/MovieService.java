@@ -20,24 +20,31 @@ import fr.cpe.cinematch_backend.repositories.*;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class MovieService {
 
-    @Autowired
-    private MovieRepository movieRepository;
+    @Value("${tmdb.api.key}")
+    private String apiKey;
+
+    private final RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
-    private MoviePosterApiService moviePosterApiService;
+    private MovieRepository movieRepository;
 
     @Autowired
     private AppUserRepository appUserRepository;
@@ -73,12 +80,11 @@ public class MovieService {
                 .map(MovieMapper.INSTANCE::toMovieDto)
                 .toList();
 
-        return
-            PaginatedMoviesResponse.builder()
+        return PaginatedMoviesResponse.builder()
                 .content(movieDtos)
                 .currentPage(movieSlice.getNumber())
-        //       .totalPages(movieSlice.getTotalPages())
-        //       .totalElements(movieSlice.getTotalElements())
+                // .totalPages(movieSlice.getTotalPages())
+                // .totalElements(movieSlice.getTotalElements())
                 .hasNext(movieSlice.hasNext())
                 .build();
     }
@@ -122,7 +128,8 @@ public class MovieService {
 
         MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(movie);
 
-        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList,isWatched, enrichedReviews);
+        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList, isWatched,
+                enrichedReviews);
     }
 
     public MovieDto createMovie(MovieCreationRequest movieCreationRequest) {
@@ -290,5 +297,24 @@ public class MovieService {
 
     public Long getMovieCount() {
         return this.movieRepository.count();
+    }
+
+    public String fetchTrailerUrl(Long tmdbId) {
+        String url = "https://api.themoviedb.org/3/movie/" + tmdbId + "/videos?api_key=" + apiKey;
+        ResponseEntity<Map> response = restTemplate.getForEntity(url, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
+            List<Map<String, Object>> results = (List<Map<String, Object>>) response.getBody().get("results");
+            if (results != null) {
+                for (Map<String, Object> video : results) {
+                    if ("YouTube".equals(video.get("site")) && "Trailer".equals(video.get("type"))) {
+                        String key = (String) video.get("key");
+                        return "https://www.youtube.com/watch?v=" + key;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
