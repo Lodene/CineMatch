@@ -6,7 +6,9 @@ import fr.cpe.cinematch_backend.dtos.PaginatedMoviesResponse;
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.dtos.ReviewWithFriendFlagDto;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
+import fr.cpe.cinematch_backend.dtos.requests.MovieRecommendationRequest;
 import fr.cpe.cinematch_backend.dtos.requests.MovieSearchRequest;
+import fr.cpe.cinematch_backend.dtos.requests.SocketRequest;
 import fr.cpe.cinematch_backend.entities.*;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -15,10 +17,7 @@ import fr.cpe.cinematch_backend.mappers.ReviewMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
 import fr.cpe.cinematch_backend.repositories.*;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,18 +55,22 @@ public class MovieService {
 
     public PaginatedMoviesResponse getAllMoviesPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
-        Page<MovieEntity> moviePage = movieRepository.findAll(pageable);
 
-        List<MovieDto> movieDtos = moviePage.getContent().stream()
+        Slice<MovieEntity> movieSlice = movieRepository.findAll(pageable);
+
+        // Page<MovieEntity> moviePage = movieRepository.findAll(pageable);
+
+        List<MovieDto> movieDtos = movieSlice.getContent().stream()
                 .map(MovieMapper.INSTANCE::toMovieDto)
                 .toList();
 
-        return PaginatedMoviesResponse.builder()
+        return
+            PaginatedMoviesResponse.builder()
                 .content(movieDtos)
-                .currentPage(moviePage.getNumber())
-                .totalPages(moviePage.getTotalPages())
-                .totalElements(moviePage.getTotalElements())
-                .hasNext(moviePage.hasNext())
+                .currentPage(movieSlice.getNumber())
+        //       .totalPages(movieSlice.getTotalPages())
+        //       .totalElements(movieSlice.getTotalElements())
+                .hasNext(movieSlice.hasNext())
                 .build();
     }
 
@@ -147,7 +150,7 @@ public class MovieService {
     }
 
     public Set<String> getAllGenres() {
-        List<MovieEntity> movies = movieRepository.findAll();
+        List<MovieEntity> movies = (List<MovieEntity>) movieRepository.findAll();
         Set<String> genres = new HashSet<>();
 
         for (MovieEntity movie : movies) {
@@ -173,7 +176,7 @@ public class MovieService {
                     "At least one search criterion must be provided.");
         }
 
-        List<MovieEntity> allMovies = movieRepository.findAll();
+        List<MovieEntity> allMovies = (List<MovieEntity>) movieRepository.findAll();
 
         return allMovies.stream()
                 .filter(movie -> request.getTitle() == null
@@ -194,4 +197,20 @@ public class MovieService {
                 .toList();
     }
 
+    public SocketRequest getRecommendedFilm(MovieRecommendationRequest request) {
+        SocketRequest socketRequest = new SocketRequest();
+        List<MovieDto> movies = new ArrayList<>();
+        for (Long id : request.getRecommendationsId()) {
+            Optional<MovieEntity> movieEntity = this.movieRepository.findById(id);
+            movieEntity.ifPresent(entity -> movies.add(MovieMapper.INSTANCE.toMovieDto(entity)));
+        }
+        socketRequest.setRecommendedMovies(movies);
+        socketRequest.setRequestId(request.getRequestId());
+        socketRequest.setFromUsername(request.getFromUsername());
+        return socketRequest;
+    }
+
+    public Long getMovieCount() {
+        return this.movieRepository.count();
+    }
 }
