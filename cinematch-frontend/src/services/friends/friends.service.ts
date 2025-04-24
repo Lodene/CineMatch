@@ -19,7 +19,7 @@ export class FriendsService {
   }
 
   public getAllUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.backendUrl}/profile`); 
+    return this.http.get<User[]>(`${this.backendUrl}/profile/all`); 
   }
 
   // Supprimer un ami

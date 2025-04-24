@@ -1,0 +1,15 @@
+:host {
+    flex:1;
+    padding: 5em 
+}
+
+.card-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 2em;
+}
+
+.friend-card {
+    flex: 33%
+}
