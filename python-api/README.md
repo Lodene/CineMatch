@@ -140,3 +140,6 @@ uv pip install -e .
 > Sinon, vous pouvez lancer manuellement les fichiers listés dans les commandes du fichier `pyproject.toml`.
 
 Le script affichera les films recommandés selon votre ou vos film(s) de départ.
+
+### Authors
+Marin Thomas
