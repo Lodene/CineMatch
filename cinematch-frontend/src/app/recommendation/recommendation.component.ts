@@ -15,6 +15,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { MovieRecommendationService } from '../../services/movie/movie-recommendation.service';
 import { LoaderService } from '../../services/loader/loader.service';
 import { SocketService } from '../../services/socket/socket.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { ProfileService } from '../../services/profile/profile.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 type SocketNotification = {
@@ -65,8 +68,9 @@ export class RecommendationComponent {
   private movieRecommendationService = inject(MovieRecommendationService);
   private loaderService = inject(LoaderService);
   private socketService = inject(SocketService);
-
-
+  private profileService = inject(ProfileService);
+  private toasterService = inject(ToastrService);
+  private username: string = "";
 
   ngOnInit() {
     // this.movie = new Movie();
@@ -79,13 +83,23 @@ export class RecommendationComponent {
     //   startWith(''),
     //   map(value => this._filterLanguages(value || ''))
     // );
-    this.socketService.on("notif").pipe(
-            tap((event) => {
-              console.log(event);
-              this.loaderService.hide();
-            })
-    ).subscribe();
-    this.getRecommendations();
+    this.profileService.currentUsername.pipe(tap((username) => {
+      if (username !== null) {
+        this.username = username;
+        this.socketService.register(this.username)
+        this.loaderService.show();
+        this.getRecommendations();
+        this.socketService.on("recommendation").pipe(
+          tap((event) => {
+            const recommendationNotification = event as SocketNotification;
+            this.recommendedMovies = recommendationNotification.recommendedMovies;
+            this.loaderService.hide();
+          })
+        ).subscribe();
+      } else {
+        this.toasterService.error("Could not retrieve your username", "Error 404");
+      }
+    })).subscribe()
   }
 
   // Optional: method to emit values when they change
@@ -119,13 +133,15 @@ export class RecommendationComponent {
   }
 
   private getRecommendations() {
-    this.loaderService.show();
+
     this.movieRecommendationService.getRecommendedMovie().subscribe({
       next: ((res: string) => {
-
+        // Contains request ID for debug
+        console.log(res);
       }),
       error: ((err: any) => {
-
+        console.error(err);
+        this.loaderService.hide();
       })
     })
   }
