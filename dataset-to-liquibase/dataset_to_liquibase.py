@@ -8,9 +8,9 @@ from pathlib import Path
 import sys 
 
 # === CONFIGURATION ===
-CSV_PATH = "TMDB_all_movies.csv"
+CSV_PATH = "subset.csv"
 OUTPUT_DIR = "liquibase_chunks"
-CHUNK_SIZE = 500
+CHUNK_SIZE = 10
 MAIN_TABLE = "movie"
 CHANGESET_AUTHOR = "T-H-O-M-A-S"
 
@@ -178,7 +178,7 @@ if __name__ == "__main__":
     # minimum arg only make one dataset
     minMode = False
     print(sys.argv)
-    if sys.argv[1] == "-minimum":
+    if len(sys.argv) >= 2 and sys.argv[1] == "-minimum":
         minMode = True
     print(minMode)
     create_output_folder("/liquibase_chunks")

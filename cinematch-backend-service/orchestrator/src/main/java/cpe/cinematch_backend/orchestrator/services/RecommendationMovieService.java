@@ -81,10 +81,9 @@ public class RecommendationMovieService {
     @JmsListener(destination = "recommendation-movie-response.queue", containerFactory = "myFactory")
     public void receiveRequest(byte[] movieRecommendationResponseJson){
 
-
         String serviceId = env.getProperty("activemq.recommendation-movie-response.queue");
         String serviceName = env.getProperty("activemq.recommendation-movie.service");
-        if (serviceName == null || serviceId == null || nodeJsUrl == null) {
+        if (serviceName == null || serviceId == null) {
             throw new RuntimeException("Error: serviceName or serviceId is null");
         }
         MovieRecommendationResponse response;
@@ -96,8 +95,8 @@ public class RecommendationMovieService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-        Optional<MovieRecommendationEntity> movieRecommendationEntity = movieRecommendationRepository.findById(movieRecommendationResponse.getRequestId());
+        /*
+        Optional<MovieRecommendationEntity> movieRecommendationEntity = movieRecommendationRepository.findById(response.getRequestId());
         if (movieRecommendationEntity.isPresent()) {
             // save in db for rollback purpose
             movieRecommendationEntity.get().setRecommendationsId(response.getRecommendationsId());
@@ -105,6 +104,7 @@ public class RecommendationMovieService {
             // todo: make an api call to the node js to notify the frontend
             this.postRequest(response, movieRecommendationEntity.get());
         }
+        */
     }
 
     private void postRequest(MovieRecommendationResponse response, MovieRecommendationEntity movieRecommendationEntity) {
