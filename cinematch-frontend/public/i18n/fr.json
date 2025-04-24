@@ -92,7 +92,10 @@
         },
         "tabs": {
           "activity": "Activité",
-          "favorites": "Favoris"
+          "favorites": "Favoris",
+          "diary": "Journal",
+          "watchlist": "Liste de visionnage",
+          "review": "Critiques"
         },
         "sections": {
           "activity": {
@@ -102,6 +105,7 @@
             "watchlist-add": "Vous avez ajouté {{ film }} à votre liste de visionnage",
             "watchlist-remove": "Vous avez retiré {{ film }} de votre liste de visionnage",
             "watch": "Vous avez regardé {{ film }}",
+            "unwatch": "Vous avez retiré {{ film }} de votre list de films vues",
             "review-add": "Vous avez ajouté un avis sur {{ film }}",
             "review-edit": "Vous avez édité votre avis sur {{ film }}",
             "review-remove": "Vous avez supprimé votre avis sur {{ film }}",
@@ -116,6 +120,15 @@
           },
           "favorites": {
             "title": "Vos films préférés"
+          },
+          "diary": {
+            "title": "Vos films vues"
+          },
+          "review": {
+            "title": "Vos critiques"
+          },
+          "watchlist": {
+            "title": "Votre list de visionnage"
           }
         }
       },
@@ -140,13 +153,17 @@
           "remove-from-watchlist": "Retirer ce film de votre watchlist",
           "add-review": "Ajouter votre avis",
           "edit-review": "Editer votre avis",
-          "need-connection": "Vous devez être connecté pour utiliser cette fonctionnalité"
+          "need-connection": "Vous devez être connecté pour utiliser cette fonctionnalité",
+          "add-to-watched": "Ajouter ce film à votre liste de films vus",
+          "remove-from-watched" : "Retirer ce film de votre liste de films vus "
         },
         "snackbar": {
           "like": "Le film a été ajouté à vos favoris",
           "unlike": "Le film a été retiré de vos favoris",
           "add-watchlist": "Le film a été ajouté à votre watchlist",
-          "remove-watchlist": "Le film a été retiré de votre watchlist"
+          "remove-watchlist": "Le film a été retiré de votre watchlist",
+          "add-to-watched": "Le film à été ajouté de votre liste de films vus",
+          "remove-from-watched" : "Le film à été retiré de votre liste de films vus"
         }
       },
       "privacy": {
@@ -230,6 +247,9 @@
       "favorite": {
         "not-found": "Vous n'avez aucun favoris.",
         "image-not-found": "Aucune image n'a pu être chargée"
+      },
+      "diary": {
+        "not-found": "Vous n'avez aucun film vues."
       },
       "review-card": {
         "edit": "Modifier",

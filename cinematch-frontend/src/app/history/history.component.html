@@ -5,7 +5,7 @@
             <mat-card-content>
                 <div *ngFor="let content of history?.content, index as i" class="activity-item">
                     <app-history-entry
-                        [historyEntry]="content">                        
+                        [historyEntry]="content">
                     </app-history-entry>
                     <mat-divider *ngIf="i !== history.content.length - 1"></mat-divider>
                 </div>
@@ -14,7 +14,20 @@
     </mat-tab>
 
     <mat-tab label="{{ 'app.common-component.profile.tabs.favorites' | translate }}">
-        <h2>{{ 'app.common-component.profile.sections.favorites.title' | translate }}</h2>
+      <h2>{{ 'app.common-component.profile.sections.favorites.title' | translate }}</h2>
+      <!-- FIX ME LATER : Compenent Film Card -->
+    </mat-tab>
+    <mat-tab label="{{ 'app.common-component.profile.tabs.diary' | translate }}">
+        <h2>{{ 'app.common-component.profile.sections.diary.title' | translate }}</h2>
         <!-- FIX ME LATER : Compenent Film Card -->
     </mat-tab>
+    <mat-tab label="{{ 'app.common-component.profile.tabs.watchlist' | translate }}">
+      <h2>{{ 'app.common-component.profile.sections.watchlist.title' | translate }}</h2>
+      <!-- FIX ME LATER : Compenent Film Card -->
+    </mat-tab>
+    <mat-tab label="{{ 'app.common-component.profile.tabs.review' | translate }}">
+      <h2>{{ 'app.common-component.profile.sections.review.title' | translate }}</h2>
+      <!-- FIX ME LATER : Compenent Film Card -->
+    </mat-tab>
+
 </mat-tab-group>

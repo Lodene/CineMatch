@@ -24,10 +24,12 @@ export class MovieActionsComponent implements OnInit, OnChanges {
   likeActionEvent = output<number>();
   watchlistActionEvent = output<number>();
   reviewActionEvent = output<number>();
+  watchedActionEvent = output<number>();
 
   likeToolTip = "";
   watchListToolTip = "";
   reviewToolTip = "";
+  watchToolTip = "";
   /**
    * mat-icon value (eg. 'home')
   */
@@ -41,16 +43,20 @@ export class MovieActionsComponent implements OnInit, OnChanges {
   */
   addReviewIconValue: string = "add_comment";
 
+  watchedIconValue: string = "visibility";
+
   @Input() movieId: number;
   @Input() disabled: boolean
 
   @Input() isLiked: boolean;
   @Input() isInWatchList: boolean;
   @Input() isReviewAdded: boolean;
+  @Input() isWatched: boolean;
 
   @Input() showWatchList: boolean;
   @Input() showAddReview: boolean;
   @Input() showLike: boolean;
+  @Input() showWatched: boolean;
 
   constructor(private translateService: TranslateService) { }
 
@@ -79,6 +85,11 @@ export class MovieActionsComponent implements OnInit, OnChanges {
       this.reviewActionEvent.emit(this.movieId);
   }
 
+  handleWatchedAction(): void {
+    if (!this.disabled)
+      this.watchedActionEvent.emit(this.movieId);
+  }
+
   /**
   * Format tooltip depending on user connection and movie state (liked, in watchlist)
   */
@@ -94,6 +105,11 @@ export class MovieActionsComponent implements OnInit, OnChanges {
       this.isReviewAdded ? this.translateService.instant('app.common-component.movie-actions.tooltip.edit-review') :
         this.translateService.instant('app.common-component.movie-actions.tooltip.add-review');
 
+    this.watchToolTip = this.disabled ? this.translateService.instant('app.common-component.movie-actions.tooltip.need-connection') :
+      this.isWatched ? this.translateService.instant('app.common-component.movie-actions.tooltip.remove-from-watched') :
+        this.translateService.instant('app.common-component.movie-actions.tooltip.add-to-watched');
+
+
   }
 
   /**
@@ -103,6 +119,7 @@ export class MovieActionsComponent implements OnInit, OnChanges {
     this.favoriteValue = this.disabled || !this.isLiked ? "favorite_border" : "favorite";
     this.watchListIconValue = this.disabled || !this.isInWatchList ? "playlist_add" : "playlist_remove";
     this.addReviewIconValue  = this.disabled || !this.isReviewAdded ? "add_comment" : "edit";
+    this.watchedIconValue = this.disabled || !this.isWatched ? "visibility" : "visibility_off";
   }
 
 

@@ -21,6 +21,7 @@ import { AboutMovieComponent } from './about-movie/about-movie.component';
 import { ReviewCardComponent } from '../common-component/review-card/review-card.component';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ReviewService } from '../../services/review/review.service';
+import { DiaryService} from '../../services/diary/diary.service';
 import { Review } from '../../models/review';
 import { MatDialog } from '@angular/material/dialog';
 import { AddReviewDialogComponent, AddReviewDialogData } from '../common-component/add-review-dialog/add-review-dialog.component';
@@ -54,6 +55,7 @@ export class MovieDetailsComponent {
     private favoriteMovieService: FavoriteMovieService,
     private reviewService: ReviewService,
     private watchlistService: WatchlistService,
+    private diaryService: DiaryService,
     private authService: AuthService,
     private profileService: ProfileService,
     private snackbarService: SnackbarService,
@@ -66,6 +68,7 @@ export class MovieDetailsComponent {
   isLiked = false;
   isReviewAdded = false;
   isInWatchlist = false;
+  isWatched = false;
   movieConsultation: MovieConsultation;
   reviews: Review[];
   username: string | null;
@@ -92,6 +95,7 @@ export class MovieDetailsComponent {
               this.isInWatchlist = movieConsultation.inWatchlist;
               this.isLiked = movieConsultation.loved;
               this.reviews = movieConsultation.reviews;
+              this.isWatched = movieConsultation.watched;
               this.isReviewAdded = movieConsultation.commented;
 
             },
@@ -137,9 +141,22 @@ export class MovieDetailsComponent {
     });
   }
 
+  handleWatchAction($event: number) {
+    this.diaryService.watchOrUnwatchMovie($event).subscribe({
+      next: () => {
+        // inversion
+        this.isWatched = !this.isWatched;
+        this.showWatchedSnackbar(this.isWatched);
+      },
+      error: (err) => {
+        this.toasterService.error(err.error.reason, err.error.error);
+      }
+    });
+  }
+
 
   /**
-   * 
+   *
    * @param action either removed or added (false = remove, true = added)
    */
   showLovedSnackbar(action: boolean) {
@@ -149,13 +166,20 @@ export class MovieDetailsComponent {
     );
   }
   /**
-   * 
+   *
    * @param action either removed or added (false = remove, true = added)
    */
   showWatchListSnackbar(action: boolean) {
     this.snackbarService.show(
       action ? this.translateService.instant('app.common-component.movie-actions.snackbar.add-watchlist') :
         this.translateService.instant('app.common-component.movie-actions.snackbar.remove-watchlist')
+    );
+  }
+
+  showWatchedSnackbar(action: boolean) {
+    this.snackbarService.show(
+      action ? this.translateService.instant('app.common-component.movie-actions.snackbar.add-to-watched') :
+        this.translateService.instant('app.common-component.movie-actions.snackbar.remove-from-watched')
     );
   }
 
@@ -182,7 +206,7 @@ export class MovieDetailsComponent {
 
       data: {
         review: review,
-        description: review.description !== undefined && 
+        description: review.description !== undefined &&
           review.description !== null ? review.description : '',
         // 0.5 to have a semi star at minimal
         note: review.note !== undefined && review.note !== null ? review.note : 0.5

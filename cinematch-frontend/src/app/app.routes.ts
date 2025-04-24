@@ -15,14 +15,15 @@ import { SettingsComponent } from './settings/settings.component';
 import { TermServiceComponent } from './term-service/term-service.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { FriendsListComponent } from './friends-list/friends-list.component';
+import { DiaryComponent } from './diary/diary.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
   { path: 'about', component: AboutComponent }, // Page "À propos"
-  { path: 'contact', component: ContactComponent }, 
-  { path: 'privacy', component: PrivacyPolicyComponent }, 
-  { path: 'terms', component: TermServiceComponent }, 
-  { path: 'settings', component: SettingsComponent }, 
+  { path: 'contact', component: ContactComponent },
+  { path: 'privacy', component: PrivacyPolicyComponent },
+  { path: 'terms', component: TermServiceComponent },
+  { path: 'settings', component: SettingsComponent },
   { path: 'login', component: LoginComponent},
   { path: 'signup', component: SignupComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
@@ -30,9 +31,8 @@ export const routes: Routes = [
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: 'recommendations', component: RecommendationComponent, canActivate:[AuthGuard]},
   { path: 'favorites', component: FavoriteComponent, canActivate:[AuthGuard]},
-  //{ path: 'friends', component: FriendsListComponent, canActivate:[AuthGuard]},
-  { path: 'friends', component: FriendsListComponent},
+  { path: 'friends', component: FriendsListComponent, canActivate:[AuthGuard]},
+  { path: 'diary', component: DiaryComponent, canActivate:[AuthGuard]},
   { path: 'movie/:id', component: MovieDetailsComponent },
   // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
-  
 ];

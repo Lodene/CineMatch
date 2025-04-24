@@ -49,6 +49,12 @@ public class MovieService {
     private WatchlistMovieService watchlistMovieService;
 
     @Autowired
+    private WatchedMovieService watchedMovieService;
+
+    @Autowired
+    private WatchedMovieRepository watchedMovieRepository;
+
+    @Autowired
     private ProfilRepository profilRepository;
     @Autowired
     private LovedMovieRepository lovedMovieRepository;
@@ -82,7 +88,7 @@ public class MovieService {
 
         List<ReviewEntity> reviews = reviewRepository.findByMovie(movie);
 
-        boolean hasCommented = false, isLoved = false, isInWatchList = false;
+        boolean hasCommented = false, isLoved = false, isInWatchList = false, isWatched = false;
         AppUser appUser;
         if (username != null) {
             appUser = appUserRepository.findByUsername(username)
@@ -90,6 +96,7 @@ public class MovieService {
                             "username '" + username + "' does not exist"));
             hasCommented = reviews.stream().anyMatch(r -> r.getUser().getId() == appUser.getId());
             isLoved = lovedMovieRepository.findByUserAndMovie(appUser, movie).isPresent();
+            isWatched = watchedMovieRepository.findByUserAndMovie(appUser, movie).isPresent();
             List<MovieDto> watchListMovie = watchlistMovieService.getWatchlistByUsername(username);
             isInWatchList = watchListMovie.stream().anyMatch(m -> m.getId().equals(movie.getId()));
         } else {
@@ -112,7 +119,7 @@ public class MovieService {
 
         MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(movie);
 
-        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList, enrichedReviews);
+        return new MovieDetailsWithReviewsDto(movieDto, hasCommented, isLoved, isInWatchList,isWatched, enrichedReviews);
     }
 
     public MovieDto createMovie(MovieCreationRequest movieCreationRequest) {
