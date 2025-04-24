@@ -3,7 +3,7 @@ package fr.cpe.cinematch_backend.controllers;
 import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.dtos.PaginatedMoviesResponse;
-import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
+// import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
 import fr.cpe.cinematch_backend.dtos.requests.MovieSearchRequest;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
@@ -59,11 +59,6 @@ public class MovieController {
         return ResponseEntity.ok(movieService.searchMovies(request));
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<List<MovieDto>> searchMovies(@RequestBody MovieSearchRequest request)
-            throws GenericNotFoundException {
-        return ResponseEntity.ok(movieService.searchMovies(request));
-    }
     // Used for testing purpose
     /*
      * @PostMapping
