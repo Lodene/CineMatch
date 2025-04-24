@@ -1,0 +1,28 @@
+/* Card d'une personne */
+:host {
+  display: block;
+  width: 120px;
+  height: 160px;
+  padding: 12px;
+  background-color: #f4f4f4;
+  text-align: center;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  background-image: url('/assets/avatar-default.jpg');  /* Ajout de l'image de fond */
+  background-size: cover;  /* Couvre toute la surface de la carte */
+  background-position: center;  /* Centre l'image */
+  background-repeat: no-repeat;  /* Empêche la répétition de l'image */
+}
+
+:host:hover {
+  transform: scale(1.05);
+}
+
+span {
+  font-size: 0.9em;
+  color: #333;
+  font-weight: 600;
+  margin-top: 8px;
+}
