@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface MovieRecommendationRepository extends MongoRepository<MovieRecommendationEntity,String>
 {
-	Optional<MovieRecommendationEntity> findById(UUID cardId);
+
 }

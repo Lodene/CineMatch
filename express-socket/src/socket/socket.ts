@@ -1,4 +1,5 @@
 import { Socket, Server as SocketIOServer } from 'socket.io';
+import { setNotifNamespace } from '../routes';
 
 interface Message {
 
@@ -28,66 +29,8 @@ export const initSocket = (server: any) => {
     },
   });
   
-  // chat namespace =>
-  const chatNamespace = io.of("/chat");
-  
-  chatNamespace.on('connection', (socket: Socket) => {
-    // console.log('Client connected:', socket.id);
-    if (!users.find(el => el === socket.handshake.auth.username)) {
-      users.push(socket.handshake.auth.username);
-    }
-
-    socket.on('join', (userId: string) => {
-      // ?
-    });
-
-    socket.on("private-message", ({ sender, receiver, message }) => {
-      console.log("received", sender, receiver, message);
-      const receiverSocketId = users[receiver];
-      if (receiverSocketId) {
-        socket.to(receiverSocketId).emit("receive-message", { sender, message });
-      }
-    });
-
-    socket.on("send-all-players", (socket: Socket) => {
-      chatNamespace.emit("player-list", users);
-    });
-
-    socket.on("disconnect", () => {
-      
-      for (let i = 0; i < users.length; i++) {
-        if (users[i] === socket.handshake.auth.username) {
-          delete users[i];
-          break;
-        }
-      }
-      console.log("User disconnected:", socket.id);
-      chatNamespace.emit("player-list", users);
-    });
-
-    socket.on("message", async (data: Message) => {
-      // const username: string = getuserNameFromToken(data.sender);
-      const username = data.sender;
-      console.log("Message received:", data, username);
-
-      // Broadcast the message to all connected clients
-      chatNamespace.emit("message", {
-        content: data.content,
-        sender: username,
-        timestamp: data.timestamp,
-      });
-      
-    });
-
-  });
-
-
-
-
-
-
   // private namespace =>
-  const privateChatNamespace = io.of("/private");
+  /*const privateChatNamespace = io.of("/private");
 
   privateChatNamespace.on('connection', (socket: Socket)=> {
     console.log(`User connected to private namespace: ${socket.id}`);
@@ -121,6 +64,32 @@ export const initSocket = (server: any) => {
         }
       });
       console.log(`User disconnected: ${socket.id}`);
+    });
+  });
+  */
+
+
+  // notif namespace =>
+  const notifNamespace = io.of('/notif');
+  setNotifNamespace(notifNamespace);
+
+
+  notifNamespace.on('connection', (socket: Socket) => {
+    console.log('Un client est connecté au namespace /notif');
+
+    socket.on("register", (username: string) => {
+      console.log(`User registered: ${username} with socket ID ${socket.id}`);
+      globalUsers.set(username,
+        {
+          id: username,
+          socketId: socket.id
+        });
+        console.log(`User registered: ${username} - Socket: ${socket.id}`);
+    })
+  
+    // Gérer la déconnexion du client
+    socket.on('disconnect', () => {
+      console.log('Client déconnecté du namespace /notif');
     });
   });
 

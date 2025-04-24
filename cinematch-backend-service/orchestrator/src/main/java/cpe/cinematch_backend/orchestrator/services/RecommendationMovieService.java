@@ -52,7 +52,7 @@ public class RecommendationMovieService {
         }
         // enregistrement de la transaction pour rollback & retour
         MovieRecommendationEntity movieRecommendationEntity = new MovieRecommendationEntity();
-        movieRecommendationEntity.setId(uuid);
+        movieRecommendationEntity.setId(uuid.toString());
         // todo: maybe save the whole movie?
         movieRecommendationEntity.setFromUsername(movieRecommendationRequest.getFromUsername());
         movieRecommendationEntity.setRecentlyLikedMovies(movieRecommendationRequest.getRecentlyLikedMovies());

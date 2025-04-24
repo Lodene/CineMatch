@@ -21,15 +21,15 @@ public class SocketService {
     RestTemplate restTemplate = new RestTemplate();
 
     public String sendMoviesInfoToSocket(SocketRequest socketRequest) {
-        String monolithUrl = env.getProperty("monolith.url.url");
-        if (monolithUrl == null) {
+        String nodejsUrl = env.getProperty("nodejs.url");
+        if (nodejsUrl == null) {
             // bad config
             return null;
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<SocketRequest> requestEntity = new HttpEntity<>(socketRequest, headers);
-        String result = restTemplate.postForObject(monolithUrl.concat("movie/getRecommendedFilm"), requestEntity, String.class);
+        String result = restTemplate.postForObject(nodejsUrl.concat("recommended-film"), requestEntity, String.class);
         if (result == null) {
             // retry until succes
             // fixme: add max retry count with static var

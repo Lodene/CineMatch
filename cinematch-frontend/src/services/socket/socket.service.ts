@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class SocketService {
 
   private socket: Socket;
-  private readonly uri: string = 'http://express-socket:3000'; // Your backend URL
+  private readonly uri: string = 'http://localhost:3000'; // Your backend URL
 
   constructor() {
     this.socket = io(this.uri);
