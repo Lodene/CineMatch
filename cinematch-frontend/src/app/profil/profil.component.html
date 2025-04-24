@@ -2,11 +2,8 @@
   <div class="profile-header">
     <img
       class="avatar"
-      [src]="
-    userProfile.profilPicture
-      ? 'data:image/jpeg;base64,' + userProfile.profilPicture
-      : '/assets/avatar-default.jpg'
-  "
+      [src]="picture"
+
       alt="{{ 'generic-error.image-not-found' | translate }}"
     />
     <div class="profile-info">

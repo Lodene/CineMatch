@@ -78,7 +78,7 @@ public class WatchlistMovieService {
                 List<MovieDto> watchlistMovies = this.getWatchlistByUsername(username);
                 List<MovieDetailsWithReviewsDto> watchListMoviesWithDetails = new ArrayList<>();
                 for (MovieDto movieDto : watchlistMovies ) {
-                        watchListMoviesWithDetails.add(new MovieDetailsWithReviewsDto(movieDto, false, false, true, new ArrayList<>()));
+                        watchListMoviesWithDetails.add(new MovieDetailsWithReviewsDto(movieDto, false, false, true, false, new ArrayList<>()));
                 }
                 return watchListMoviesWithDetails;
         }
@@ -97,7 +97,7 @@ public class WatchlistMovieService {
                 List<MovieDto> watchlistMovies = this.getWatchlistByUserId(userId);
                 List<MovieDetailsWithReviewsDto> watchListMoviesWithDetails = new ArrayList<>();
                 for (MovieDto movieDto : watchlistMovies ) {
-                        watchListMoviesWithDetails.add(new MovieDetailsWithReviewsDto(movieDto, false, false, true, new ArrayList<>()));
+                        watchListMoviesWithDetails.add(new MovieDetailsWithReviewsDto(movieDto, false, false, true, false, new ArrayList<>()));
                 }
                 return watchListMoviesWithDetails;
         }

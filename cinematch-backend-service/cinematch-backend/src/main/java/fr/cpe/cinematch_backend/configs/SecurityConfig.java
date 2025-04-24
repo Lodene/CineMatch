@@ -77,7 +77,7 @@ public class SecurityConfig {
     UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8088"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:8088", "http://orchestrator:8088", "http://cinematch-frontend:4200"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("authorization","content-Type", "x-auth-token"));

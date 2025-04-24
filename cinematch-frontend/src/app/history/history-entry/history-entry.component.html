@@ -1,9 +1,15 @@
 <div class="activity-item">
-    <div class="entry-icon-with-text">
-        <mat-icon [ngClass]="{'loved': historyEntry.actionType === movieActionType.LIKE}">{{ iconValue }}</mat-icon>
-        <span>
-            {{ textValue }}
-        </span>
-    </div>
-    <p class="timestamp">{{ timestampValue }}</p>
+  <div class="entry-icon-with-text">
+    <mat-icon [ngClass]="{'loved': historyEntry.actionType === movieActionType.LIKE}">
+      {{ iconValue }}
+    </mat-icon>
+    <span>
+      {{ textBefore }}
+      <a class="film-link" (click)="goToMovie(historyEntry.movieId)">
+        {{ historyEntry.movieTitle }}
+      </a>
+      {{ textAfter }}
+    </span>
+  </div>
+  <p class="timestamp">{{ timestampValue }}</p>
 </div>

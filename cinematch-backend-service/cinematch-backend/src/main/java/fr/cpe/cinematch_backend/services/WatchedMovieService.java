@@ -1,6 +1,7 @@
 package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.MovieDto;
+import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.entities.MovieEntity;
 import fr.cpe.cinematch_backend.entities.WatchedMovieEntity;
@@ -15,6 +16,7 @@ import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class WatchedMovieService {
@@ -58,15 +60,26 @@ public class WatchedMovieService {
                                 });
         }
 
-        public List<MovieDto> getWatchedMoviesByUsername(String username) throws GenericNotFoundException {
-                AppUser user = appUserRepository.findByUsername(username)
-                                .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
-                                                "username '" + username + "' not found"));
+        public List<MovieDetailsWithReviewsDto> getWatchedMoviesByUsername(String username) throws GenericNotFoundException {
+            AppUser user = appUserRepository.findByUsername(username)
+                    .orElseThrow(() -> new GenericNotFoundException(404, "User not found",
+                            "username '" + username + "' not found"));
 
-                return watchedMovieRepository.findByUser(user).stream()
-                                .map(entry -> MovieMapper.INSTANCE.toMovieDto(entry.getMovie()))
-                                .toList();
+            return watchedMovieRepository.findByUser(user).stream()
+                    .map(entry -> {
+                        MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(entry.getMovie());
+                        return new MovieDetailsWithReviewsDto(
+                                movieDto,
+                                false, // isCommented
+                                false, // isLoved
+                                false, // isInWatchlist
+                                true,  // isWatched
+                                new ArrayList<>() // reviews
+                        );
+                    })
+                    .toList();
         }
+
 
         public List<MovieDto> getWatchedMoviesByUserId(Long idUser) throws GenericNotFoundException {
                 AppUser user = appUserRepository.findById(idUser)

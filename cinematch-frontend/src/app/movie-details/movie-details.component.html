@@ -12,13 +12,16 @@
                 [showLike]="true"
                 [showAddReview]="true"
                 [showWatchList]="true"
+                [showWatched] = "true"
                 [movieId]="movie.id"
                 [isInWatchList]="isInWatchlist"
                 [isLiked]="isLiked"
                 [isReviewAdded]="isReviewAdded"
+                [isWatched] = "isWatched"
                 (watchlistActionEvent)="handleWatchListAction($event)"
                 (reviewActionEvent)="handleReviewAction($event)"
-                (likeActionEvent)="handleLikeAction($event)">
+                (likeActionEvent)="handleLikeAction($event)"
+                (watchedActionEvent)="handleWatchAction($event)">
             </app-movie-actions>
         </div>
         <div style="display: flex;" class="my-20">
@@ -58,7 +61,7 @@
             </ng-template>
 
         </mat-tab>
-        <mat-tab label="Similar films">"{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}"</mat-tab>
+        <mat-tab label="{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}">"{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}"</mat-tab>
     </mat-tab-group>
 
 </div>

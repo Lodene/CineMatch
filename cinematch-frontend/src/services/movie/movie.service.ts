@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { MovieConsultation } from '../../models/movieConsultation';
 import { MovieSearchRequest } from '../../models/movie-search-request';
+import { PaginatedMovieResponse } from '../../models/paginated-movie-reponse';
 
 
 @Injectable({
@@ -24,16 +25,16 @@ export class MovieService {
     return this.http.get<MovieConsultation>(`${this.backendUrl}/${movieId}`);
   }
 
-  public getAllMovies(): Observable<Movie[]> {
-    return this.http.get<Movie[]>(`${this.backendUrl}/movies`);
+  public getAllMovies(page: number, size: number):Observable<PaginatedMovieResponse> {
+    return this.http.get<PaginatedMovieResponse>(`${this.backendUrl}/movies?page=${page}&size=${size}`);
   }
 
-  public addMovie(movie: Movie) {
-    return this.http.post<Movie>(`${this.backendUrl}`, movie, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    });
+  /**
+   * 
+   * @returns the number of movie present in the database
+   */
+  public getMovieCount(): Observable<number> {
+    return this.http.get<number>(`${this.backendUrl}/getMovieCount`)
   }
 
   public getAllGeneres() {

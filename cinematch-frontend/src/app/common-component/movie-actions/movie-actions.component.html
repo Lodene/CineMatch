@@ -4,7 +4,7 @@
     [disabled]="disabled"
     class="empty-button"
     matTooltip="{{ likeToolTip }}">
-        <mat-icon class="big-icon" [ngClass]="{'loved': isLiked}" (click)="handleLike()">{{ favoriteValue }}</mat-icon>
+        <mat-icon class="big-icon" [ngClass]="{'loved': isLiked}" (click)="$event.stopPropagation(); handleLike()">{{ favoriteValue }}</mat-icon>
     </button>
 
     <button
@@ -12,14 +12,22 @@
     [disabled]="disabled"
     class="empty-button"
     matTooltip="{{ watchListToolTip }}">
-        <mat-icon class="big-icon" (click)="handleWatchListAction()">{{ watchListIconValue }}</mat-icon>
+        <mat-icon class="big-icon" (click)="$event.stopPropagation(); handleWatchListAction()">{{ watchListIconValue }}</mat-icon>
     </button>
 
     <button
     *ngIf="showAddReview"
     [disabled]="disabled"
     class="empty-button"
-    matTooltip="{{ reviewToolTip }}">   
+    matTooltip="{{ reviewToolTip }}">
         <mat-icon class="big-icon" (click)="handleReviewAction()">{{ addReviewIconValue }}</mat-icon>
+    </button>
+
+    <button
+      *ngIf="showWatched"
+      [disabled]="disabled"
+      class="empty-button"
+      matTooltip="{{ watchToolTip }}">
+      <mat-icon class="big-icon" (click)="$event.stopPropagation(); handleWatchedAction()">{{ watchedIconValue }}</mat-icon>
     </button>
 </div>

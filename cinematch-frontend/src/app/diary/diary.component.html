@@ -1,0 +1,18 @@
+<div class="movies" *ngIf="watchedMovies?.length !== 0; else noMovies">
+  <movie-card-horizontal
+    [showLike]="false"
+    [showWatchList]="false"
+    [showWatched]="true"
+    [movie]="consultationMovie.movie"
+    [isLoved]="false"
+    [isWatched]="consultationMovie.watched"
+    (deleteMovie)="deleteMovie($event)"
+    *ngFor="let consultationMovie of watchedMovies"
+  >
+  </movie-card-horizontal>
+</div>
+<ng-template #noMovies>
+  <h1 class="not-found">
+    {{ 'app.common-component.diary.not-found' | translate}}
+  </h1>
+</ng-template>

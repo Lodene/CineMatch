@@ -64,7 +64,7 @@ public class LovedMovieService {
                 .toList();
         List<MovieDetailsWithReviewsDto> lovedMovie = new ArrayList<>();
         for (MovieDto movieDto : userMovies) {
-               lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, new ArrayList<>()));
+               lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, false, new ArrayList<>()));
         }
         return lovedMovie;
     }
@@ -82,7 +82,7 @@ public class LovedMovieService {
         }
         List<MovieDetailsWithReviewsDto> lovedMovie = new ArrayList<>();
         for (MovieDto movieDto : movieDtoList) {
-            lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, new ArrayList<>()));
+            lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, false, new ArrayList<>()));
         }
         return lovedMovie;
     }

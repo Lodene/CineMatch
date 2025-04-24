@@ -8,6 +8,7 @@ import cpe.cinematch_backend.orchestrator.entities.MovieRecommendationEntity;
 import cpe.cinematch_backend.orchestrator.repositories.MovieRecommendationRepository;
 import cpe.cinematch_backend.orchestrator.requests.MovieRecommendationActiveMqRequest;
 import cpe.cinematch_backend.orchestrator.requests.MovieRecommendationRequest;
+import cpe.cinematch_backend.orchestrator.requests.SocketRecommendationRequest;
 import cpe.cinematch_backend.orchestrator.responses.MovieRecommendationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -88,42 +89,49 @@ public class RecommendationMovieService {
         }
         MovieRecommendationResponse response;
         try {
-            String json = new String(movieRecommendationResponseJson, StandardCharsets.UTF_8);  // ✅ decode byte[] properly
+            String json = new String(movieRecommendationResponseJson, StandardCharsets.UTF_8);  // decode byte[] properly
             ObjectMapper objectMapper = new ObjectMapper();
             response = objectMapper.readValue(json, MovieRecommendationResponse.class);
-            System.out.println("✅ Got: " + response);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        /*
+
         Optional<MovieRecommendationEntity> movieRecommendationEntity = movieRecommendationRepository.findById(response.getRequestId());
         if (movieRecommendationEntity.isPresent()) {
             // save in db for rollback purpose
             movieRecommendationEntity.get().setRecommendationsId(response.getRecommendationsId());
             movieRecommendationRepository.save(movieRecommendationEntity.get());
-            // todo: make an api call to the node js to notify the frontend
-            this.postRequest(response, movieRecommendationEntity.get());
+            // notify the monolith to fetch movie info
+            this.postRequest(response, movieRecommendationEntity.get(), 0);
         }
-        */
+
     }
 
-    private void postRequest(MovieRecommendationResponse response, MovieRecommendationEntity movieRecommendationEntity) {
-        String nodeJsUrl = env.getProperty("nodejs.url");
-        if (nodeJsUrl == null) {
+    private void postRequest(MovieRecommendationResponse response, MovieRecommendationEntity movieRecommendationEntity, int tryCount) {
+        String monolithUrl = env.getProperty("monolith.url");
+        if (monolithUrl == null) {
             // bad config
             return;
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<MovieRecommendationResponse> requestEntity = new HttpEntity<>(response, headers);
-        String result = restTemplate.postForObject(nodeJsUrl.concat("/orchestrator/recommendation-film"), requestEntity, String.class);
+        SocketRecommendationRequest socketRequest = new SocketRecommendationRequest();
+        socketRequest.setRequestId(response.getRequestId());
+        socketRequest.setFromUsername(movieRecommendationEntity.getFromUsername());
+        socketRequest.setRecommendationsId(response.getRecommendationsId());
+        HttpEntity<SocketRecommendationRequest> requestEntity = new HttpEntity<>(socketRequest, headers);
+        String result = restTemplate.postForObject(monolithUrl.concat("movie/getRecommendedFilm"), requestEntity, String.class);
         if (result != null) {
             // everything went well, we can delete
             movieRecommendationRepository.delete(movieRecommendationEntity);
         } else {
-            // retry until succes
-            // fixme: add max retry count with static var
-            this.postRequest(response, movieRecommendationEntity);
+            if (tryCount >= 3) {
+                // 3 try max
+                return;
+            }
+            // retry until success
+            tryCount +=1;
+            this.postRequest(response, movieRecommendationEntity, tryCount);
         }
 
     }

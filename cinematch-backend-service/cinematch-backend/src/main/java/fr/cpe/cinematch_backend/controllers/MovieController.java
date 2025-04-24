@@ -4,10 +4,13 @@ import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
 import fr.cpe.cinematch_backend.dtos.PaginatedMoviesResponse;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
+import fr.cpe.cinematch_backend.dtos.requests.MovieRecommendationRequest;
 import fr.cpe.cinematch_backend.dtos.requests.MovieSearchRequest;
+import fr.cpe.cinematch_backend.dtos.requests.SocketRequest;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.MovieService;
+import fr.cpe.cinematch_backend.services.SocketService;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +23,12 @@ import java.util.Set;
 @RestController
 @RequestMapping("movie")
 public class MovieController {
+
     @Autowired
     private MovieService movieService;
+
+    @Autowired
+    SocketService socketService;
 
     @GetMapping("/movies")
     public ResponseEntity<PaginatedMoviesResponse> getAllMoviesPaginated(
@@ -61,6 +68,16 @@ public class MovieController {
     ) throws GenericNotFoundException {
         PaginatedMoviesResponse result = movieService.searchMovies(request, page, size);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/getRecommendedFilm")
+    public ResponseEntity<String> getRecommendedFilm(@RequestBody MovieRecommendationRequest request) {
+        SocketRequest socketRequest  = movieService.getRecommendedFilm(request);
+        return ResponseEntity.ok(socketService.sendMoviesInfoToSocket(socketRequest));
+    }
+    @GetMapping("/getMovieCount")
+    public ResponseEntity<Long> getMovieCount() {
+        return ResponseEntity.ok(movieService.getMovieCount());
     }
 
     // Used for testing purpose

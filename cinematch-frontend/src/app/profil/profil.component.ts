@@ -36,7 +36,7 @@ import { EditProfileDialogComponent } from '../common-component/edit-profile-dia
 export class ProfilComponent implements OnInit {
   favoriteMovies: Movie[] = [];
   userProfile: User = new User();
-
+  picture = '/assets/avatar-default.jpg';
   readonly dialog = inject(MatDialog);
 
   constructor(
@@ -55,6 +55,11 @@ export class ProfilComponent implements OnInit {
     this.profileService.getProfil().subscribe({
       next: (profile: User) => {
         this.userProfile = profile;
+        if(!!this.userProfile.profilPicture) {
+          this.picture = 'data:image/jpeg;base64,' + this.userProfile.profilPicture
+        } else {
+          this.picture = '/assets/avatar-default.jpg';
+        }
       },
       error: (error) => {
         this.toasterService.error(error.error.reason, error.error.error);

@@ -5,11 +5,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.Date;
 import java.util.List;
 
-public interface MovieRepository extends JpaRepository<MovieEntity, Long>, JpaSpecificationExecutor<MovieEntity> {
+public interface MovieRepository extends JpaRepository<MovieEntity, Long> {
     List<MovieEntity> findMovieEntitiesByReleaseDateBetween(Date releaseDateAfter, Date releaseDateBefore);
 
     List<MovieEntity> findMovieEntitiesByTitleContaining(String title);
