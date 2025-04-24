@@ -99,17 +99,20 @@ class MessageListener(stomp.ConnectionListener):
             if movie_json_string:
                 try:
                     recentlyLikedMovies = movie_json_string.get("recentlyLikedMovies") 
-                    print("first movie liked: ", recentlyLikedMovies[0].get("title"))
+                    # print("first movie liked: ", recentlyLikedMovies[0].get("title"))
                 except json.JSONDecodeError as e:
                     print(f"❌ Error decoding movie JSON: {e}")
             else:
                 print("❗No 'payload' key in payload")
 
             # Traitement AI
+            movie_ids = []
+            for movie in recentlyLikedMovies:
+                movie_ids.append(movie.get("id"))
 
-            movie_ids = [
-                "157336",  # Interstellar
-            ]
+            # movie_ids = [
+            #     "157336",  # Interstellar
+            # ]
             # Contains ID
             recommended_movies = recommend_movies(df_full, model, movie_ids, topn=10)
 

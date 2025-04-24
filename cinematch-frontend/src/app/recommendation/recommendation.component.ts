@@ -11,7 +11,7 @@ import { map, Observable, startWith, take, tap } from 'rxjs';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MovieRecommendationService } from '../../services/movie/movie-recommendation.service';
 import { LoaderService } from '../../services/loader/loader.service';
 import { SocketService } from '../../services/socket/socket.service';
@@ -70,6 +70,8 @@ export class RecommendationComponent {
   private socketService = inject(SocketService);
   private profileService = inject(ProfileService);
   private toasterService = inject(ToastrService);
+  private translateService = inject(TranslateService);
+
   private username: string = "";
 
   ngOnInit() {
@@ -93,11 +95,17 @@ export class RecommendationComponent {
           tap((event) => {
             const recommendationNotification = event as SocketNotification;
             this.recommendedMovies = recommendationNotification.recommendedMovies;
+            this.toasterService.success(
+              this.translateService.instant('app.common-component.recommendation.succes')
+            );
             this.loaderService.hide();
           })
         ).subscribe();
       } else {
-        this.toasterService.error("Could not retrieve your username", "Error 404");
+        this.toasterService.error(
+          this.translateService.instant('app.common-component.recommendation.user-error-reason'),
+          this.translateService.instant('app.common-component.recommendation.user-error')
+        );
       }
     })).subscribe()
   }
@@ -138,9 +146,13 @@ export class RecommendationComponent {
       next: ((res: string) => {
         // Contains request ID for debug
         console.log(res);
+        this.toasterService.show(
+          this.translateService.instant('app.common-component.recommendation.show')
+        );
       }),
       error: ((err: any) => {
         console.error(err);
+        this.toasterService.error(err.error.reason, err.error.error);
         this.loaderService.hide();
       })
     })
