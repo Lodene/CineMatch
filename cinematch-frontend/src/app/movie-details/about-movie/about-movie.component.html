@@ -1,43 +1,43 @@
 <div class="about-movie-wrapper">
     <div class="synopsis my-10">
-        <div class="title-md">Synopsis</div>
+        <div class="title-md">{{ 'app.common-component.about-movie.synopsis' | translate }}</div>
         <div class="text">{{movie?.overview}}</div>
     </div>
     <div class="details-container my-10">
-        <div class="title-md">Details</div>
+        <div class="title-md">{{ 'app.common-component.about-movie.details' | translate }}</div>
 
         <div class="details-items">
             <div class="detail m-20">
-                <div class="title-md">Director</div>
+                <div class="title-md">{{ 'app.common-component.about-movie.director' | translate }}</div>
                 <div class="text" *ngFor="let director of movie?.director">
                     {{director}}
                 </div>
             </div>
 
             <div class="detail m-20">
-                <div class="title-md">Runtime</div>
+                <div class="title-md">{{ 'app.common-component.about-movie.runtime' | translate }}</div>
                 <div class="text">{{movie.runtime}}min</div>
             </div>
 
             <div class="detail m-20">
-                <div class="title-md">Release Year</div>
+                <div class="title-md">{{ 'app.common-component.about-movie.release-year' | translate }}</div>
                 <div class="text">{{movie.releaseDate  | date:'y'}}</div>
             </div>
 
             <div class="detail m-20">
-                <div class="title-md">Rating</div>
+                <div class="title-md">{{ 'app.common-component.about-movie.rating' | translate }}</div>
                 <div class="text">{{movie.imdbRating}}</div>
             </div>
 
             <div class="detail m-20">
-                <div class="title-md">Music composer</div>
+                <div class="title-md">{{ 'app.common-component.about-movie.music-composer' | translate }}</div>
                 <div class="text" *ngFor="let director of movie?.musicComposer">
                     {{director}}
                 </div>
             </div>
 
             <div class="detail m-20">
-                <div class="title-md">Director of photography</div>
+                <div class="title-md">{{ 'app.common-component.about-movie.director-of-photography' | translate }}</div>
                 <div class="text" *ngFor="let director of movie?.directorOfPhotography">
                     {{director}}
                 </div>

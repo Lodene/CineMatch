@@ -1,6 +1,13 @@
 {
   "app": {
     "title": "CineMatch",
+    "home": {
+      "paginator-items-per-page": "Nombre de film par page",
+      "next-page": "Page suivante",
+      "prev-page": "Page précédente",
+      "first-page": "Aller à la première page",
+      "last-page": "Aller à la dernière page"
+    },
     "common-component": {
       "header": {
         "title": "CineMatch",

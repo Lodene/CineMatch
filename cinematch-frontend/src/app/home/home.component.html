@@ -1,8 +1,12 @@
 <app-featured-film [movie]="film" />
 <mat-paginator [length]="totalElements"
                [pageSize]="10"
-               [pageSizeOptions]="[5, 10, 25, 100]"
-               aria-label="Select page"
+               [pageSizeOptions]="[5, 10, 25, 50]"
+               attr.aria-label="{{'app.home.paginator-items-per-page' | translate}}"
+               attr.firstPageLabel="{{'app.home.first-page' | translate}}"
+               attr.lastPageLabel="{{'app.home.last-page' | translate}}"
+               attr.nextPageLabel="{{'app.home.next-page' | translate}}"
+               attr.previousPageLabel="{{'app.home.prev-page' | translate}}"
                showFirstLastButtons>
 </mat-paginator>
 

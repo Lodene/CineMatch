@@ -4,7 +4,7 @@ import { MovieCardComponentHorizontal } from '../common-component/movie-card-hor
 import { NgFor } from '@angular/common';
 
 import { AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { FeaturedFilmComponent } from '../featured-film/featured-film.component';
 import { CommonModule } from '@angular/common';
 import { MovieService } from '../../services/movie/movie.service';
@@ -18,7 +18,13 @@ import {MatPaginator, MatPaginatorModule, PageEvent} from '@angular/material/pag
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, FeaturedFilmComponent, MovieCardComponent, MatPaginatorModule],
+  imports: [
+    CommonModule,
+    FeaturedFilmComponent,
+    MovieCardComponent,
+    MatPaginatorModule,
+    TranslatePipe
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
