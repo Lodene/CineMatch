@@ -293,7 +293,7 @@
         "search-by-actor": "Actor",
         "search-by-director": "Director",
         "search-by-year": "Year",
-        "search-by-note": "Note IMDB",
+        "search-by-note": "Note IMDB (min)",
         "search-description": "Enter your search parametres"
       }
     },

@@ -15,11 +15,14 @@ import fr.cpe.cinematch_backend.mappers.ReviewMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
 import fr.cpe.cinematch_backend.repositories.*;
 
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -159,7 +162,7 @@ public class MovieService {
         return genres;
     }
 
-    public List<MovieDto> searchMovies(MovieSearchRequest request) throws GenericNotFoundException {
+    public PaginatedMoviesResponse searchMovies(MovieSearchRequest request, int page, int size) throws GenericNotFoundException {
         if (request == null ||
                 (request.getTitle() == null &&
                         (request.getGenres() == null || request.getGenres().isEmpty()) &&
@@ -173,25 +176,93 @@ public class MovieService {
                     "At least one search criterion must be provided.");
         }
 
-        List<MovieEntity> allMovies = movieRepository.findAll();
+        // Create a specification based on the search criteria
+        Specification<MovieEntity> specification = buildMovieFilterSpecification(request);
 
-        return allMovies.stream()
-                .filter(movie -> request.getTitle() == null
-                        || movie.getTitle().toLowerCase().contains(request.getTitle().toLowerCase()))
-                .filter(movie -> request.getGenres() == null || !request.getGenres().isEmpty() &&
-                        movie.getGenres().stream().anyMatch(request.getGenres()::contains))
-                .filter(movie -> request.getDirector() == null || !request.getDirector().isEmpty() &&
-                        movie.getDirector().stream().anyMatch(request.getDirector()::contains))
-                .filter(movie -> request.getCast() == null || !request.getCast().isEmpty() &&
-                        movie.getCast().stream().anyMatch(request.getCast()::contains))
-                .filter(movie -> request.getMinRating() == null || movie.getImdbRating() >= request.getMinRating())
-                .filter(movie -> request.getMaxRating() == null || movie.getImdbRating() <= request.getMaxRating())
-                .filter(movie -> request.getStartDate() == null
-                        || (movie.getReleaseDate() != null && movie.getReleaseDate().after(request.getStartDate())))
-                .filter(movie -> request.getEndDate() == null
-                        || (movie.getReleaseDate() != null && movie.getReleaseDate().before(request.getEndDate())))
+        // Create pageable with sorting
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        // Use the specification with pagination
+        Page<MovieEntity> moviePage = movieRepository.findAll(specification, pageable);
+
+        // Map entities to DTOs
+        List<MovieDto> movieDtos = moviePage.getContent().stream()
                 .map(MovieMapper.INSTANCE::toMovieDto)
                 .toList();
+
+        // Build the paginated response
+        return PaginatedMoviesResponse.builder()
+                .content(movieDtos)
+                .currentPage(moviePage.getNumber())
+                .totalPages(moviePage.getTotalPages())
+                .totalElements(moviePage.getTotalElements())
+                .hasNext(moviePage.hasNext())
+                .build();
     }
+
+
+    private Specification<MovieEntity> buildMovieFilterSpecification(MovieSearchRequest request) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (request.getTitle() != null) {
+                predicates.add(cb.like(
+                        cb.lower(root.get("title")),
+                        "%" + request.getTitle().toLowerCase() + "%"
+                ));
+            }
+
+            if (request.getGenres() != null && !request.getGenres().isEmpty()) {
+                // This implementation depends on how genres are stored in your entity
+                // Assuming genres is a collection in the entity
+                Join<MovieEntity, String> genresJoin = root.join("genres");
+                predicates.add(genresJoin.in(request.getGenres()));
+            }
+
+            if (request.getDirector() != null && !request.getDirector().isEmpty()) {
+                // Assuming director is a collection in the entity
+                Join<MovieEntity, String> directorsJoin = root.join("director");
+                predicates.add(directorsJoin.in(request.getDirector()));
+            }
+
+            if (request.getCast() != null && !request.getCast().isEmpty()) {
+                // Assuming cast is a collection in the entity
+                Join<MovieEntity, String> castJoin = root.join("cast");
+                predicates.add(castJoin.in(request.getCast()));
+            }
+
+            if (request.getMinRating() != null) {
+                predicates.add(cb.greaterThanOrEqualTo(
+                        root.get("imdbRating"),
+                        request.getMinRating()
+                ));
+            }
+
+            if (request.getMaxRating() != null) {
+                predicates.add(cb.lessThanOrEqualTo(
+                        root.get("imdbRating"),
+                        request.getMaxRating()
+                ));
+            }
+
+            if (request.getStartDate() != null) {
+                predicates.add(cb.greaterThan(
+                        root.get("releaseDate"),
+                        request.getStartDate()
+                ));
+            }
+
+            if (request.getEndDate() != null) {
+                predicates.add(cb.lessThan(
+                        root.get("releaseDate"),
+                        request.getEndDate()
+                ));
+            }
+
+            return predicates.isEmpty() ? null : cb.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+
 
 }

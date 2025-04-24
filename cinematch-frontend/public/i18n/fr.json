@@ -294,7 +294,7 @@
         "search-by-actor": "Acteur",
         "search-by-director": "Realisateur",
         "search-by-year": "Année",
-        "search-by-note": "Note IMDB",
+        "search-by-note": "Note IMDB (min)",
         "search-description": "Entrer vos paramètres de recherche"
       }
     },

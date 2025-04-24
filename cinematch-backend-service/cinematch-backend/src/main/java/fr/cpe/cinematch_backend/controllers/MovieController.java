@@ -54,9 +54,13 @@ public class MovieController {
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<MovieDto>> searchMovies(@RequestBody MovieSearchRequest request)
-            throws GenericNotFoundException {
-        return ResponseEntity.ok(movieService.searchMovies(request));
+    public ResponseEntity<PaginatedMoviesResponse> searchMovies(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size,
+            @RequestBody MovieSearchRequest request
+    ) throws GenericNotFoundException {
+        PaginatedMoviesResponse result = movieService.searchMovies(request, page, size);
+        return ResponseEntity.ok(result);
     }
 
     // Used for testing purpose
