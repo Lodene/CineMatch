@@ -8,10 +8,13 @@ import json
 import re
 from dataclasses import dataclass
 from typing import Optional, List
+from core.utils.decorators import to_time
+from core.utils.utils_inference import load_inference_data, recommend_movies
 
 app = FastAPI(title="FastAPI ActiveMQ Integration")
 
-
+# load ai model => 
+df_full, df_enriched, model = load_inference_data()
 
 class MovieDto(BaseModel):
     id: int
@@ -102,10 +105,18 @@ class MessageListener(stomp.ConnectionListener):
             else:
                 print("❗No 'payload' key in payload")
 
-            # Envoie à model-in.queue
+            # Traitement AI
+
+            movie_ids = [
+                "157336",  # Interstellar
+            ]
+            # Contains ID
+            recommended_movies = recommend_movies(df_full, model, movie_ids, topn=10)
+
+            #
             response = {
                 "requestId": movie_json_string.get("requestId"),  # UUID as string
-                "recommendationsId": [123, 456, 12]  # List of Longs (just Python ints)
+                "recommendationsId": recommended_movies  # List of Strings (just Python ints)
             }
             activemq_client.send_message(response, destination_queue=activemq_queue_response)
         except Exception as e:

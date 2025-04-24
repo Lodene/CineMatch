@@ -13,3 +13,10 @@ python-api/__pycache__
 dataset-to-liquibase/subset.csv
 express-socket/node_modules
 express-socket/dist
+ai-movie_clustering/.vscode
+ai-movie_clustering/.editorconfig
+python-api/uv.lock
+python-api/core/utils/__pycache__
+python-api/core/scripts/__pycache__
+python-api/core/__pycache__
+python-api/core/data

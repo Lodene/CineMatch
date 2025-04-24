@@ -143,6 +143,15 @@ services:
       - cinematch-network
     environment:
       - PYTHONUNBUFFERED=TRUE
+      - PYTHONPATH=core
+      - VECTOR_SIZE=200
+      - WINDOW=8
+      - MIN_COUNT=3
+      - NB_EPOCHS=50
+      - DM=1
+      - MODEL_VERSION=8
+      - KEEP_STOPWORDS=1
+      - OMDB_API_KEYS=fake
 
 volumes:
   local_pgdata:

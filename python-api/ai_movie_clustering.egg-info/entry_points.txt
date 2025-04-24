@@ -1,0 +1,6 @@
+[console_scripts]
+enrich_omdb = core.scripts.enrich_omdb:main
+enrich_wiki = core.scripts.enrich_wikipedia:main
+inference = core.scripts.inference:main
+liquibase = core.scripts.reco_to_liquibase:main
+training = core.scripts.training:main
