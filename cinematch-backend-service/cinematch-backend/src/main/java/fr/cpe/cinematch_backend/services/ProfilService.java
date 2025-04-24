@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ProfilService {
@@ -102,5 +103,12 @@ public class ProfilService {
         }
         profilRepository.delete(profileEntity.get());
         return profileEntity.get();
+    }
+
+    public List<ProfileDto> getAllProfiles() {
+        List<ProfileEntity> profiles = profilRepository.findAll();
+        return profiles.stream()
+                .map(ProfileMapper.INSTANCE::toProfileDto)
+                .toList();
     }
 }

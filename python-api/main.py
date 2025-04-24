@@ -4,11 +4,55 @@ import json
 import uuid
 from pydantic import BaseModel
 from typing import Dict
+import json
+import re
+from dataclasses import dataclass
+from typing import Optional, List
 
 app = FastAPI(title="FastAPI ActiveMQ Integration")
 
 
 
+class MovieDto(BaseModel):
+    id: int
+    title: str
+    voteAverage: Optional[float]
+    voteCount: Optional[float]
+    status: Optional[str]
+    releaseDate: Optional[str]
+    revenue: Optional[float]
+    runtime: Optional[float]
+    budget: Optional[float]
+    imdbId: Optional[str]
+    originalLanguage: Optional[str] 
+    originalTitle: Optional[str]
+    overview: Optional[str]
+    popularity: Optional[float]
+    genres: Optional[list[str]]
+    productionCompanies: Optional[list[str]]
+    productionCountries: Optional[list[str]]
+    spokenLanguages: Optional[list[str]]
+    cast: Optional[list[str]]
+    director: Optional[list[str]]
+    directorOfPhotography: Optional[list[str]]
+    writers: Optional[list[str]]
+    producers: Optional[list[str]]
+    musicComposer: Optional[list[str]]
+    imdbRating: Optional[float]
+    imdbVotes: Optional[float]
+    posterPath: Optional[str]
+    backdropPath: Optional[str]
+
+class RequestDict(BaseModel):
+    fromUsername: Optional[str]
+    requestId: str
+    recentlyLikedMovies: List[MovieDto]
+
+
+class Request:
+    requestId: str
+    serviceId: str
+    payload: MovieDto
 
 class MessageRequest(BaseModel):
     requestId: str
@@ -16,11 +60,15 @@ class MessageRequest(BaseModel):
     payload: Dict
 
 
+class RecommendationResponse(BaseModel):
+    requestId: str
+    recommendationsId: List[int]
+
 # ActiveMQ connection settings
-activemq_host = "localhost"
+activemq_host = "activemq"
 activemq_port = 61613  # STOMP port
-activemq_queue = "/queue/similar-movie.queue"
-activemq_queue_response = "/queue/model-in.queue"
+activemq_queue = "/queue/recommendation-movie.queue"
+activemq_queue_response = "/queue/recommendation-movie-response.queue"
 activemq_user = "admin"
 activemq_password = "cine"
 
@@ -39,17 +87,27 @@ class MessageListener(stomp.ConnectionListener):
         # print(f'[Orchestrator → FastAPI]: {message}')
         # received_messages.append(message)
         # activemq_client.send_message(f"This is a answer to the message received : {message}", destination_queue=activemq_queue_response)
-
         try:
+            # pure vibe coding
+            # This is your raw string from frame.body
             parsed_message = MessageRequest.parse_raw(frame.body)
-            print("partie MSG-----------------")
-            print(f"[Orchestrator → FastAPI] Message reçu et validé : {parsed_message}")
-
-            # Enregistre la version dict pour l’API
-            received_messages.append(parsed_message.dict())
+            # print(parsed_message)
+            movie_json_string = parsed_message.payload.get("payload")
+            if movie_json_string:
+                try:
+                    recentlyLikedMovies = movie_json_string.get("recentlyLikedMovies") 
+                    print("first movie liked: ", recentlyLikedMovies[0].get("title"))
+                except json.JSONDecodeError as e:
+                    print(f"❌ Error decoding movie JSON: {e}")
+            else:
+                print("❗No 'payload' key in payload")
 
             # Envoie à model-in.queue
-            self.activemq_client.send_message(parsed_message.dict(), destination_queue=activemq_queue_response)
+            response = {
+                "requestId": movie_json_string.get("requestId"),  # UUID as string
+                "recommendationsId": [123, 456, 12]  # List of Longs (just Python ints)
+            }
+            activemq_client.send_message(response, destination_queue=activemq_queue_response)
         except Exception as e:
             print(f"[FastAPI] Erreur de parsing du message : {e}")
 
@@ -75,7 +133,8 @@ class ActiveMQClient:
     def connect_producer(self):
         if not self.producer_conn.is_connected():
             try:
-                self.producer_conn.connect(self.username, self.password, wait=True)
+                self.producer_conn.connect('admin', 'cine', wait=True)
+                print("producer connected {", self.producer_conn.is_connected(), "}")
             except Exception as e:
                 print(e)
 
@@ -92,15 +151,15 @@ class ActiveMQClient:
         try:
             if not self.producer_conn.is_connected():
                 self.connect_producer()
-            
             if destination_queue is None:
                 destination_queue = self.queue
-
+            print(json.dumps(message))
             self.producer_conn.send(
                 destination=destination_queue,
                 body=json.dumps(message),
-                content_type='application/json',
-                headers={'message-id': str(uuid.uuid4())}
+                headers = {
+                    "content-type": "application/json"
+                }
             )
             return True
         except Exception as e:
@@ -125,7 +184,7 @@ activemq_client = ActiveMQClient(
 @app.post("/send-message/")
 async def send_message(message: dict):
     """Send a message to ActiveMQ queue"""
-    if activemq_client.send_message(message):
+    if activemq_client.send_message(message, activemq_queue_response):
         return {"status": "Message sent successfully", "message": message}
     else:
         return {"status": "Error sending message"}, 500

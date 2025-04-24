@@ -479,6 +479,39 @@
     <changeSet id="1745344427464-1" author="T-H-O-M-A-S">
         <modifyDataType tableName="reviews" columnName="note" newDataType="float"/>
     </changeSet>
+    <changeSet id="1745408401903-1" author="T-H-O-M-A-S" labels="add timestamp for loved movie for recommendation">
+        <addColumn tableName="loved_movies">
+            <column name="loved_at" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="1745400000000-1" author="Thomas">
+    <createTable tableName="related_movies">
+        <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints nullable="false" primaryKey="true" primaryKeyName="pk_related_movies"/>
+        </column>
+        <column name="movie1_id" type="BIGINT">
+            <constraints nullable="false"/>
+        </column>
+        <column name="movie2_id" type="BIGINT">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+</changeSet>
+
+<changeSet id="1745400000000-2" author="Thomas">
+    <addForeignKeyConstraint baseColumnNames="movie1_id" baseTableName="related_movies"
+                             constraintName="fk_related_movie1" referencedColumnNames="id"
+                             referencedTableName="movie"/>
+</changeSet>
+
+<changeSet id="1745400000000-3" author="Thomas">
+    <addForeignKeyConstraint baseColumnNames="movie2_id" baseTableName="related_movies"
+                             constraintName="fk_related_movie2" referencedColumnNames="id"
+                             referencedTableName="movie"/>
+</changeSet>
+
 
 
 </databaseChangeLog>

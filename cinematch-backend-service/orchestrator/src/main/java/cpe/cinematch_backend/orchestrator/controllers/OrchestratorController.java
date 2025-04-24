@@ -1,7 +1,7 @@
 package cpe.cinematch_backend.orchestrator.controllers;
 
-import cpe.cinematch_backend.orchestrator.requests.SimilarMovieRequest;
-import cpe.cinematch_backend.orchestrator.services.SimilarMovieService;
+import cpe.cinematch_backend.orchestrator.requests.MovieRecommendationRequest;
+import cpe.cinematch_backend.orchestrator.services.RecommendationMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,14 +13,14 @@ public class OrchestratorController
 {
 
 	@Autowired
-	private SimilarMovieService similarMovieService;
+	private RecommendationMovieService recommendationMovieService;
 
 
 
-	@PostMapping("/similar-film")
-	public String getSimiliarFilm(@RequestBody SimilarMovieRequest similarMovieRequest) {
+	@PostMapping("/recommendation-film")
+	public String getRecommendationFilm(@RequestBody MovieRecommendationRequest movieRecommendationRequest) {
 		UUID uuid = UUID.randomUUID();
-		similarMovieService.sendRequest(uuid, similarMovieRequest);
-		return uuid.toString() ;
+		recommendationMovieService.sendRequest(uuid, movieRecommendationRequest);
+		return uuid.toString();
 	}
 }

@@ -2,7 +2,9 @@ package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
+import fr.cpe.cinematch_backend.dtos.PaginatedMoviesResponse;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
+import fr.cpe.cinematch_backend.dtos.requests.MovieSearchRequest;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.MovieService;
@@ -22,8 +24,10 @@ public class MovieController {
     private MovieService movieService;
 
     @GetMapping("/movies")
-    public ResponseEntity<List<MovieDto>> getAllMovies() throws GenericNotFoundException {
-        return ResponseEntity.ok(this.movieService.getAllMovies());
+    public ResponseEntity<PaginatedMoviesResponse> getAllMoviesPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(this.movieService.getAllMoviesPaginated(page, size));
     }
 
     @GetMapping("/{movieId}")
@@ -47,6 +51,12 @@ public class MovieController {
     @GetMapping("/genres")
     public ResponseEntity<Set<String>> getAllGenres() {
         return ResponseEntity.ok(this.movieService.getAllGenres());
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<List<MovieDto>> searchMovies(@RequestBody MovieSearchRequest request)
+            throws GenericNotFoundException {
+        return ResponseEntity.ok(movieService.searchMovies(request));
     }
 
     // Used for testing purpose

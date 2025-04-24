@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit{
     { id: 5, shortLink: '/diary', icon: 'menu_book', textKey: 'app.common-component.header.menu-item.diary' },
     { id: 6, shortLink: '/favorites', icon: 'favorite_border', textKey: 'app.common-component.header.menu-item.favorites' },
     { id: 7, shortLink: '/profile', icon: 'person', textKey: 'app.common-component.header.menu-item.profile' },
+    { id: 7, shortLink: '/friends', icon: 'group', textKey: 'app.common-component.header.menu-item.friends' },
     { id: 8, shortLink: '/settings', icon: 'settings', textKey: 'app.common-component.header.menu-item.settings' }
   ];
   

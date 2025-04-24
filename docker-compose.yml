@@ -1,4 +1,18 @@
 services:
+
+  express-socket:
+    container_name: express-socket
+    restart: always
+    build:
+      context: ./express-socket
+      dockerfile: Dockerfile
+    volumes:
+      - ./express-socket:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - cinematch-network
+
   activemq:
     image: symptoma/activemq:latest
     container_name: activemq
@@ -113,20 +127,22 @@ services:
       - WATCHPACK_POLLING=true
     networks:
       - cinematch-network
-
+# run in localhost 
   python-api:
     container_name: python-api
     build:
       context: ./python-api
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8001:8001"
     depends_on:
       - activemq
     volumes:
       - ./python-api:/app
     networks:
       - cinematch-network
+    environment:
+      - PYTHONUNBUFFERED=TRUE
 
 volumes:
   local_pgdata:
