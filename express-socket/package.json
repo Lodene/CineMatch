@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.8.1",
+    "uuid": "^11.1.0"
+  },
+  "name": "express-socket",
+  "version": "1.0.0",
+  "description": "socket for cinematch",
+  "main": "index.ts",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "tsc",
+    "dev": "npx nodemon --config nodemon.json src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "exec": "ts-node src/index.ts"
+  },
+  "author": "Marin Thomas",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.0",
+    "@types/morgan": "^1.9.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}

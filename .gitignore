@@ -10,3 +10,6 @@ dataset-to-liquibase/.venv
 cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/dataset_chunks
 python-api/venv
 python-api/__pycache__
+dataset-to-liquibase/subset.csv
+express-socket/node_modules
+express-socket/dist

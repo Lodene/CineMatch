@@ -1,4 +1,18 @@
 services:
+
+  express-socket:
+    container_name: express-socket
+    restart: always
+    build:
+      context: ./express-socket
+      dockerfile: Dockerfile
+    volumes:
+      - ./express-socket:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - cinematch-network
+
   activemq:
     image: symptoma/activemq:latest
     container_name: activemq
