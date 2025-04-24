@@ -2,6 +2,7 @@ package fr.cpe.cinematch_backend.services;
 
 import fr.cpe.cinematch_backend.dtos.MovieDetailsWithReviewsDto;
 import fr.cpe.cinematch_backend.dtos.MovieDto;
+import fr.cpe.cinematch_backend.dtos.PaginatedMoviesResponse;
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.dtos.ReviewWithFriendFlagDto;
 import fr.cpe.cinematch_backend.dtos.requests.MovieCreationRequest;
@@ -14,6 +15,10 @@ import fr.cpe.cinematch_backend.mappers.ReviewMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
 import fr.cpe.cinematch_backend.repositories.*;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,36 +54,21 @@ public class MovieService {
     @Autowired
     private LovedMovieRepository lovedMovieRepository;
 
-    public List<MovieDto> getAllMovies() throws GenericNotFoundException {
-        List<MovieEntity> movies = movieRepository.findAll();
-        List<MovieDto> movieDtos = new ArrayList<>();
-        if (!movies.isEmpty()) {
-            movies.forEach(
-                    movieEntity -> {
-                        // Fetch movie poster URL if it's not already set
-                        if (movieEntity.getPosterPath() == null || movieEntity.getPosterPath().isEmpty()) {
-                            try {
-                                String posterUrl = moviePosterApiService.getMoviePosterUrl(movieEntity.getId());
-                                movieEntity.setPosterPath(posterUrl);
-                                this.movieRepository.save(movieEntity);
-                            } catch (BadEndpointException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        if (movieEntity.getBackdropPath() == null || movieEntity.getBackdropPath().isEmpty()) {
-                            try {
-                                String backdropUrl = moviePosterApiService.getMovieBackdropUrl(movieEntity.getId());
-                                movieEntity.setBackdropPath(backdropUrl);
-                                this.movieRepository.save(movieEntity);
-                            } catch (BadEndpointException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                        MovieDto movieDto = MovieMapper.INSTANCE.toMovieDto(movieEntity);
-                        movieDtos.add(movieDto);
-                    });
-        }
-        return movieDtos;
+    public PaginatedMoviesResponse getAllMoviesPaginated(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<MovieEntity> moviePage = movieRepository.findAll(pageable);
+
+        List<MovieDto> movieDtos = moviePage.getContent().stream()
+                .map(MovieMapper.INSTANCE::toMovieDto)
+                .toList();
+
+        return PaginatedMoviesResponse.builder()
+                .content(movieDtos)
+                .currentPage(moviePage.getNumber())
+                .totalPages(moviePage.getTotalPages())
+                .totalElements(moviePage.getTotalElements())
+                .hasNext(moviePage.hasNext())
+                .build();
     }
 
     public MovieDetailsWithReviewsDto getMovieDetailsWithReviews(Long movieId, String username)
