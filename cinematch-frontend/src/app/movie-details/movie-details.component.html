@@ -33,6 +33,10 @@
             <mat-icon class="mr-4" aria-hidden="false" aria-label="access_time" fontIcon="access_time"></mat-icon>
             <div class="mr-10">{{movie?.runtime}} min</div>
         </div>
+        <button mat-raised-button color="primary" (click)="watchTrailer()" class="watch-trailer-button">
+          <mat-icon class="mr-2">play_circle</mat-icon>
+          {{ 'app.common-component.movie-details.watch-trailer' | translate }}
+        </button>
         <div style="display: flex; flex-direction: row;" class="my-20">
             <div *ngFor="let g of movie.genres" class="rounded-border-gradient mr-10">{{g}}</div>
         </div>
