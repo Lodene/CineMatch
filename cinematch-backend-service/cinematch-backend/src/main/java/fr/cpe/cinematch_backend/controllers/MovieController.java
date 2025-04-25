@@ -10,6 +10,7 @@ import fr.cpe.cinematch_backend.dtos.requests.SocketRequest;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.MovieService;
+import fr.cpe.cinematch_backend.services.RelatedMoviesService;
 import fr.cpe.cinematch_backend.services.SocketService;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class MovieController {
     @Autowired
     SocketService socketService;
 
+    @Autowired
+    private RelatedMoviesService relatedMoviesService;
+    
     @GetMapping("/movies")
     public ResponseEntity<PaginatedMoviesResponse> getAllMoviesPaginated(
             @RequestParam(defaultValue = "0") int page,
@@ -90,6 +94,13 @@ public class MovieController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Trailer not found.");
         }
+    }
+
+
+
+    @GetMapping("/related-movies/{movieId}")
+    public ResponseEntity<List<MovieDto>> getRelatedMovies(@PathVariable Long movieId) throws GenericNotFoundException {
+        return ResponseEntity.ok(relatedMoviesService.getRelatedMoviesByMovie1(movieId));
     }
 
     // Used for testing purpose

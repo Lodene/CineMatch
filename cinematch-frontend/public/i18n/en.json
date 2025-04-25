@@ -209,6 +209,7 @@
         "not-found": "Movie not found",
         "image-not-found": "No image could be loaded",
         "reviews-not-found": "No reviews were left on this movie.",
+        "no-similar-films": "No similar films could be retrieved for this movie.",
         "tabs": {
           "details": "Details",
           "reviews": "Reviews",

@@ -1,0 +1,21 @@
+[project]
+name = "ai-movie-clustering"
+version = "0.1.0"
+description = "AI model for movie clustering and recommendation, based on the similarities of their overviews."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "gensim>=4.3.3",
+    "ipykernel>=6.29.5",
+    "nltk>=3.9.1",
+    "pandas>=2.2.3",
+    "requests>=2.32.3",
+    "tqdm>=4.67.1",
+]
+
+[project.scripts]
+enrich_omdb = "core.scripts.enrich_omdb:main"
+enrich_wiki = "core.scripts.enrich_wikipedia:main"
+training = "core.scripts.training:main"
+inference = "core.scripts.inference:main"
+liquibase = "core.scripts.reco_to_liquibase:main"

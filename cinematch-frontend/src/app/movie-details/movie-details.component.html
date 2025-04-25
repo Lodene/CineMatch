@@ -2,7 +2,7 @@
 
     <div class="container-movie">
 
-        <img class="image" [src]="posterUrl" [alt]="'app.common-component.movie-details.image-not-found' | translate">
+        <img class="movie-details-image" [src]="posterUrl" [alt]="'app.common-component.movie-details.image-not-found' | translate">
 
     <div class="details mx-10">
         <div class="name  mr-10 title-md name-and-action-wrapper">
@@ -65,7 +65,20 @@
             </ng-template>
 
         </mat-tab>
-        <mat-tab label="{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}">"{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}"</mat-tab>
+        <mat-tab label="{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}">
+            <div *ngIf="similarMovies.length > 0; else noSimilarMovie" class="similar-wrapper">
+                    <div *ngFor="let movie of similarMovies" >
+                        <movie-card [movie]="movie">
+                        </movie-card>
+                    </div>
+            </div>
+            <ng-template #noSimilarMovie>
+                <h2>
+                    {{ 'app.common-component.movie-details.no-similar-films' | translate}}
+                </h2>
+            </ng-template>
+            <!-- "{{ 'app.common-component.movie-details.tabs.similar-films' | translate }}" -->
+        </mat-tab>
     </mat-tab-group>
 
 </div>

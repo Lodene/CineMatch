@@ -20,3 +20,5 @@ python-api/core/utils/__pycache__
 python-api/core/scripts/__pycache__
 python-api/core/__pycache__
 python-api/core/data
+python-api/core/output/liquibase_xml
+cinematch-backend-service/cinematch-backend/src/main/resources/db/changelog/similar-movie-chunks

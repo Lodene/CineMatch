@@ -11,7 +11,7 @@ import { PaginatedMovieResponse } from '../../models/paginated-movie-reponse';
 })
 export class MovieService {
 
-  backendUrl: string = 'http://localhost:8081/movie';
+  backendUrl: string = 'http://localhost:8081/';
   tmdbBaseUrl: string = 'https://api.themoviedb.org/3';
   tmdbApiKey: string = '87161c039b9e1323d0366432f76803d7'; // 🔒 Remplace par ta clé API TMDB
 
@@ -22,18 +22,18 @@ export class MovieService {
    * @returns Movie, 401, 404
    */
   public getMovieById(movieId: number): Observable<MovieConsultation> {
-    return this.http.get<MovieConsultation>(`${this.backendUrl}/${movieId}`);
+    return this.http.get<MovieConsultation>(`${this.backendUrl}movie/${movieId}`);
   }
 
   public getAllMovies(page: number, size: number): Observable<PaginatedMovieResponse> {
-    return this.http.get<PaginatedMovieResponse>(`${this.backendUrl}/movies?page=${page}&size=${size}`);
+    return this.http.get<PaginatedMovieResponse>(`${this.backendUrl}movie/movies?page=${page}&size=${size}`);
   }
 
   /**
    * @returns the number of movies present in the database
    */
   public getMovieCount(): Observable<number> {
-    return this.http.get<number>(`${this.backendUrl}/getMovieCount`);
+    return this.http.get<number>(`${this.backendUrl}movie/getMovieCount`);
   }
 
   /**
@@ -41,18 +41,22 @@ export class MovieService {
    * @returns La clé de la bande-annonce YouTube ou null
    */
   public getTrailerUrl(movieId: number): Observable<string> {
-    return this.http.get(`http://localhost:8081/movie/trailer/${movieId}`, { responseType: 'text' });
+    return this.http.get(`${this.backendUrl}movie/trailer/${movieId}`, { responseType: 'text' });
   }
 
   public getAllGenres() {
-    return this.http.get<string[]>(`${this.backendUrl}/genres`);
+    return this.http.get<string[]>(`${this.backendUrl}movie/genres`);
   }
 
 
   public searchMovies(movieSearchRequest: MovieSearchRequest, page: number = 0, size: number = 10) {
     return this.http.post<any>(
-      `${this.backendUrl}/search?page=${page}&size=${size}`, 
+      `${this.backendUrl}movie/search?page=${page}&size=${size}`, 
       movieSearchRequest
     );
+  }
+
+  public getSimilarMovie(movieId: number): Observable<Movie[]> {
+    return this.http.get<Movie[]>(`${this.backendUrl}movie/related-movies/${movieId}`);
   }
 }
