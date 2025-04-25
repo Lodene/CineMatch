@@ -100,7 +100,7 @@
         },
         "sections": {
           "activity": {
-            "title": "Recent Activity",
+            "title": "{{username}}'s Recent Activity",
             "like": "You added {{ film }} to your favorites",
             "unlike": "You removed {{ film }} from your favorites",
             "watchlist-add": "You added {{ film }} to your watchlist",
@@ -120,16 +120,16 @@
             }
           },
           "favorites": {
-            "title": "Your Favorite Films"
+            "title": "{{username}}'s Favorite Films"
           },
           "diary": {
-            "title": "Your Watched Films"
+            "title": "{{username}}'s Watched Films"
           },
           "review": {
-            "title": "Your reviews"
+            "title": "{{username}}'s reviews"
           },
           "watchlist": {
-            "title": "Your watchlist"
+            "title": "{{username}}'s watchlist"
           }
         },
         "not-found": "User not found"

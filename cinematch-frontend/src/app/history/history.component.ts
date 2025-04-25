@@ -5,6 +5,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { TranslateModule } from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { HistoryService } from '../../services/profile/history.service';
 import { User } from '../../models/types/components/user/user.model';
 import { firstValueFrom } from 'rxjs';
@@ -44,6 +45,9 @@ export class HistoryComponent implements OnInit, OnChanges {
   @Input() username: string;
 
   profileService = inject(ProfileService);
+  translateService = inject(TranslateService);
+
+  translatedTitles: any = {};
 
   constructor(
     private _historyService: HistoryService,
@@ -56,6 +60,7 @@ export class HistoryComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (!!!this.history) {
       this.loadUserHistory();
+      this.updateTabTitles();
     }
   }
 
@@ -67,6 +72,7 @@ export class HistoryComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.loadUserHistory();
+    this.updateTabTitles();
   }
 
   private loadUserHistory() {
@@ -99,6 +105,17 @@ export class HistoryComponent implements OnInit, OnChanges {
     this._reviewService.getReviewByUsername(this.username).subscribe((reviews: Review[]) => {
       this.reviews = reviews;
     })
+  }
+
+  updateTabTitles() {
+    // Mettre à jour les titres des tabs dynamiquement avec le username
+    this.translatedTitles = {
+      activity: this.translateService.instant('app.common-component.profile.sections.activity.title', { username: this.username }),
+      favorites: this.translateService.instant('app.common-component.profile.sections.favorites.title', { username: this.username }),
+      diary: this.translateService.instant('app.common-component.profile.sections.diary.title', { username: this.username }),
+      watchlist: this.translateService.instant('app.common-component.profile.sections.watchlist.title', { username: this.username }),
+      review: this.translateService.instant('app.common-component.profile.sections.review.title', { username: this.username }),
+    };
   }
 
 }

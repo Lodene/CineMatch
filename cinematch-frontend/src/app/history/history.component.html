@@ -1,6 +1,6 @@
 <mat-tab-group>
     <mat-tab label="{{ 'app.common-component.profile.tabs.activity' | translate }}">
-        <h2>{{ 'app.common-component.profile.sections.activity.title' | translate }}</h2>
+        <h2>{{translatedTitles.activity}}</h2>
         <mat-card class="activity-card">
             <mat-card-content>
                 <div *ngFor="let content of history?.content, index as i" class="activity-item">
@@ -14,7 +14,7 @@
     </mat-tab>
 
     <mat-tab label="{{ 'app.common-component.profile.tabs.favorites' | translate }}">
-      <h2>{{ 'app.common-component.profile.sections.favorites.title' | translate }}</h2>
+      <h2>{{ translatedTitles.favorites }}</h2>
       <mat-card class="activity-card">
         <mat-card-content>
           <div *ngFor="let movie of moviesLoved">
@@ -24,7 +24,7 @@
       </mat-card>
     </mat-tab>
     <mat-tab label="{{ 'app.common-component.profile.tabs.diary' | translate }}">
-      <h2>{{ 'app.common-component.profile.sections.diary.title' | translate }}</h2>
+      <h2>{{ translatedTitles.diary }}</h2>
       <mat-card class="activity-card">
         <mat-card-content>
           <div *ngFor="let movie of moviesWatched">
@@ -35,7 +35,7 @@
     </mat-tab>
 
     <mat-tab label="{{ 'app.common-component.profile.tabs.watchlist' | translate }}">
-      <h2>{{ 'app.common-component.profile.sections.watchlist.title' | translate }}</h2>
+      <h2>{{ translatedTitles.watchlist}}</h2>
       <mat-card class="activity-card">
         <mat-card-content>
           <div *ngFor="let movie of moviesInWatchlist">
@@ -45,7 +45,7 @@
       </mat-card>
     </mat-tab>
     <mat-tab label="{{ 'app.common-component.profile.tabs.review' | translate }}">
-      <h2>{{ 'app.common-component.profile.sections.review.title' | translate }}</h2>
+      <h2>{{ translatedTitles.review }}</h2>
       <mat-card class="activity-card">
         <mat-card-content>
           <div *ngFor="let review of reviews" class="activity-item">

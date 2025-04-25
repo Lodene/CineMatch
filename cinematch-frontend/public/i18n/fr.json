@@ -100,7 +100,7 @@
         },
         "sections": {
           "activity": {
-            "title": "Activité récente",
+            "title": "Activité récente de {{username}}",
             "like": "Vous avez ajouté {{ film }} à vos favoris",
             "unlike": "Vous avez retiré {{ film }} de vos favoris",
             "watchlist-add": "Vous avez ajouté {{ film }} à votre liste de visionnage",
@@ -120,16 +120,16 @@
             }
           },
           "favorites": {
-            "title": "Vos films préférés"
+            "title": "Films préférés de {{username}}"
           },
           "diary": {
-            "title": "Vos films vues"
+            "title": "Films vus de {{username}}"
           },
           "review": {
-            "title": "Vos critiques"
+            "title": "Critiques de {{username}}"
           },
           "watchlist": {
-            "title": "Votre list de visionnage"
+            "title": "Liste de visionnage de {{username}}"
           }
         },
         "not-found": "Utilisateur non trouvé"
