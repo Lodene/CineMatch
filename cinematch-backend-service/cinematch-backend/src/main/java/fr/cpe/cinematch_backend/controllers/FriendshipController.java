@@ -1,6 +1,7 @@
 package fr.cpe.cinematch_backend.controllers;
 
 import fr.cpe.cinematch_backend.dtos.FriendDTO;
+import fr.cpe.cinematch_backend.dtos.ProfileDetailsDto;
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.services.FriendshipService;
@@ -21,7 +22,7 @@ public class FriendshipController {
 
 
     @GetMapping
-    public ResponseEntity<List<ProfileDto>> getMyFriends(@AuthenticationPrincipal UserDetails userDetails) throws GenericNotFoundException {
+    public ResponseEntity<List<ProfileDetailsDto>> getMyFriends(@AuthenticationPrincipal UserDetails userDetails) throws GenericNotFoundException {
         String currentUsername = userDetails.getUsername();
         return ResponseEntity.ok(friendshipService.getFriendsOfUser(currentUsername));
     }

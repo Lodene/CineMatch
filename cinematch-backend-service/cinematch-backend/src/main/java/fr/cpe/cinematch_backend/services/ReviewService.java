@@ -13,6 +13,7 @@ import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
 import fr.cpe.cinematch_backend.mappers.ReviewMapper;
 import fr.cpe.cinematch_backend.mappers.ReviewWithFriendFlagMapper;
+import fr.cpe.cinematch_backend.repositories.FriendShipRepository;
 import fr.cpe.cinematch_backend.repositories.ReviewRepository;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
@@ -38,14 +39,15 @@ public class ReviewService {
     @Autowired
     private MovieService movieService;
 
-    @Autowired
-    private FriendshipService friendshipService;
 
     @Autowired
     private ProfilRepository profilRepository;
 
     @Autowired
     private MovieActionHistoryService movieActionHistoryService;
+
+    @Autowired
+    private FriendShipRepository friendShipRepository;
 
     public ReviewDto createReview(ReviewRequest reviewRequest, String username)
             throws GenericNotFoundException, BadEndpointException {
@@ -161,9 +163,9 @@ public class ReviewService {
             ReviewWithFriendFlagDto enrichedDto = ReviewWithFriendFlagMapper.INSTANCE.fromReviewDtoAndProfile(baseDto,
                     profileDto);
 
-            boolean isFriend = friendshipService.isFriend(requesterId, review.getUser().getId());
+            boolean isFriend = friendShipRepository.findByUserId1AndUserId2(requesterId, review.getUser().getId()).isPresent() ||
+                            friendShipRepository.findByUserId1AndUserId2(review.getUser().getId(), requesterId).isPresent();
             enrichedDto.setWrittenByFriend(isFriend);
-
             return enrichedDto;
         }).toList();
     }

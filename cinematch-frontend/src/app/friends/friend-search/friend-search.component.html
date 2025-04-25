@@ -19,17 +19,6 @@
       />
       <mat-icon matSuffix *ngIf="isLoading">hourglass_empty</mat-icon>
     </mat-form-field>
-    <button
-      mat-flat-button
-      color="primary"
-      (click)="addFriend()"
-      [disabled]="isLoading || !searchResult"
-    >
-      <mat-icon *ngIf="isLoading">hourglass_empty</mat-icon>
-      <span *ngIf="!isLoading">
-        {{ searchResult ? 'Ajouter ' + searchResult.username : 'Ajouter' }}
-      </span>
-    </button>
   </div>
 
   <!-- Affichage des erreurs -->
@@ -39,28 +28,45 @@
   </div>
 
   <!-- Résultat de la recherche -->
-  <div *ngIf="searchResult" class="search-result mat-elevation-z1">
-    <div class="user-avatar">
-      <img [src]="searchResult.profilPicture" alt="{{ searchResult.name }}" />
-    </div>
-    <div class="user-info">
-      <h2>{{ searchResult.name }}</h2>
-      <p class="username">{{ searchResult.username }}</p>
-      <p *ngIf="searchResult.description" class="description">{{ searchResult.description }}</p>
-      <div class="user-stats">
-        <span class="stat">
-          <mat-icon>movie</mat-icon> {{ searchResult.watchedMoviesCount }} films vus
-        </span>
-        <span class="stat">
-          <mat-icon>rate_review</mat-icon> {{ searchResult.reviewsCount }} critiques
-        </span>
-        <span class="stat">
-          <mat-icon>bookmark</mat-icon> {{ searchResult.watchlistCount }} dans la liste
-        </span>
+    <div *ngFor="let user of searchResult" class="search-result mat-elevation-z1">
+      <div class="user-card-wrapper">
+        <div class="info-wrapper">
+          <div class="user-avatar">
+            <img *ngIf="user.profilPicture !== null" [src]="'data:image/jpeg;base64,' + user.profilPicture" alt="{{ user.username }}" />
+            <img *ngIf="user.profilPicture === null" src='/assets/avatar-default.jpg' alt="{{ user.username }}" />
+          </div>
+          <div class="user-info">
+            <h2>{{ user.username }}</h2>
+            <p *ngIf="user.description" class="description">{{ user.description }}</p>
+            <div class="user-stats">
+              <span class="stat">
+                <mat-icon>movie</mat-icon> {{ user.watchedMoviesCount }} films vus
+              </span>
+              <span class="stat">
+                <mat-icon>rate_review</mat-icon> {{ user.reviewsCount }} critiques
+              </span>
+              <span class="stat">
+                <mat-icon>bookmark</mat-icon> {{ user.watchlistCount }} dans la liste
+              </span>
+            </div>
+          </div>
+        </div>
+        
+          <div>
+            <button
+            mat-flat-button
+            color="primary"
+            (click)="addFriend(user.username)"
+            [disabled]="isLoading || !searchResult"
+          >
+            <mat-icon *ngIf="isLoading">hourglass_empty</mat-icon>
+            <span *ngIf="!isLoading">
+              {{ searchResult ? 'Ajouter ' + user.username : 'Ajouter' }}
+            </span>
+          </button>
+          </div>
       </div>
     </div>
-  </div>
-
   <!-- Message si aucun résultat -->
   <div *ngIf="searchTerm && !searchResult && !isLoading" class="no-result">
     <p>Aucun utilisateur trouvé pour "{{ searchTerm }}"</p>
