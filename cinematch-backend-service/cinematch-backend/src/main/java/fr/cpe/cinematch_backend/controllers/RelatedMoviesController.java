@@ -15,11 +15,5 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/related-movies")
 public class RelatedMoviesController {
 
-    @Autowired
-    private RelatedMoviesService relatedMoviesService;
 
-    @GetMapping("/{movieId}")
-    public ResponseEntity<List<MovieDto>> getRelatedMovies(@PathVariable Long movieId) throws GenericNotFoundException {
-        return ResponseEntity.ok(relatedMoviesService.getRelatedMoviesByMovie1(movieId));
-    }
 }

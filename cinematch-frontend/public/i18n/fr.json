@@ -230,6 +230,7 @@
         "not-found": "Film non trouvé",
         "image-not-found": "Aucune image n'a pu être chargée",
         "reviews-not-found": "Aucun avis n'a été laissé sur ce film",
+        "no-similar-films": "Aucun film similaire n'a été trouvé à ce film",
         "tabs": {
           "details": "Détails",
           "reviews": "Avis",

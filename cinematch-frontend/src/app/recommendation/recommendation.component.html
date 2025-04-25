@@ -1,5 +1,5 @@
 <div class="container" *ngIf="recommendedMovies?.length !== 0; else noMovies">
-    <div class="m-20 title-xl">Film Recommendations</div>
+    <div class="m-20 title-xl">{{ 'app.common-component.recommendation.title' | translate }}</div>
     <div class="list">
         <div *ngFor="let recommendedMovie of recommendedMovies">
             <movie-card [movie]="recommendedMovie"></movie-card>

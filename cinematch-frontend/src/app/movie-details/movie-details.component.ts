@@ -1,4 +1,4 @@
-import { CommonModule, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Component, inject, signal, ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -26,11 +26,14 @@ import { Review } from '../../models/review';
 import { MatDialog } from '@angular/material/dialog';
 import { AddReviewDialogComponent, AddReviewDialogData } from '../common-component/add-review-dialog/add-review-dialog.component';
 import { ProfileService } from '../../services/profile/profile.service';
+import { MovieCardComponent } from "../common-component/movie-card/movie-card.component";
+import { MovieCardComponentHorizontal } from "../common-component/movie-card-horizontal/movie-card-horizontal.component";
 
 @Component({
   selector: 'app-movie-details',
   imports: [
     NgIf,
+    NgFor,
     MatIconModule,
     CommonModule,
     TranslatePipe,
@@ -40,7 +43,8 @@ import { ProfileService } from '../../services/profile/profile.service';
     MatTabsModule,
     AboutMovieComponent,
     ReviewCardComponent,
-  ],
+    MovieCardComponent,
+],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './movie-details.component.html',
   styleUrl: './movie-details.component.scss'
@@ -72,10 +76,13 @@ export class MovieDetailsComponent {
   movieConsultation: MovieConsultation;
   reviews: Review[];
   username: string | null;
-
+  
+  similarMovies: Movie[] = [];
+  
   // used for image
   backdropUrl: string;
   posterUrl: string
+
 
 
   async ngOnInit() {
@@ -109,6 +116,7 @@ export class MovieDetailsComponent {
           }).add(() => {
             this.loaderService.hide();
           });
+        this.getSimilarMovie(this.idMovie);
       },
       error: (error) => {
         console.error(error);
@@ -308,6 +316,19 @@ export class MovieDetailsComponent {
             this.translateService.instant('app.common-component.movie-details.failed-to-create'))
         }
       }
+    });
+  }
+
+  private getSimilarMovie(movieId: number): void {
+    this.movieService.getSimilarMovie(movieId).subscribe({
+      next: ((res: Movie[]) => {
+        this.similarMovies = res;
+      }),
+      error: ((err:any) => {
+        console.log(err);
+      })
+    }).add(() => {
+
     });
   }
 
