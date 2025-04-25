@@ -1,45 +1,62 @@
-<div class="settings">
-    <div class="content">
-      <h1>Mes amis</h1>
-  
-      <!-- Barre de recherche -->
-      <div class="search-bar mat-elevation-z2">
-        <mat-form-field appearance="outline" class="search-field">
-          <mat-label>Rechercher un utilisateur</mat-label>
-          <input
-            matInput
-            [(ngModel)]="searchTerm"
-            (input)="search()"
-            placeholder="Ex: JohnDoe42"
-          />
-        </mat-form-field>
-        <button
-          *ngIf="searchResult"
-          mat-flat-button
-          color="primary"
-          (click)="addFriend()"
-        >
-          Ajouter {{ searchResult?.username }}
-        </button>
-      </div>
-  
-      <!-- Liste d'amis -->
-      <div *ngIf="friends.length > 0; else noFriends">
-        <div *ngFor="let friend of friends" class="friend-card mat-elevation-z1">
-          <div class="friend-info">
-            <h2>{{ friend.name }}</h2>
-            <p>{{ friend.username }}</p>
-            <p>{{ friend.description }}</p>
+<div class="friends-container">
+  <div class="back-button">
+    <a routerLink="/friends" mat-button>
+      <mat-icon>arrow_back</mat-icon> Retour
+    </a>
+  </div>
+
+  <h1>Mes amis</h1>
+
+  <!-- Affichage des erreurs -->
+  <div *ngIf="error" class="error-message mat-elevation-z1">
+    <mat-icon>error</mat-icon>
+    <span>{{ error }}</span>
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isLoading" class="loading-indicator">
+    <mat-icon>hourglass_empty</mat-icon>
+    <span>Chargement en cours...</span>
+  </div>
+
+  <!-- Liste des amis -->
+  <div *ngIf="!isLoading && friends.length > 0" class="friends-list">
+    <mat-card *ngFor="let friend of friends" class="friend-card mat-elevation-z2">
+      <div class="friend-content">
+        <div class="friend-avatar">
+          <img [src]="friend.profilPicture" alt="{{ friend.name }}" />
+        </div>
+        <div class="friend-info">
+          <mat-card-title>{{ friend.name }}</mat-card-title>
+          <mat-card-subtitle>{{ friend.username }}</mat-card-subtitle>
+          <p *ngIf="friend.description" class="description">{{ friend.description }}</p>
+          <div class="friend-stats">
+            <span class="stat">
+              <mat-icon>movie</mat-icon> {{ friend.watchedMoviesCount }}
+            </span>
+            <span class="stat">
+              <mat-icon>rate_review</mat-icon> {{ friend.reviewsCount }}
+            </span>
+            <span class="stat">
+              <mat-icon>bookmark</mat-icon> {{ friend.watchlistCount }}
+            </span>
           </div>
-          <button mat-icon-button color="warn" (click)="removeFriend(friend)">
-            <mat-icon>person_remove</mat-icon>
-          </button>
         </div>
       </div>
-  
-      <ng-template #noFriends>
-        <p>Vous n'avez pas encore d'amis. Ajoutez-en via la barre de recherche !</p>
-      </ng-template>
-    </div>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button mat-button color="warn" (click)="removeFriend(friend)" [disabled]="isLoading">
+          <mat-icon>person_remove</mat-icon> Retirer
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
-  
+
+  <!-- Message si aucun ami -->
+  <div *ngIf="!isLoading && friends.length === 0" class="no-friends">
+    <p>Vous n'avez pas encore d'amis.</p>
+    <p>
+      <a routerLink="/friends/search">Rechercher des utilisateurs</a> pour leur envoyer des demandes d'ami.
+    </p>
+  </div>
+</div>
