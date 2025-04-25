@@ -51,6 +51,5 @@ public class RecommendationMovieService {
         request.setFromUsername(username);
         HttpEntity<SimilarMovieRequest> requestEntity = new HttpEntity<>(request, headers);
         return restTemplate.postForObject(orchestratorUrl.concat("/orchestrator/recommendation-film"), requestEntity, String.class);
-
     }
 }
