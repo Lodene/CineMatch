@@ -74,7 +74,6 @@ public class AuthController {
         String jwtToken = jwtService.generateToken((UserDetails) authenticatedUser.getPrincipal());
 
         AppUser uE = (AppUser) authenticatedUser.getPrincipal();
-        System.out.println("User: " + uE.getUsername() + " and first connexion : " + uE.isFirstConnexion());
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);

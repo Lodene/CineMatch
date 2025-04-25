@@ -1,0 +1,18 @@
+<div class="movies">
+  <div *ngFor="let movie of movies"
+       (click)="toggleSelection(movie.id)"
+       [ngClass]="{ 'selected': isSelected(movie.id) }">
+    <movie-card [movie]="movie"></movie-card>
+  </div>
+</div>
+
+<mat-paginator [length]="totalElements"
+               [pageSize]="10"
+               [pageSizeOptions]="[5, 10, 25, 50]"
+               showFirstLastButtons>
+</mat-paginator>
+
+<button mat-raised-button color="primary" (click)="validateSelection()"
+        [disabled]="selectedMovies.size === 0">
+  Valider la sélection
+</button>

@@ -16,10 +16,6 @@ import { TermServiceComponent } from './term-service/term-service.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { SearchComponent } from './search/search.component';
 import { DiaryComponent } from './diary/diary.component';
-import { FriendMenuComponent } from './friends/friend-menu.component';
-import { FriendSearchComponent } from './friends/friend-search/friend-search.component';
-import { ManageFriendRequestComponent } from './friends/manage-friend-request/manage-friend-request.component';
-import { FriendsListComponent } from './friends/friends-list/friends-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
@@ -41,6 +37,7 @@ export const routes: Routes = [
   { path: 'friends/request', component: ManageFriendRequestComponent, canActivate: [AuthGuard]},
   { path: 'friends/friends', component: FriendsListComponent, canActivate: [AuthGuard] },
   { path: 'movie/:id', component: MovieDetailsComponent },
+  { path: 'first-connexion', component: FirstConnexionMoviesComponent, canActivate:[AuthGuard]},
   { path: 'profile/:username', component: ProfilComponent, canActivate:[AuthGuard]},
   // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
 ];
