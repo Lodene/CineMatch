@@ -1,78 +1,71 @@
-<div class="friend-request-container">
-    <mat-tab-group animationDuration="300ms">
-      <mat-tab label="Rechercher des amis">
-        <div class="tab-content">
-  
-          <!-- Liste d'amis -->
-          <h3>Mes amis</h3>
-          <div *ngIf="isSearchLoading && !friends.length" class="loading-indicator">
-            <mat-icon>hourglass_empty</mat-icon>
-            <span>Chargement en cours...</span>
-          </div>
-  
-          <div *ngIf="friends.length > 0; else noFriends">
-            <div *ngFor="let friend of friends" class="friend-card">
-              <div class="friend-info">
-                <h3>{{ friend.name || friend.username }}</h3>
-                <p>{{ friend.username }}</p>
-                <p *ngIf="friend.description">{{ friend.description }}</p>
-              </div>
-              <button mat-icon-button color="warn" (click)="removeFriend(friend)" [disabled]="isSearchLoading">
-                <mat-icon>person_remove</mat-icon>
-              </button>
-            </div>
-          </div>
-  
-          <ng-template #noFriends>
-            <p *ngIf="!isSearchLoading" class="empty-state">Vous n'avez pas encore d'amis. Ajoutez-en via la barre de recherche !</p>
-          </ng-template>
+<!-- Liste des demandes reçues -->
+<div *ngIf="!isRequestsLoading && !requestsError && receivedRequests && receivedRequests.length > 0" class="requests-list">
+  <mat-card *ngFor="let request of receivedRequests" class="request-card">
+    <mat-card-content>
+      <div class="request-info">
+        <div class="friend-avatar">
+          <!-- Utiliser getProfileImage pour éviter les erreurs 404 -->
+          <img *ngIf="request?.sender" [src]="getProfileImage(request.sender)" alt="Profile" class="profile-image">
+          <mat-icon *ngIf="!request?.sender">person</mat-icon>
         </div>
-      </mat-tab>
-  
-      <mat-tab label="Demandes reçues">
-        <div class="tab-content">
-          <!-- Indicateur de chargement -->
-          <div *ngIf="isRequestsLoading" class="loading-indicator">
-            <mat-icon>hourglass_empty</mat-icon>
-            <span>Chargement des demandes...</span>
-          </div>
-          
-          <!-- Messages d'erreur -->
-          <div *ngIf="requestsError" class="error-message">
-            <mat-icon>error</mat-icon>
-            <span>{{ requestsError }}</span>
-          </div>
-          
-          <!-- Pas de demandes -->
-          <div *ngIf="!isRequestsLoading && receivedRequests.length === 0" class="empty-state">
-            <p>Vous n'avez pas de demandes d'amis en attente.</p>
-          </div>
-          
-          <!-- Liste des demandes -->
-          <div *ngIf="receivedRequests.length > 0" class="requests-list">
-            <div *ngFor="let request of receivedRequests" class="request-card">
-              <div class="request-info">
-                <h3>{{ request.senderUsername }}</h3>
-                <p>Demande envoyée le {{ request.creationTime | date:'dd/MM/yyyy' }}</p>
-              </div>
-              <div class="request-actions">
-                <button mat-flat-button color="primary" (click)="acceptRequest(request.id)" [disabled]="isProcessing">
-                  <mat-icon>check</mat-icon> Accepter
-                </button>
-                <button mat-stroked-button color="warn" (click)="declineRequest(request.id)" [disabled]="isProcessing">
-                  <mat-icon>close</mat-icon> Refuser
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="request-details">
+          <h3>{{ request?.sender?.username || 'Utilisateur inconnu' }}</h3>
+          <p>{{ request?.sender?.name || '' }}</p>
+          <p class="request-date">Demande envoyée le {{ request?.createdAt | date:'dd/MM/yyyy' }}</p>
         </div>
-      </mat-tab>
+      </div>
+    </mat-card-content>
+    <mat-card-actions class="actions-container">
+      <!-- Bouton Accepter -->
+      <button 
+        mat-raised-button 
+        color="primary"
+        [disabled]="isRequestProcessing(request.id)"
+        (click)="acceptRequest(request.id)" 
+        class="action-button">
+        <mat-icon *ngIf="!isRequestProcessing(request.id)">check</mat-icon>
+        <mat-spinner *ngIf="isRequestProcessing(request.id)" diameter="20"></mat-spinner>
+        <span>{{ isRequestProcessing(request.id) ? 'En cours...' : 'Accepter' }}</span>
+      </button>
       
-      <mat-tab label="Demandes envoyées">
-        <div class="tab-content">
-          <!-- À développer dans une future mise à jour -->
-          <p class="empty-state">Fonctionnalité à venir dans une prochaine mise à jour.</p>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
-  </div>
+      <!-- Bouton Refuser -->
+      <button 
+        mat-stroked-button 
+        color="warn"
+        [disabled]="isRequestProcessing(request.id)"
+        (click)="declineRequest(request.id)" 
+        class="action-button">
+        <mat-icon *ngIf="!isRequestProcessing(request.id)">close</mat-icon>
+        <mat-spinner *ngIf="isRequestProcessing(request.id)" diameter="20"></mat-spinner>
+        <span>{{ isRequestProcessing(request.id) ? 'En cours...' : 'Refuser' }}</span>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<!-- Message si aucune demande -->
+<div *ngIf="!isRequestsLoading && !requestsError && (!receivedRequests || receivedRequests.length === 0)" class="no-requests">
+  <mat-card>
+    <mat-card-content>
+      <mat-icon>info</mat-icon>
+      <p>Vous n'avez aucune demande d'ami en attente.</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Indicateur de chargement -->
+<div *ngIf="isRequestsLoading" class="loading-container">
+  <mat-spinner diameter="40"></mat-spinner>
+  <p>Chargement des demandes...</p>
+</div>
+
+<!-- Message d'erreur -->
+<div *ngIf="!isRequestsLoading && requestsError" class="error-container">
+  <mat-card>
+    <mat-card-content>
+      <mat-icon color="warn">error</mat-icon>
+      <p>{{ requestsError }}</p>
+      <button mat-button color="primary" (click)="loadReceivedRequests()">Réessayer</button>
+    </mat-card-content>
+  </mat-card>
+</div>
