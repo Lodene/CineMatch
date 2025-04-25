@@ -94,15 +94,22 @@ export class RecommendationComponent implements OnInit {
     this.movieRecommendationService.getRecommendedMovie().subscribe({
       next: ((res: string) => {
         // Contains request ID for debug
-        console.log(res);
-        this.toasterService.show(
-        this.translateService.instant('app.common-component.recommendation.show')
-        );
+        // console.log(res);
+        // Event can be triggered multiple time
+        if (this.recommendedMovies.length === 0) {
+          this.toasterService.show(
+            this.translateService.instant('app.common-component.recommendation.show')
+            );
+        }
       }),
       error: ((err: any) => {
         console.error(err);
-        this.toasterService.error(
-          this.translateService.instant('app.common-component.recommendation.post-request-error'));
+        if (err?.error) {
+          this.toasterService.error(err.error.reason, err.error.error);
+        } else {
+          this.toasterService.error(
+            this.translateService.instant('app.common-component.recommendation.post-request-error'));  
+        }
         this.loaderService.hide();
       })
     })
