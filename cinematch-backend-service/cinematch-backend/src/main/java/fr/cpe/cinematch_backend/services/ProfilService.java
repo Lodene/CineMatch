@@ -35,7 +35,7 @@ public class ProfilService {
     @Autowired
     private WatchedMovieService watchedMovieService;
 
-    public ProfileDetailsDto getProfileByUsername(String username) throws GenericNotFoundException {
+    public ProfileDetailsDto  getProfileByUsername(String username) throws GenericNotFoundException {
         ProfileEntity profileEntity = this.checkAndRetrieveProfile(username);
         AppUser user = profileEntity.getUser();
 
@@ -43,14 +43,16 @@ public class ProfilService {
         int watchlistCount = watchlistMovieService.getWatchlistByUsername(username).size();
         int watchedMoviesCount = watchedMovieService.getWatchedMoviesByUsername(username).size();
 
-        return ProfileDetailsDto.builder()
-                .description(profileEntity.getDescription())
-                .isChild(profileEntity.isChild())
-                .profilPicture(profileEntity.getProfilPicture())
-                .reviewsCount(reviewsCount)
-                .watchlistCount(watchlistCount)
-                .watchedMoviesCount(watchedMoviesCount)
-                .build();
+        ProfileDetailsDto profileDetailsDto = new ProfileDetailsDto();
+        profileDetailsDto.setDescription(profileEntity.getDescription());
+        profileDetailsDto.setUsername(profileEntity.getUser().getUsername());
+        profileDetailsDto.setProfilPicture(profileEntity.getProfilPicture());
+        profileDetailsDto.setChild(profileEntity.isChild());
+        profileDetailsDto.setReviewsCount(reviewsCount);
+        profileDetailsDto.setWatchlistCount(watchlistCount);
+        profileDetailsDto.setWatchedMoviesCount(watchedMoviesCount);
+
+        return profileDetailsDto;
     }
 
     public void updateProfile(String username, ProfileDto dto) throws GenericNotFoundException {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,7 +39,7 @@ import { Review } from '../../models/review';
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
-export class HistoryComponent {
+export class HistoryComponent implements OnInit, OnChanges {
 
   @Input() username: string;
 
@@ -53,6 +53,11 @@ export class HistoryComponent {
     private _watchlistService: WatchlistService,
     private _reviewService: ReviewService
   ) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!!!this.history) {
+      this.loadUserHistory();
+    }
+  }
 
   history : PaginatedHistoryResponse;
   moviesWatched: MovieConsultation[] = [];
@@ -61,6 +66,13 @@ export class HistoryComponent {
   reviews : Review[] = [];
 
   ngOnInit() {
+    this.loadUserHistory();
+  }
+
+  private loadUserHistory() {
+    if (!!!this.username) {
+      return;
+    }
     this._historyService.getUserMovieHistoryByUsername(this.username).subscribe({
       next: (result: PaginatedHistoryResponse) => {
         this.history = result;
@@ -87,6 +99,7 @@ export class HistoryComponent {
     this._reviewService.getReviewByUsername(this.username).subscribe((reviews: Review[]) => {
       this.reviews = reviews;
     })
-
   }
+
 }
+

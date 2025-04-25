@@ -16,6 +16,13 @@ import { TermServiceComponent } from './term-service/term-service.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { SearchComponent } from './search/search.component';
 import { DiaryComponent } from './diary/diary.component';
+import { FriendMenuComponent } from './friends/friend-menu.component';
+import { FriendSearchComponent } from './friends/friend-search/friend-search.component';
+import { ManageFriendRequestComponent } from './friends/manage-friend-request/manage-friend-request.component';
+import { FriendsListComponent } from './friends/friends-list/friends-list.component';
+import { ConsultProfileComponent } from './consult-profile/consult-profile.component';
+import { MyProfileComponent } from './my-profile/my-profile.component';
+import { FirstConnexionMoviesComponent } from './first-connexion-movies/first-connexion-movies.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
@@ -28,7 +35,7 @@ export const routes: Routes = [
   { path: 'signup', component: SignupComponent},
   { path: 'search', component: SearchComponent},
   { path: 'main', component: MainComponent, canActivate:[AuthGuard]},
-  { path: 'profile', component: ProfilComponent, canActivate:[AuthGuard]},
+  { path: 'profile', component: MyProfileComponent, canActivate:[AuthGuard]},
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: 'recommendations', component: RecommendationComponent, canActivate:[AuthGuard]},
   { path: 'favorites', component: FavoriteComponent, canActivate:[AuthGuard]},
@@ -39,5 +46,6 @@ export const routes: Routes = [
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'first-connexion', component: FirstConnexionMoviesComponent, canActivate:[AuthGuard]},
   { path: 'profile/:username', component: ProfilComponent, canActivate:[AuthGuard]},
+  { path: 'profile/:username', component: ConsultProfileComponent, canActivate:[AuthGuard]},
   // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
 ];

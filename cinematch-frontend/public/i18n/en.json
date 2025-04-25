@@ -131,7 +131,8 @@
           "watchlist": {
             "title": "Your watchlist"
           }
-        }
+        },
+        "not-found": "User not found"
       },
       "about": {
         "title": "About Us",

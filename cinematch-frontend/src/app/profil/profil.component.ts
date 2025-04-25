@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,9 +35,15 @@ import { EditProfileDialogComponent } from '../common-component/edit-profile-dia
   styleUrls: ['./profil.component.scss']
 })
 export class ProfilComponent implements OnInit {
+
+
+  @Input() userProfile: User;
+  @Input() picture: string = '/assets/avatar-default.jpg';
+  @Input() username: string;
+  profileEdited = output<void>();
   favoriteMovies: Movie[] = [];
-  userProfile: User = new User();
-  picture = '/assets/avatar-default.jpg';
+  // userProfile: User = new User();
+
   readonly dialog = inject(MatDialog);
   disableEdit: boolean = false;
 
@@ -49,60 +55,9 @@ export class ProfilComponent implements OnInit {
     private route: ActivatedRoute // Inject ActivatedRoute
   ) {}
 
+  
+
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      // Récupérer le username de l'URL
-      this.userProfile.username = params['username'];
-
-      if (this.userProfile.username) {
-        console.log('URL:', this.userProfile.username);
-        // Si un username est passé dans l'URL, on charge les données de cet utilisateur
-        this.loadUserProfileByUsername(this.userProfile.username);
-        this.disableEdit = true;
-      } else {
-        console.log('Local user');
-        // Sinon, on charge les données de l'utilisateur connecté
-        this.loadUserProfile();
-      }
-    });
-  }
-
-  loadUserProfile() {
-    this.loaderService.show();
-    this.profileService.getProfil().subscribe({
-      next: (profile: User) => {
-        this.userProfile = profile;
-        if (!!this.userProfile.profilPicture) {
-          this.picture = 'data:image/jpeg;base64,' + this.userProfile.profilPicture;
-        } else {
-          this.picture = '/assets/avatar-default.jpg';
-        }
-      },
-      error: (error) => {
-        this.toasterService.error(error.error.reason, error.error.error);
-      }
-    }).add(() => {
-      this.loaderService.hide();
-    });
-  }
-
-  loadUserProfileByUsername(username: string) {
-    this.loaderService.show();
-    this.profileService.getProfileByUsername(username).subscribe({
-      next: (profile: User) => {
-        this.userProfile = profile;
-        if (!!this.userProfile.profilPicture) {
-          this.picture = 'data:image/jpeg;base64,' + this.userProfile.profilPicture;
-        } else {
-          this.picture = '/assets/avatar-default.jpg';
-        }
-      },
-      error: (error) => {
-        this.toasterService.error(error.error.reason, error.error.error);
-      }
-    }).add(() => {
-      this.loaderService.hide();
-    });
   }
 
   editProfile() {
@@ -125,7 +80,7 @@ export class ProfilComponent implements OnInit {
               this.translateService.instant('app.common-component.profile.update-successfuly.reason'),
               this.translateService.instant('app.common-component.profile.update-successfuly.message')
             );
-            this.loadUserProfile(); // Refresh
+            this.profileEdited.emit();
           },
           error: (err) => {
             console.error(err);

@@ -131,7 +131,8 @@
           "watchlist": {
             "title": "Votre list de visionnage"
           }
-        }
+        },
+        "not-found": "Utilisateur non trouvé"
       },
       "about": {
         "title": "À propos de nous",
