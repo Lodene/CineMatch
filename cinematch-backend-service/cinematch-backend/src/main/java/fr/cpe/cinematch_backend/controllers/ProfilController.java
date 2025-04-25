@@ -117,7 +117,7 @@ public class ProfilController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ProfileDto>> getAllProfiles() {
+    public ResponseEntity<List<ProfileDetailsDto>> getAllProfiles() {
         return ResponseEntity.ok(profilService.getAllProfiles());
     }
 

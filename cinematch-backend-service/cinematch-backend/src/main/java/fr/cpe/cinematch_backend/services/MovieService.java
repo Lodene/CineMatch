@@ -53,9 +53,6 @@ public class MovieService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private FriendshipService friendshipService;
-
-    @Autowired
     private WatchlistMovieService watchlistMovieService;
 
     @Autowired
@@ -68,6 +65,8 @@ public class MovieService {
     private ProfilRepository profilRepository;
     @Autowired
     private LovedMovieRepository lovedMovieRepository;
+    @Autowired
+    private FriendShipRepository friendShipRepository;
 
     public PaginatedMoviesResponse getAllMoviesPaginated(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
@@ -120,7 +119,10 @@ public class MovieService {
                     ReviewMapper.INSTANCE.toReviewDto(review),
                     profileDto);
             if (username != null) {
-                dto.setWrittenByFriend(friendshipService.isFriend(appUser.getId(), review.getUser().getId()));
+                dto.setWrittenByFriend(
+                    friendShipRepository.findByUserId1AndUserId2(appUser.getId(), review.getUser().getId()).isPresent() ||
+                        friendShipRepository.findByUserId1AndUserId2(review.getUser().getId(), appUser.getId()).isPresent()
+                );
             }
 
             return dto;

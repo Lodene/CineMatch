@@ -45,7 +45,6 @@ export const routes: Routes = [
   { path: 'friends/friends', component: FriendsListComponent, canActivate: [AuthGuard] },
   { path: 'movie/:id', component: MovieDetailsComponent },
   { path: 'first-connexion', component: FirstConnexionMoviesComponent, canActivate:[AuthGuard]},
-  { path: 'profile/:username', component: ProfilComponent, canActivate:[AuthGuard]},
   { path: 'profile/:username', component: ConsultProfileComponent, canActivate:[AuthGuard]},
   // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
 ];

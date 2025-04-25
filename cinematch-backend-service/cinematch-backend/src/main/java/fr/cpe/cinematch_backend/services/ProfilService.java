@@ -9,6 +9,7 @@ import fr.cpe.cinematch_backend.mappers.ProfileMapper;
 import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +54,14 @@ public class ProfilService {
         profileDetailsDto.setWatchedMoviesCount(watchedMoviesCount);
 
         return profileDetailsDto;
+    }
+
+    public ProfileDetailsDto getProfileById(Long id) throws GenericNotFoundException {
+        Optional<AppUser> user = appUserRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new GenericNotFoundException(404, "User not found", "User with id: '" + id + "' was not found");
+        }
+        return this.getProfileByUsername(user.get().getUsername());
     }
 
     public void updateProfile(String username, ProfileDto dto) throws GenericNotFoundException {
@@ -107,10 +116,17 @@ public class ProfilService {
         return profileEntity.get();
     }
 
-    public List<ProfileDto> getAllProfiles() {
+    public List<ProfileDetailsDto> getAllProfiles() {
         List<ProfileEntity> profiles = profilRepository.findAll();
         return profiles.stream()
-                .map(ProfileMapper.INSTANCE::toProfileDto)
+                .map(entity ->
+                {
+                    try {
+                        return this.getProfileById(entity.getId());
+                    } catch (GenericNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
                 .toList();
     }
 }

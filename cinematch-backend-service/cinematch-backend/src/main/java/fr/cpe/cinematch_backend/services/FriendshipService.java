@@ -1,5 +1,6 @@
 package fr.cpe.cinematch_backend.services;
 
+import fr.cpe.cinematch_backend.dtos.ProfileDetailsDto;
 import fr.cpe.cinematch_backend.dtos.ProfileDto;
 import fr.cpe.cinematch_backend.entities.FriendshipEntity;
 import fr.cpe.cinematch_backend.mappers.ProfileMapper;
@@ -31,6 +32,11 @@ public class FriendshipService {
 
     @Autowired
     private ProfilRepository profilRepository;
+
+    @Autowired
+    private ProfilService profilService;
+
+
 
     public void createFriendship(Long userId1, Long userId2) throws BadEndpointException {
         if (userId1.equals(userId2)) {
@@ -65,12 +71,12 @@ public class FriendshipService {
         friendShipRepository.delete(friendshipEntity);
     }
 
-    public List<ProfileDto> getFriendsOfUser(String currentUsername) throws GenericNotFoundException {
+    public List<ProfileDetailsDto> getFriendsOfUser(String currentUsername) throws GenericNotFoundException {
         AppUser currentUser = appUserRepository.findByUsername(currentUsername)
                 .orElseThrow(() -> new GenericNotFoundException(404, "Utilisateur introuvable",
                         "Utilisateur courant introuvable"));
         List<FriendshipEntity> friendshipEntities = this.getUsersFriends(currentUser.getId());
-        List<ProfileDto> friends = new ArrayList<>();
+        List<ProfileDetailsDto> friends = new ArrayList<>();
         for (FriendshipEntity friendshipEntity : friendshipEntities) {
             Long friendId = friendshipEntity.getUserId1().equals(currentUser.getId())
                     ? friendshipEntity.getUserId2()
@@ -80,7 +86,13 @@ public class FriendshipService {
             Optional<AppUser> friend = appUserRepository.findById(friendId);
             if (friend.isPresent()) {
                 Optional<ProfileEntity> profileEntity = profilRepository.findByUserId(friend.get().getId());
-                profileEntity.ifPresent(entity -> friends.add(ProfileMapper.INSTANCE.toProfileDto(entity)));
+                profileEntity.ifPresent(entity -> {
+                    try {
+                        friends.add(profilService.getProfileByUsername(entity.getUser().getUsername()));
+                    } catch (GenericNotFoundException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
             }
         }
         return friends;
