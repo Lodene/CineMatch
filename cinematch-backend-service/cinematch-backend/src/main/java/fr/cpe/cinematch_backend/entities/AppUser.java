@@ -33,6 +33,9 @@ public class AppUser implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_first_connexion", nullable = false)
+    private boolean isFirstConnexion = true;
+
     @CreationTimestamp
     @Column(updatable = false)
     private Date createdAt;

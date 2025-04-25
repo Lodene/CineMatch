@@ -19,6 +19,9 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_first_connexion" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="DATETIME"/>
         </createTable>
     </changeSet>
