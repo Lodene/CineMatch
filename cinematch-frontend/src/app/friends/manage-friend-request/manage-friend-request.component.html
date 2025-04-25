@@ -1,1 +1,78 @@
-<p>manage-friend-request works!</p>
+<div class="friend-request-container">
+    <mat-tab-group animationDuration="300ms">
+      <mat-tab label="Rechercher des amis">
+        <div class="tab-content">
+  
+          <!-- Liste d'amis -->
+          <h3>Mes amis</h3>
+          <div *ngIf="isSearchLoading && !friends.length" class="loading-indicator">
+            <mat-icon>hourglass_empty</mat-icon>
+            <span>Chargement en cours...</span>
+          </div>
+  
+          <div *ngIf="friends.length > 0; else noFriends">
+            <div *ngFor="let friend of friends" class="friend-card">
+              <div class="friend-info">
+                <h3>{{ friend.name || friend.username }}</h3>
+                <p>{{ friend.username }}</p>
+                <p *ngIf="friend.description">{{ friend.description }}</p>
+              </div>
+              <button mat-icon-button color="warn" (click)="removeFriend(friend)" [disabled]="isSearchLoading">
+                <mat-icon>person_remove</mat-icon>
+              </button>
+            </div>
+          </div>
+  
+          <ng-template #noFriends>
+            <p *ngIf="!isSearchLoading" class="empty-state">Vous n'avez pas encore d'amis. Ajoutez-en via la barre de recherche !</p>
+          </ng-template>
+        </div>
+      </mat-tab>
+  
+      <mat-tab label="Demandes reçues">
+        <div class="tab-content">
+          <!-- Indicateur de chargement -->
+          <div *ngIf="isRequestsLoading" class="loading-indicator">
+            <mat-icon>hourglass_empty</mat-icon>
+            <span>Chargement des demandes...</span>
+          </div>
+          
+          <!-- Messages d'erreur -->
+          <div *ngIf="requestsError" class="error-message">
+            <mat-icon>error</mat-icon>
+            <span>{{ requestsError }}</span>
+          </div>
+          
+          <!-- Pas de demandes -->
+          <div *ngIf="!isRequestsLoading && receivedRequests.length === 0" class="empty-state">
+            <p>Vous n'avez pas de demandes d'amis en attente.</p>
+          </div>
+          
+          <!-- Liste des demandes -->
+          <div *ngIf="receivedRequests.length > 0" class="requests-list">
+            <div *ngFor="let request of receivedRequests" class="request-card">
+              <div class="request-info">
+                <h3>{{ request.senderUsername }}</h3>
+                <p>Demande envoyée le {{ request.creationTime | date:'dd/MM/yyyy' }}</p>
+              </div>
+              <div class="request-actions">
+                <button mat-flat-button color="primary" (click)="acceptRequest(request.id)" [disabled]="isProcessing">
+                  <mat-icon>check</mat-icon> Accepter
+                </button>
+                <button mat-stroked-button color="warn" (click)="declineRequest(request.id)" [disabled]="isProcessing">
+                  <mat-icon>close</mat-icon> Refuser
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      
+      <mat-tab label="Demandes envoyées">
+        <div class="tab-content">
+          <!-- À développer dans une future mise à jour -->
+          <p class="empty-state">Fonctionnalité à venir dans une prochaine mise à jour.</p>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>

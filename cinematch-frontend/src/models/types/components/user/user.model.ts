@@ -20,3 +20,15 @@ export class User {
     this.child = data?.child || false;
   }
 }
+export interface FriendRequest {
+  id: number;
+  sender: User;
+  receiver: User;
+  createdAt: string;
+}
+
+export interface IncomingFriendRequestDto {
+  id: number;
+  sender: User;
+  createdAt: string;
+}

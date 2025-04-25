@@ -1,19 +1,33 @@
-<div class="card-wrapper">
-    <mat-card appearance="outlined" class="friend-card">
-        <mat-card-header>Title</mat-card-header>
-        <mat-card-content>Simple card</mat-card-content>
-        <mat-card-actions>Go</mat-card-actions>
-    </mat-card>
-    <mat-card appearance="outlined" class="friend-card">
-        <mat-card-header>Title</mat-card-header>
-        <mat-card-content>Simple card</mat-card-content>
-        <mat-card-actions>Go</mat-card-actions>
-    </mat-card>
-    <mat-card appearance="outlined">
-        <mat-card-header>Title</mat-card-header>
-        <mat-card-content>Simple card</mat-card-content>
-        <mat-card-actions>Go</mat-card-actions>
-    </mat-card>
-</div>
-
+<div class="friends-menu-container">
+    <div class="menu-header">
+      <h1>Gestion des amis</h1>
+    </div>
   
+    <div class="menu-nav">
+      <a 
+        routerLink="/friends/search" 
+        [ngClass]="{'active': isRouteActive('/friends/search')}" 
+        class="nav-button">
+        <mat-icon>person_search</mat-icon>
+        <span>Rechercher des amis</span>
+      </a>
+      <a 
+        routerLink="/friends/friends" 
+        [ngClass]="{'active': isRouteActive('/friends/friends')}" 
+        class="nav-button">
+        <mat-icon>people</mat-icon>
+        <span>Mes amis</span>
+      </a>
+      <a 
+        routerLink="/friends/request" 
+        [ngClass]="{'active': isRouteActive('/friends/request')}" 
+        class="nav-button">
+        <mat-icon>notifications</mat-icon>
+        <span>Demandes d'ami</span>
+      </a>
+    </div>
+  
+    <div class="content-placeholder">
+      <p>Sélectionnez une option pour gérer vos amis</p>
+    </div>
+  </div>

@@ -15,8 +15,11 @@ import { SettingsComponent } from './settings/settings.component';
 import { TermServiceComponent } from './term-service/term-service.component';
 import { FavoriteComponent } from './favorite/favorite.component';
 import { SearchComponent } from './search/search.component';
-import { FriendsListComponent } from './friends-list/friends-list.component';
 import { DiaryComponent } from './diary/diary.component';
+import { FriendMenuComponent } from './friends/friend-menu.component';
+import { FriendSearchComponent } from './friends/friend-search/friend-search.component';
+import { ManageFriendRequestComponent } from './friends/manage-friend-request/manage-friend-request.component';
+import { FriendsListComponent } from './friends/friends-list/friends-list.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // Page d'accueil
@@ -33,8 +36,10 @@ export const routes: Routes = [
   { path: 'watchlist', component: WatchListComponent, canActivate:[AuthGuard]},
   { path: 'recommendations', component: RecommendationComponent, canActivate:[AuthGuard]},
   { path: 'favorites', component: FavoriteComponent, canActivate:[AuthGuard]},
-  { path: 'friends', component: FriendsListComponent, canActivate:[AuthGuard]},
-  { path: 'diary', component: DiaryComponent, canActivate:[AuthGuard]},
+  { path: 'friends', component: FriendMenuComponent, canActivate: [AuthGuard]},
+  { path: 'friends/search', component: FriendSearchComponent, canActivate: [AuthGuard]},
+  { path: 'friends/request', component: ManageFriendRequestComponent, canActivate: [AuthGuard]},
+  { path: 'friends/friends', component: FriendsListComponent, canActivate: [AuthGuard] },
   { path: 'movie/:id', component: MovieDetailsComponent },
   // { path: '**', redirectTo: '' }, // Redirection vers l'accueil pour les routes inconnues
 ];
