@@ -32,3 +32,4 @@ export interface IncomingFriendRequestDto {
   sender: User;
   createdAt: string;
 }
+
