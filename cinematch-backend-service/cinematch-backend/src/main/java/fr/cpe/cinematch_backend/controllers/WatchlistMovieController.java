@@ -35,10 +35,6 @@ public class WatchlistMovieController {
         return ResponseEntity.ok(watchlistMovieService.getWatchListWithReviewsByUsername(user.getUsername()));
     }
 
-    @GetMapping("/user/{idUser}")
-    public ResponseEntity<List<MovieDetailsWithReviewsDto>> getWatchlistByUserId(@PathVariable Long idUser) throws GenericNotFoundException {
-        return ResponseEntity.ok(watchlistMovieService.getWatchListWithReviewsByUserId(idUser));
-    }
     @GetMapping("/user/{username}")
     public ResponseEntity<List<MovieDetailsWithReviewsDto>> getWatchlistByUsername(@PathVariable String username) throws GenericNotFoundException {
         return ResponseEntity.ok(watchlistMovieService.getWatchListWithReviewsByUsername(username));

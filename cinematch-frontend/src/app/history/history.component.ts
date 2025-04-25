@@ -13,6 +13,15 @@ import { PaginatedHistoryResponse } from '../../models/history/paginated-history
 import { MovieActionType } from '../../models/history/movie-action-type';
 import { ProfileService } from '../../services/profile/profile.service';
 import { HistoryEntryComponent } from "./history-entry/history-entry.component";
+import { DiaryService } from '../../services/diary/diary.service';
+import { MovieConsultation } from '../../models/movieConsultation';
+import { Movie } from '../../models/movie';
+import { MovieHistoryEntryComponent} from './movie-history-entry/movie-history-entry.component';
+import { ReviewHistoryEntryComponent} from './review-history-entry/review-history-entry.component';
+import { LovedMovieService } from '../../services/loved-movie/loved-movie.service';
+import { WatchlistService} from '../../services/watchlist/watchlist.service';
+import { ReviewService} from '../../services/review/review.service';
+import { Review } from '../../models/review';
 
 @Component({
   selector: 'app-history',
@@ -23,23 +32,36 @@ import { HistoryEntryComponent } from "./history-entry/history-entry.component";
     MatIconModule,
     MatDividerModule,
     TranslateModule,
-    HistoryEntryComponent
+    HistoryEntryComponent,
+    MovieHistoryEntryComponent,
+    ReviewHistoryEntryComponent,
 ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.scss'
 })
 export class HistoryComponent {
 
+  @Input() username: string;
+
   profileService = inject(ProfileService);
-  
+
   constructor(
     private _historyService: HistoryService,
     private _movieService: MovieService,
+    private _diaryService: DiaryService,
+    private _lovedService: LovedMovieService,
+    private _watchlistService: WatchlistService,
+    private _reviewService: ReviewService
   ) { }
 
   history : PaginatedHistoryResponse;
+  moviesWatched: MovieConsultation[] = [];
+  moviesLoved: MovieConsultation[] = [];
+  moviesInWatchlist : MovieConsultation[] = [];
+  reviews : Review[] = [];
+
   ngOnInit() {
-    this._historyService.getCurrentUserMovieHistory().subscribe({
+    this._historyService.getUserMovieHistoryByUsername(this.username).subscribe({
       next: (result: PaginatedHistoryResponse) => {
         this.history = result;
         console.log(result);
@@ -49,5 +71,22 @@ export class HistoryComponent {
     }).add(() => {
 
     });
+
+    this._diaryService.getWatchedMoviesByUsername(this.username).subscribe((movies) => {
+      this.moviesWatched = movies;
+    });
+
+    this._lovedService.getLovedMoviesByUsername(this.username).subscribe((movies) => {
+      this.moviesLoved = movies;
+    });
+
+    this._watchlistService.getWatchListByUsername(this.username).subscribe((movies) => {
+      this.moviesInWatchlist = movies
+    });
+
+    this._reviewService.getReviewByUsername(this.username).subscribe((reviews: Review[]) => {
+      this.reviews = reviews;
+    })
+
   }
 }

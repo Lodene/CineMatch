@@ -1,0 +1,46 @@
+.movie-history-entry {
+  display: flex;
+  align-items: center;
+  margin: 1em 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  padding: 10px;
+  border-top: 2px solid #f0f0f0;  /* Bordure haute */
+  border-bottom: 2px solid #f0f0f0; /* Bordure basse */
+  border-radius: 6px;
+}
+
+.movie-history-entry:hover {
+  background-color: #f7f7f7; /* Changement de couleur au survol */
+  transform: scale(1.02); /* Légère élévation au survol */
+}
+
+.movie-poster {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  margin-right: 1em;
+  border-radius: 4px;
+}
+
+.movie-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.movie-title:hover {
+  color: #bbaef1; /* Changement de couleur du titre au survol */
+}
+
+.movie-release-date {
+  font-size: 0.9em;
+  color: #777;
+}

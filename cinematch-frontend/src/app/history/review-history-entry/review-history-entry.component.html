@@ -1,0 +1,20 @@
+<div class="review-history-entry" (click)="goToMovie(review.idMovie)">
+  <div class="movie-poster-container" (click)="goToMovie(review.idMovie)">
+    <img class="movie-poster" [src]="moviePosterUrl" [alt]="review.movieTitle">
+  </div>
+  <div class="review-details">
+    <a class="movie-title" (click)="goToMovie(review.idMovie)">
+      {{ review.movieTitle }}
+    </a>
+    <p class="review-text">{{ review.description }}...</p> <!-- Limité à 150 caractères -->
+
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <!-- Note -->
+      <p class="review-date">{{ review.createdAt | date: 'dd/MM/yyyy' }}</p>
+      <div style="display: flex; flex-direction: row; align-items: center;">
+        <mat-icon class="mr-10" style="color:#ffe234;" aria-hidden="false" aria-label="star" fontIcon="star"></mat-icon>
+        <div class="mr-10">{{ review?.note }}</div>
+      </div>
+    </div><!-- Affichage de la date -->
+  </div>
+</div>

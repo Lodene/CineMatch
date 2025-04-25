@@ -15,19 +15,44 @@
 
     <mat-tab label="{{ 'app.common-component.profile.tabs.favorites' | translate }}">
       <h2>{{ 'app.common-component.profile.sections.favorites.title' | translate }}</h2>
-      <!-- FIX ME LATER : Compenent Film Card -->
+      <mat-card class="activity-card">
+        <mat-card-content>
+          <div *ngFor="let movie of moviesLoved">
+            <app-movie-history-entry [movie]="movie.movie"></app-movie-history-entry>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
     <mat-tab label="{{ 'app.common-component.profile.tabs.diary' | translate }}">
-        <h2>{{ 'app.common-component.profile.sections.diary.title' | translate }}</h2>
-        <!-- FIX ME LATER : Compenent Film Card -->
+      <h2>{{ 'app.common-component.profile.sections.diary.title' | translate }}</h2>
+      <mat-card class="activity-card">
+        <mat-card-content>
+          <div *ngFor="let movie of moviesWatched">
+            <app-movie-history-entry [movie]="movie.movie"></app-movie-history-entry>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
+
     <mat-tab label="{{ 'app.common-component.profile.tabs.watchlist' | translate }}">
       <h2>{{ 'app.common-component.profile.sections.watchlist.title' | translate }}</h2>
-      <!-- FIX ME LATER : Compenent Film Card -->
+      <mat-card class="activity-card">
+        <mat-card-content>
+          <div *ngFor="let movie of moviesInWatchlist">
+            <app-movie-history-entry [movie]="movie.movie"></app-movie-history-entry>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
     <mat-tab label="{{ 'app.common-component.profile.tabs.review' | translate }}">
       <h2>{{ 'app.common-component.profile.sections.review.title' | translate }}</h2>
-      <!-- FIX ME LATER : Compenent Film Card -->
+      <mat-card class="activity-card">
+        <mat-card-content>
+          <div *ngFor="let review of reviews" class="activity-item">
+            <app-review-history-entry [review]="review"></app-review-history-entry>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </mat-tab>
 
 </mat-tab-group>

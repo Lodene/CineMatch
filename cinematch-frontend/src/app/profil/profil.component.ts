@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -38,16 +39,32 @@ export class ProfilComponent implements OnInit {
   userProfile: User = new User();
   picture = '/assets/avatar-default.jpg';
   readonly dialog = inject(MatDialog);
+  disableEdit: boolean = false;
 
   constructor(
     private profileService: ProfileService,
     private loaderService: LoaderService,
     private toasterService: ToastrService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private route: ActivatedRoute // Inject ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadUserProfile();
+    this.route.params.subscribe(params => {
+      // Récupérer le username de l'URL
+      this.userProfile.username = params['username'];
+
+      if (this.userProfile.username) {
+        console.log('URL:', this.userProfile.username);
+        // Si un username est passé dans l'URL, on charge les données de cet utilisateur
+        this.loadUserProfileByUsername(this.userProfile.username);
+        this.disableEdit = true;
+      } else {
+        console.log('Local user');
+        // Sinon, on charge les données de l'utilisateur connecté
+        this.loadUserProfile();
+      }
+    });
   }
 
   loadUserProfile() {
@@ -55,8 +72,27 @@ export class ProfilComponent implements OnInit {
     this.profileService.getProfil().subscribe({
       next: (profile: User) => {
         this.userProfile = profile;
-        if(!!this.userProfile.profilPicture) {
-          this.picture = 'data:image/jpeg;base64,' + this.userProfile.profilPicture
+        if (!!this.userProfile.profilPicture) {
+          this.picture = 'data:image/jpeg;base64,' + this.userProfile.profilPicture;
+        } else {
+          this.picture = '/assets/avatar-default.jpg';
+        }
+      },
+      error: (error) => {
+        this.toasterService.error(error.error.reason, error.error.error);
+      }
+    }).add(() => {
+      this.loaderService.hide();
+    });
+  }
+
+  loadUserProfileByUsername(username: string) {
+    this.loaderService.show();
+    this.profileService.getProfileByUsername(username).subscribe({
+      next: (profile: User) => {
+        this.userProfile = profile;
+        if (!!this.userProfile.profilPicture) {
+          this.picture = 'data:image/jpeg;base64,' + this.userProfile.profilPicture;
         } else {
           this.picture = '/assets/avatar-default.jpg';
         }

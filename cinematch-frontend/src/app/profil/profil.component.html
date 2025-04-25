@@ -15,10 +15,12 @@
         <div><span class="bold">{{ userProfile.watchlistCount }}</span> {{ 'app.common-component.profile.stats.watchlist' | translate }}</div>
       </div>
     </div>
-    <button mat-stroked-button (click)="editProfile()">{{ 'app.common-component.profile.actions.edit' | translate }}</button>
+    <button *ngIf="!disableEdit" mat-stroked-button (click)="editProfile()">
+      {{ 'app.common-component.profile.actions.edit' | translate }}
+    </button>
   </div>
 
-  <app-history class="history"></app-history>
+  <app-history class="history" [username]="this.userProfile.username"></app-history>
   <!-- <mat-tab-group>
     <mat-tab label="{{ 'app.common-component.profile.tabs.activity' | translate }}">
       <h2>{{ 'app.common-component.profile.sections.activity.title' | translate }}</h2>

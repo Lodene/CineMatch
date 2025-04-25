@@ -10,6 +10,7 @@ import { MovieConsultation } from '../../models/movieConsultation';
 export class DiaryService {
 
   backendUrl: string = 'http://localhost:8081/watched-movie';
+  backendUrlUSer: string ='user';
 
   constructor(private http: HttpClient) { }
 
@@ -20,7 +21,7 @@ export class DiaryService {
     return this.http.post(`${this.backendUrl}/${movieId}`, {});
   }
   public getWatchedMoviesByUsername(username: string): Observable<MovieConsultation[]> {
-    return this.http.get<MovieConsultation[]>(`${this.backendUrl}/${username}`);
+    return this.http.get<MovieConsultation[]>(`${this.backendUrl}/${this.backendUrlUSer}/${username}`);
   }
 }
 
