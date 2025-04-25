@@ -254,6 +254,7 @@
         "filter": "Filter",
         "not-found": "You have no recommendations.",
         "show": "Request sent to our recommendation system",
+        "post-request-error": "An error occured when sending your request",
         "succes": "Recommendation retrieved successfuly",
         "user-error": "404",
         "user-error-reason": "Could not retrieve your username"

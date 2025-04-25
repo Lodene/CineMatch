@@ -22,9 +22,13 @@ public class RecommendationMovieController {
     RecommendationMovieService recommendationMovieService;
 
     @GetMapping()
-    public ResponseEntity<String> getRecommendedMovie() throws GenericNotFoundException, ConfigErrorException, BadEndpointException {
+    public ResponseEntity getRecommendedMovie() throws GenericNotFoundException, ConfigErrorException, BadEndpointException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AppUser user = (AppUser) auth.getPrincipal();
-        return ResponseEntity.ok(this.recommendationMovieService.getRecommendedMovie(user.getUsername()));
+        if (this.recommendationMovieService.getRecommendedMovie(user.getUsername()) != null) {
+            return ResponseEntity.ok().build();
+        };
+        return ResponseEntity.badRequest().build();
+
     }
 }

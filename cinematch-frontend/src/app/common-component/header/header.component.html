@@ -20,13 +20,6 @@
   </div>
   <!-- Bloc de droite -->
   <div class="right-section">
-
-    <!-- Search -->
-    <mat-form-field class="search-field" appearance="outline">
-      <mat-icon matPrefix>search</mat-icon>
-      <input matInput [placeholder]="'app.common-component.header.search-placeholder' | translate" />
-    </mat-form-field>
-
     <!-- Login -->
      <div *ngIf="!isConnected; else notConnected" class="login-signup-wrapper">
       <button  mat-stroked-button color="primary" class="login-button" routerLink="/login">

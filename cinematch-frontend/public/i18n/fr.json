@@ -285,6 +285,7 @@
         "filter": "Filtrer",
         "not-found": "Vous n'avez aucune recommandation.",
         "show": "Votre requête est bien partie vers notre système de recommendation",
+        "post-request-error": "Un erreur est survenue lors de l'envoie de votre requête",
         "succes": "Recommendation récupéré avec succès",
         "user-error": "404",
         "user-error-reason": "Le nom d'utilisateur courant n'a pas pu être récupéré"

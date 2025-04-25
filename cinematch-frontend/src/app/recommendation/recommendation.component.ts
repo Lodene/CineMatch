@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MovieCardComponent } from "../common-component/movie-card/movie-card.component";
 import { Movie } from '../../models/movie';
 import { MatSliderModule } from '@angular/material/slider';
@@ -45,25 +45,14 @@ type SocketNotification = {
   templateUrl: './recommendation.component.html',
   styleUrl: './recommendation.component.scss'
 })
-export class RecommendationComponent {
+export class RecommendationComponent implements OnInit {
 
   // movie: Movie;
   recommendedMovies: Movie[]=[];
 
-
   // Direct property bindings for slider values
   minTime: number = 120;
   maxTime: number = 200;
-
-  genersSearchControl = new FormControl('');
-  selectedGeners = new FormControl([]);
-  genersOptions: string[] = ['Action', 'Adventure', 'Comedy', 'Drama', 'Horror', 'Romance', 'Sci-Fi', 'Thriller'];
-  filteredOptions: Observable<string[]>;
-
-  languageSearchControl = new FormControl('');
-  selectedLanguages = new FormControl([]);
-  langueagesOptions: string[] = ['French', 'English', 'Spanish', 'Korean', 'Chinese'];
-  filteredLanguagesOptions: Observable<string[]>;
 
   private movieRecommendationService = inject(MovieRecommendationService);
   private loaderService = inject(LoaderService);
@@ -75,16 +64,6 @@ export class RecommendationComponent {
   private username: string = "";
 
   ngOnInit() {
-    // this.movie = new Movie();
-    // this.filteredOptions = this.genersSearchControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterGeners(value || ''))
-    // );
-
-    // this.filteredLanguagesOptions = this.languageSearchControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filterLanguages(value || ''))
-    // );
     this.profileService.currentUsername.pipe(tap((username) => {
       if (username !== null) {
         this.username = username;
@@ -94,13 +73,15 @@ export class RecommendationComponent {
         this.socketService.on("recommendation").pipe(
           tap((event) => {
             const recommendationNotification = event as SocketNotification;
-            this.recommendedMovies = recommendationNotification.recommendedMovies;
-            this.toasterService.success(
-              this.translateService.instant('app.common-component.recommendation.succes')
-            );
+            if (this.recommendedMovies.length === 0) {
+              this.recommendedMovies = recommendationNotification.recommendedMovies;
+              this.toasterService.success(
+                this.translateService.instant('app.common-component.recommendation.succes')
+              );
+            }
             this.loaderService.hide();
           })
-        ).subscribe();
+        ).subscribe()
       } else {
         this.toasterService.error(
           this.translateService.instant('app.common-component.recommendation.user-error-reason'),
@@ -109,56 +90,21 @@ export class RecommendationComponent {
       }
     })).subscribe()
   }
-
-  // Optional: method to emit values when they change
-  onSliderChange(): void {
-    // You could emit these values to a parent component or service
-    console.log(`Runtime range: ${this.minTime} - ${this.maxTime} minutes`);
-  }
-
-
-  private _filterGeners(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.genersOptions.filter(option => option.toLowerCase().includes(filterValue));
-  }
-  private _filterLanguages(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.langueagesOptions.filter(option => option.toLowerCase().includes(filterValue));
-  }
-
-
-  // Optional: for clearing search field when the panel is closed
-  onClosedPanel() {
-    this.genersSearchControl.setValue('');
-    this.languageSearchControl.setValue('');
-  }
-
-  onSelectionChange() {
-    console.log('Selection changed');
-    console.log(this.selectedGeners.value);
-    console.log(this.selectedLanguages.value);
-    // Add any additional logic needed when selection changes
-  }
-
   private getRecommendations() {
-
     this.movieRecommendationService.getRecommendedMovie().subscribe({
       next: ((res: string) => {
         // Contains request ID for debug
         console.log(res);
         this.toasterService.show(
-          this.translateService.instant('app.common-component.recommendation.show')
+        this.translateService.instant('app.common-component.recommendation.show')
         );
       }),
       error: ((err: any) => {
         console.error(err);
-        this.toasterService.error(err.error.reason, err.error.error);
+        this.toasterService.error(
+          this.translateService.instant('app.common-component.recommendation.post-request-error'));
         this.loaderService.hide();
       })
     })
-  }
-
-  filterRecommendations(){
-    //TODO : filter recommendedMovies list 
   }
 }
