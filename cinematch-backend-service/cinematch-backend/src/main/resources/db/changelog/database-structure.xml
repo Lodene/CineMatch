@@ -19,9 +19,6 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="is_first_connexion" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="DATETIME"/>
         </createTable>
     </changeSet>
@@ -515,6 +512,11 @@
                              referencedTableName="movie"/>
 </changeSet>
 
+<changeSet id="1745571917289-1" author="T-H-O-M-A-S">
+    <addColumn tableName="app_user">
+        <column name="is_first_connexion" type="boolean"/>
+    </addColumn>
+</changeSet>
 
 
 </databaseChangeLog>
