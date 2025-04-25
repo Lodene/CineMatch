@@ -9,6 +9,8 @@
     </mat-card-content>
     <mat-card-actions class="card-actions">
         <div class="rounded-border-gradient mr-10">{{movie.releaseDate | date:'y'}}</div>
-        <div class="rounded-border-gradient">{{movie.genres[0]}}</div>
+        <div *ngFor="let g of movie.genres">
+            <div class="rounded-border-gradient mx-4">{{g}}</div>
+        </div>
     </mat-card-actions>
 </mat-card>

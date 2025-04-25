@@ -121,6 +121,11 @@
         color: #111;
       }
 
+      &:nth-child(3) {
+        background-color: #f4f4f5;
+        color: #111;
+      }
+
       &:last-child {
         background-color: white;
         border: 1px solid #e5e7eb;

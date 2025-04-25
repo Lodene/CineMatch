@@ -1,43 +1,47 @@
 <div class="featured-wrapper" *ngIf="movie">
-    <div class="backdrop">
-      <img [src]="backdropPath" [alt]="'generic-error.image-not-found' | translate" />
-      <div class="gradient-overlay"></div>
-    </div>
+  <div class="backdrop">
+    <img [src]="backdropPath" [alt]="'generic-error.image-not-found' | translate" />
+    <div class="gradient-overlay"></div>
+  </div>
 
-    <div class="content-container">
-      <div class="text-content">
-        <h1 class="film-title">{{ movie.title }}</h1>
+  <div class="content-container">
+    <div class="text-content">
+      <h1 class="film-title">{{ movie.title }}</h1>
 
-        <div class="film-meta">
-          <span class="badge">{{ movie.releaseDate | date:'y'}}</span>
-          <span class="rating">
-            <span class="rating-score">{{ movie.imdbRating }}</span> / 10
-          </span>
-          <span class="runtime">{{ movie.runtime }} min</span>
-        </div>
+      <div class="film-meta">
+        <span class="badge">{{ movie.releaseDate | date:'y'}}</span>
+        <span class="rating">
+          <span class="rating-score">{{ movie.imdbRating }}</span> / 10
+        </span>
+        <span class="runtime">{{ movie.runtime }} min</span>
+      </div>
 
-        <div class="genres">
-          <span class="badge secondary" *ngFor="let genre of movie.genres">{{ genre }}</span>
-        </div>
+      <div class="genres">
+        <span class="badge secondary" *ngFor="let genre of movie.genres">{{ genre }}</span>
+      </div>
 
-        <p class="overview">{{ movie.overview }}</p>
+      <p class="overview">{{ movie.overview }}</p>
 
-        <div class="actions">
-          <button mat-flat-button color="primary" (click)="watchTrailer()">
-            <mat-icon>play_circle</mat-icon>
-            Watch Trailer
-          </button>
+      <div class="actions">
+        <button mat-flat-button color="primary" (click)="watchTrailer()">
+          <mat-icon>play_circle</mat-icon>
+          {{'app.common-component.featured-film.watch-trailer'|translate}}
+        </button>
 
-          <button mat-stroked-button>
-            <mat-icon>add</mat-icon>
-            Add to Watchlist
-          </button>
+        <button mat-stroked-button (click)="goToMovie(movie.id)">
+          <mat-icon>info</mat-icon>
+          {{'app.common-component.featured-film.details'|translate}}
+        </button>
 
-          <button mat-flat-button color="accent" [routerLink]="'/film/' + movie.id">
-            <mat-icon>info</mat-icon>
-            Details
-          </button>
-        </div>
+        <app-movie-actions
+          [disabled]="!isLogged"
+          [showWatchList]="true"
+          [movieId]="movie.id"
+          [isInWatchList]="isInWatchlist"
+          (watchlistActionEvent)="handleWatchListAction($event)">
+        </app-movie-actions>
+
       </div>
     </div>
   </div>
+</div>

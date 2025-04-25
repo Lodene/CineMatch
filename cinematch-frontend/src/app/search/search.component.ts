@@ -61,7 +61,7 @@ export class SearchComponent implements OnInit {
 
   genersSearchControl = new FormControl('');
   selectedGeners = new FormControl([]);
-  genersOptions: string[] = [];
+  genersOptions: string[] = ["Action", "Adventure", "Horror", "Romance", "War", "History", "Science Fiction", "Western", "Documentary", "Drama", "Thriller", "TV Movie", "Music", "Crime", "Fantasy", "Animation", "Family", "Comedy", "Mystery",];
   filteredOptions: Observable<string[]>;
   currentPage: number = 0;
   totalPages: number = 0;
@@ -69,18 +69,18 @@ export class SearchComponent implements OnInit {
   hasNextPage: boolean;
 
   async ngOnInit() {
-    this.loaderService.show();
-    this.movieService.getAllGenres().subscribe({
-      next: (g: string[]) => {
-        this.genersOptions = g;
-        console.log(this.genersOptions);
-      },
-      error: (error) => {
-        this.toasterService.error(error.error.reason, error.error.error);
-      }
-    }).add(() => {
-      this.loaderService.hide();
-    })
+    //this.loaderService.show();
+    // this.movieService.getAllGenres().subscribe({
+    //   next: (g: string[]) => {
+    //     this.genersOptions = g;
+    //     console.log(this.genersOptions);
+    //   },
+    //   error: (error) => {
+    //     this.toasterService.error(error.error.reason, error.error.error);
+    //   }
+    // }).add(() => {
+    //   this.loaderService.hide();
+    // })
 
     this.filteredOptions = this.genersSearchControl.valueChanges.pipe(
       startWith(''),
@@ -119,14 +119,14 @@ export class SearchComponent implements OnInit {
     }
 
     var genres = null;
-    if(this.selectedGeners.value && this.selectedGeners.value.length > 0){
+    if (this.selectedGeners.value && this.selectedGeners.value.length > 0) {
       genres = this.selectedGeners.value as string[];
 
     }
 
     var searchRequest = new MovieSearchRequest();
     searchRequest.title = !!this.titleSearch && this.titleSearch !== "" ? this.titleSearch : null;
-    searchRequest.minRating = !!this.noteSearch && this.noteSearch > 1? this.noteSearch : null;
+    searchRequest.minRating = !!this.noteSearch && this.noteSearch > 1 ? this.noteSearch : null;
     searchRequest.cast = cast;
     searchRequest.director = director;
     searchRequest.genres = genres;
@@ -154,29 +154,29 @@ export class SearchComponent implements OnInit {
       cast = [];
       cast.push(this.actorSearch);
     }
-    
+
     var director = null;
     if (!!this.directorSearch && this.directorSearch !== "") {
       director = [];
       director.push(this.directorSearch);
     }
-    
+
     var genres = null;
-    if(this.selectedGeners.value && this.selectedGeners.value.length > 0){
+    if (this.selectedGeners.value && this.selectedGeners.value.length > 0) {
       genres = this.selectedGeners.value as string[];
     }
-    
+
     var searchRequest = new MovieSearchRequest();
     searchRequest.title = !!this.titleSearch && this.titleSearch !== "" ? this.titleSearch : null;
-    searchRequest.minRating = !!this.noteSearch && this.noteSearch > 1? this.noteSearch : null;
+    searchRequest.minRating = !!this.noteSearch && this.noteSearch > 1 ? this.noteSearch : null;
     searchRequest.cast = cast;
     searchRequest.director = director;
     searchRequest.genres = genres;
     searchRequest.startDate = new Date(this.startYear, 0, 1);
     searchRequest.endDate = new Date(this.endYear, 0, 1);
-    
+
     this.loaderService.show();
-    
+
     this.movieService.searchMovies(searchRequest, page, size).subscribe({
       next: (response: PaginatedMovieResponse) => {
         this.moviesFound = response.content;
