@@ -51,9 +51,13 @@ export class MovieService {
 
   public searchMovies(movieSearchRequest: MovieSearchRequest, page: number = 0, size: number = 10) {
     return this.http.post<any>(
-      `${this.backendUrl}movie/search?page=${page}&size=${size}`, 
+      `${this.backendUrl}movie/search?page=${page}&size=${size}`,
       movieSearchRequest
     );
+  }
+
+  public likeMultipleMovies(movieIds: number[]): Observable<void> {
+    return this.http.post<void>('http://localhost:8081/loved-movies/bulk', movieIds);
   }
 
   public getSimilarMovie(movieId: number): Observable<Movie[]> {

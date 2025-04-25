@@ -22,6 +22,15 @@ public class LovedMovieController {
     @Autowired
     private LovedMovieService lovedMovieService;
 
+    // 💡 Mettre cette route EN PREMIER
+    @PostMapping("/bulk")
+    public ResponseEntity<Void> likeMultipleMovies(@RequestBody List<Long> movieIds) throws GenericNotFoundException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser user = (AppUser) authentication.getPrincipal();
+        lovedMovieService.likeMultipleMovies(user, movieIds);
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/{idMovie}")
     public ResponseEntity likeOrUnlikeMovie(@PathVariable Long idMovie) throws GenericNotFoundException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

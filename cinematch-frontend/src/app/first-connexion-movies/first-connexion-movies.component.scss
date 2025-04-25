@@ -1,0 +1,22 @@
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.movies > div {
+  cursor: pointer;
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.movies > div.selected {
+  outline: 3px solid #ff9800; // Orange
+  box-shadow: 0 0 10px #ff9800;
+  transform: scale(1.02);
+}
+
+.movies > div:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}

@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import fr.cpe.cinematch_backend.entities.enums.MovieActionType;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -64,7 +63,7 @@ public class LovedMovieService {
                 .toList();
         List<MovieDetailsWithReviewsDto> lovedMovie = new ArrayList<>();
         for (MovieDto movieDto : userMovies) {
-               lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, false, new ArrayList<>()));
+            lovedMovie.add(new MovieDetailsWithReviewsDto(movieDto, false, true, false, false, new ArrayList<>()));
         }
         return lovedMovie;
     }
@@ -106,6 +105,24 @@ public class LovedMovieService {
                 .limit(limit)
                 .toList();
         return lovedMovieEntityList.stream().map(LovedMovieEntity::getMovie).collect(Collectors.toList());
+    }
+
+    public void likeMultipleMovies(AppUser user, List<Long> movieIds) throws GenericNotFoundException {
+        for (Long movieId : movieIds) {
+            // Vérifie si le film existe
+            MovieEntity movie = movieRepository.findById(movieId)
+                    .orElseThrow(() -> new GenericNotFoundException(404, "Movie not found",
+                            "Film introuvable avec l'ID : " + movieId));
+
+            // Vérifie si l'utilisateur a déjà liké ce film
+            boolean alreadyLiked = lovedMovieRepository.existsByUserAndMovie(user, movie);
+            if (!alreadyLiked) {
+                LovedMovieEntity entity = new LovedMovieEntity();
+                entity.setUser(user);
+                entity.setMovie(movie);
+                lovedMovieRepository.save(entity);
+            }
+        }
     }
 
 }
