@@ -43,27 +43,37 @@ export class LoginComponent {
   }
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const loginRequest = {
+      const loginRequest: LoginRequest = {
         username: this.loginForm.get('username')?.value,
         password: this.loginForm.get('password')?.value
-      } as LoginRequest;
+      };
+
       this.logged = false;
       this.loaderService.show();
+
       this.authService.login(loginRequest).subscribe({
         next: (res => {
           this.authService.setTokenInStorage(res.token);
           this.authService.tokenSubject.next(res.token);
           this.langService.setLanguage(res.lang);
           this.profileService.usernameSubject.next(res.username);
-          this.toasterService.success(this.translateService.instant('app.common-component.login.response.login-successful'));
-          this.router.navigate(['']);
+          this.toasterService.success(
+            this.translateService.instant('app.common-component.login.response.login-successful')
+          );
+
+          if (res.isFirstConnexion) {
+            this.router.navigate(['/first-connexion']);
+          } else {
+            this.router.navigate(['']);
+          }
         }),
         error: (err => {
-           this.toasterService.error(err.error.reason, err.error.error);
+          this.toasterService.error(err.error.reason, err.error.error);
         })
       }).add(() => {
         this.loaderService.hide();
-      });         
+      });
+
     } else {
       console.log('Form is not valid!');
     }

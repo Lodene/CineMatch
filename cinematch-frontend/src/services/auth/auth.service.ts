@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { LoaderService } from '../loader/loader.service';
 
-// Request typing => 
+// Request typing =>
 export type SignupRequest = {
   username: string;
   password: string;
@@ -22,6 +22,7 @@ type LoginResponse = {
   expiresIn: number;
   lang: string;
   username: string;
+  isFirstConnexion: boolean;
 }
 
 
@@ -36,7 +37,7 @@ export class AuthService {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: any,
-    @Inject(DOCUMENT) private document: Document,  
+    @Inject(DOCUMENT) private document: Document,
     private http: HttpClient, private router: Router,
   ) {
     this.localStorage = document.defaultView?.localStorage;
@@ -53,7 +54,7 @@ export class AuthService {
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http.post<any>(`${this.apiUrl}/login`, loginRequest);
   }
-  
+
 
   // Method to set token in HttpOnly cookie
   public setTokenInStorage(token: string): void {

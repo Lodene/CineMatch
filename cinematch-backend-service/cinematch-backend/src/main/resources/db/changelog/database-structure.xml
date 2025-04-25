@@ -512,6 +512,11 @@
                              referencedTableName="movie"/>
 </changeSet>
 
+<changeSet id="1745571917289-1" author="T-H-O-M-A-S">
+    <addColumn tableName="app_user">
+        <column name="is_first_connexion" type="boolean"/>
+    </addColumn>
+</changeSet>
 
 
 </databaseChangeLog>

@@ -14,4 +14,5 @@ public class LoginResponse {
     private long expiresIn;
     private String lang;
     private String username;
+    private boolean firstConnexion;
 }

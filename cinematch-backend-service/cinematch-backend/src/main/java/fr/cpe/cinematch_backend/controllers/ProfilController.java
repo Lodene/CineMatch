@@ -5,15 +5,18 @@ import fr.cpe.cinematch_backend.dtos.ProfileDetailsDto;
 import fr.cpe.cinematch_backend.entities.AppUser;
 import fr.cpe.cinematch_backend.exceptions.BadEndpointException;
 import fr.cpe.cinematch_backend.exceptions.GenericNotFoundException;
+import fr.cpe.cinematch_backend.repositories.AppUserRepository;
 import fr.cpe.cinematch_backend.repositories.ProfilRepository;
 import fr.cpe.cinematch_backend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +30,7 @@ public class ProfilController {
     @Autowired
     private ProfilService profilService;
     @Autowired
-    private ProfilRepository profilRepository;
+    private AppUserRepository userRepository;
     @Autowired
     private LovedMovieService lovedMovieService;
     @Autowired
@@ -116,5 +119,17 @@ public class ProfilController {
     @GetMapping("/all")
     public ResponseEntity<List<ProfileDto>> getAllProfiles() {
         return ResponseEntity.ok(profilService.getAllProfiles());
+    }
+
+    @GetMapping("/first-connexion/status")
+    public ResponseEntity<Boolean> getFirstConnexionStatus() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUser uE = (AppUser) authentication.getPrincipal();
+
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Utilisateur introuvable"));
+
+        return ResponseEntity.ok(user.isFirstConnexion());
     }
 }
