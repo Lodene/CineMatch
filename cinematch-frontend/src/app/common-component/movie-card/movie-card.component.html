@@ -1,5 +1,21 @@
-<mat-card class="card m-10" appearance="outlined" (click)="goToMovie(movie)">
+<mat-card class="card m-10" appearance="outlined" (click)="goToMovie(movie)" (mouseover)="hideElement = false"
+    (mouseleave)="hideElement = true">
     <img class="image" [src]="posterPath" [alt]="'generic-error.image-not-found' | translate">
+    <div class="overlay">
+        <app-movie-actions 
+            [hidden]="hideElement"
+            class="mt-20" 
+            [disabled]="!isLogged" 
+            [showLike]="true"
+            [showWatchList]="true" 
+            [isLiked]="isLiked" 
+            [movieId]="movie.id" 
+            [isInWatchList]="isInWatchlist"
+            (likeActionEvent)="handleLikeAction($event)" 
+            (watchlistActionEvent)="handleWatchListAction($event)">
+        </app-movie-actions>
+
+    </div>
     <mat-card-content class="card-cotent mt-4">
         <div class="name  mr-10 text-bold">{{movie.title}}</div>
         <div style="display: flex;">

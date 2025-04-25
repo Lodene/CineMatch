@@ -1,6 +1,41 @@
 .card {
     width: 335px;
     height: 97%;
+
+    box-shadow: 8px 14px 38px rgba(39, 44, 49, .06), 1px 3px 8px rgba(39, 44, 49, .03);
+    // overflow: hidden; /* otherwise header image won't respect rounded corners */
+    // background: white;
+    transition: all .5s ease;
+    /* back to normal */
+}
+
+
+.card:hover {
+    transform: translate3D(0, -1px, 0) scale(1.03);
+    /* move up slightly and zoom in */
+    box-shadow: 8px 28px 50px rgba(39, 44, 49, .07), 1px 6px 12px rgba(39, 44, 49, .04);
+    transition: all .4s ease;
+    /* zoom in */
+    cursor: pointer;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    transition: .3s ease;
+    overflow: hidden;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+.card:hover .overlay {
+    background-color: rgba(255, 255, 255, 0.564);
 }
 
 .image {
