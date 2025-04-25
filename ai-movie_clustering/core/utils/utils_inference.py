@@ -115,4 +115,4 @@ def recommend_movies(
     similar = model.dv.most_similar([avg_vector], topn=topn + len(movie_ids))
     # Remove original movies from recommendations
     similar = [rec_id for (rec_id, score) in similar if rec_id not in movie_ids]
-    return similar
+    return similar[:topn]
